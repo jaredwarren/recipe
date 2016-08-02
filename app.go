@@ -30,8 +30,41 @@ type Ingredient struct {
 // TODO: convert to different units
 // TODO: if i have density, I can convert from volume to weight
 
-// Convert ingredient
-func (n *Ingredient) Convert() bool {
+// UnitConverter ...
+type UnitConverter interface {
+	Convert(f, t UnitOfMeasure) UnitOfMeasure
+}
+
+// VolumeUnitConverter ...
+type VolumeUnitConverter struct {
+	test string
+}
+
+// Convert ...
+func (c *VolumeUnitConverter) Convert(f, t UnitOfMeasure) UnitOfMeasure {
+	return UnitOfMeasure{}
+}
+
+// VolumeToWeightUnitConverter ...
+type VolumeToWeightUnitConverter struct {
+	test string
+}
+
+// Convert ...
+func (c *VolumeToWeightUnitConverter) Convert(f, t UnitOfMeasure) UnitOfMeasure {
+	return UnitOfMeasure{}
+}
+
+// UnitOfMeasure ...
+type UnitOfMeasure struct {
+	Name         string  // name e.g. Cups, Table Spoon
+	Abbreviation string  // abbreviation e.g C, Tb
+	Type         string  // volume, weight
+	Diff         float32 // difference from SI
+}
+
+// Convert ingredient, probably shouldn't  be part of intredient, but UnitOfMeasure
+func (n *Ingredient) Convert(f, t UnitOfMeasure) bool {
 	_, month, day := time.Now().Date()
 	if month == time.November && day == 10 {
 		fmt.Println("Happy Go day!")
