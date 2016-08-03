@@ -33,11 +33,37 @@ var Recipe = MediaType("application/jaredwarren.recipe+json", func() {
 		Attribute("id", Integer, "Unique recipe ID")
 		Attribute("title", String, "Title of recipe")
 		Attribute("images", ArrayOf(String), "Title of recipe")
+		Attribute("Servings", ArrayOf(String), "Title of recipe")
+		Attribute("images", ArrayOf(String), "Title of recipe")
+		Attribute("images", ArrayOf(String), "Title of recipe")
+		Attribute("images", ArrayOf(String), "Title of recipe")
+		Attribute("images", ArrayOf(String), "Title of recipe")
+		Attribute("images", ArrayOf(String), "Title of recipe")
+		Attribute("images", ArrayOf(String), "Title of recipe")
 
 		Required("id", "title")
 	})
 	View("default", func() {
 		Attribute("id")
+		Attribute("title")
+	})
+})
+
+var UnitOfMeasure = MediaType("application/jaredwarren.unitofmeasure+json", func() {
+	Description("A recipe")
+	Attributes(func() {
+		Attribute("name", String, "")
+		Attribute("abbreviation", String, "")
+		Attribute("type", String, "", func() {
+			Enum("volume", "weight")
+			Default("weight")
+		})
+		Attribute("diff", Number, "")
+
+		Required("diff", "name")
+	})
+	View("default", func() {
+		Attribute("name")
 		Attribute("title")
 	})
 })
