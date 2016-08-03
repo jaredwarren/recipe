@@ -1,0 +1,72 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  JaredwarrenRecipe:
+    description: A recipe (default view)
+    example:
+      id: 2.8951832e+18
+      images:
+      - Commodi autem aut.
+      - Commodi autem aut.
+      title: Voluptatum architecto et non.
+    properties:
+      id:
+        description: Unique recipe ID
+        example: 2.8951832e+18
+        format: int64
+        type: integer
+      title:
+        description: Title of recipe
+        example: Voluptatum architecto et non.
+        type: string
+    required:
+    - id
+    - title
+    title: 'Mediatype identifier: application/jaredwarren.recipe+json'
+    type: object
+host: localhost:8080
+info:
+  description: A simple recipe service
+  title: Recipe API
+  version: ""
+paths:
+  /recipes/{recipeID}:
+    get:
+      description: Get recipe by id
+      operationId: recipe#show
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: recipeID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/JaredwarrenRecipe'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show recipe
+      tags:
+      - recipe
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/JaredwarrenRecipe'
+schemes:
+- http
+swagger: "2.0"

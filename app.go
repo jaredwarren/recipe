@@ -169,6 +169,6 @@ type ShoppingItem struct {
 //
 var alphaDB *sql.DB
 
-func main() {
+func mainish() {
 	fmt.Printf("hello, world\n")
 }
