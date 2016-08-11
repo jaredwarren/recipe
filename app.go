@@ -22,9 +22,10 @@ type IngredientStorage interface {
 
 // Ingredient stuff
 type Ingredient struct {
-	Name     string
-	Quantity int
-	Units    string
+	Name       string
+	Quantity   int
+	Units      string
+	PrepMethod string // e.g. chopped, sliced, etc.. might need to be array. this might be a mini recipe or just a word
 }
 
 // TODO: convert to different units

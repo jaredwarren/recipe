@@ -22,6 +22,6 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 	// Put your logic here
 
 	// RecipeController_Show: end_implement
-	res := &app.JaredwarrenRecipe{}
+	res := &app.RecipeRecipe{}
 	return ctx.OK(res)
 }

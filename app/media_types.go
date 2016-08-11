@@ -16,19 +16,39 @@ import "github.com/goadesign/goa"
 
 // A recipe (default view)
 //
-// Identifier: application/jaredwarren.recipe+json
-type JaredwarrenRecipe struct {
+// Identifier: application/recipe.recipe+json
+type RecipeRecipe struct {
 	// Unique recipe ID
 	ID int `form:"id" json:"id" xml:"id"`
 	// Title of recipe
 	Title string `form:"title" json:"title" xml:"title"`
 }
 
-// Validate validates the JaredwarrenRecipe media type instance.
-func (mt *JaredwarrenRecipe) Validate() (err error) {
+// Validate validates the RecipeRecipe media type instance.
+func (mt *RecipeRecipe) Validate() (err error) {
 	if mt.Title == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
 	}
 
+	return
+}
+
+// A recipe (default view)
+//
+// Identifier: application/recipe.unitofmeasure+json
+type RecipeUnitofmeasure struct {
+	Name string `form:"name" json:"name" xml:"name"`
+	Type string `form:"type" json:"type" xml:"type"`
+}
+
+// Validate validates the RecipeUnitofmeasure media type instance.
+func (mt *RecipeUnitofmeasure) Validate() (err error) {
+	if mt.Name == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+	}
+
+	if !(mt.Type == "volume" || mt.Type == "weight") {
+		err = goa.MergeErrors(err, goa.InvalidEnumValueError(`response.type`, mt.Type, []interface{}{"volume", "weight"}))
+	}
 	return
 }

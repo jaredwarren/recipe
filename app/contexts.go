@@ -47,8 +47,8 @@ func NewShowRecipeContext(ctx context.Context, service *goa.Service) (*ShowRecip
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowRecipeContext) OK(r *JaredwarrenRecipe) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/jaredwarren.recipe+json")
+func (ctx *ShowRecipeContext) OK(r *RecipeRecipe) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
