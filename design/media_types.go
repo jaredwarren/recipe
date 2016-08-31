@@ -2,6 +2,8 @@ package design
 
 // mysql root: asdf1234
 
+// build: goagen bootstrap -d github.com/jaredwarren/recipe/design
+
 import (
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
@@ -13,7 +15,7 @@ var Meal = MediaType("application/recipe.meal+json", func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("title", String, "title")
 		Attribute("courses", ArrayOf(Course), "all courses")
-		Attribute("servings", int, "How much to scale eacy recipe by")
+		Attribute("servings", Integer, "How much to scale eacy recipe by")
 
 		Required("id", "courses")
 	})
@@ -30,7 +32,7 @@ var Course = MediaType("application/recipe.course+json", func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("title", String, "title")
 		Attribute("recipes", ArrayOf(Recipe), "all recipes")
-		Attribute("servings", int, "How much to scale eacy recipe by, overrides meal")
+		Attribute("servings", Integer, "How much to scale eacy recipe by, overrides meal")
 
 		Required("id", "recipes")
 	})
@@ -44,20 +46,23 @@ var Course = MediaType("application/recipe.course+json", func() {
 var Recipe = MediaType("application/recipe.recipe+json", func() {
 	Description("A recipe")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
 		Attribute("id", Integer, "Unique recipe ID")
 		Attribute("title", String, "Title of recipe")
 		Attribute("description", String, "Long description of recipe")
 		Attribute("images", ArrayOf(String), "Title of recipe")
-		Attribute("servings", Ingredient, "should be quantity and measure e.g. 4 cups. same as ingredients")
+		Attribute("quantity", UnitOfMeasure, "quantity, measure, servings, yield e.g. 4 cups.") // ???
+		//Attribute("servings", UnitOfMeasure, "should be quantity and measure e.g. 4 cups. same as ingredients")
 		Attribute("prep_time", DateTime, "Amount of time to prepare")
 		Attribute("cook_time", DateTime, "Amount of time to cook")
 		Attribute("wait_time", DateTime, "Amount of time to wait for things such as mairnading")
 		Attribute("cookware", ArrayOf(Cookware), "List of tools needed")
 		Attribute("version", String, "Version Number e.g. 1.0.1")
-		Attribute("ingredients", ArrayOf(Ingredient), "List of ingredients")
-		Attribute("sub_recipes", ArrayOf(Recipe), "List of ingredients")
-		Attribute("directions", ArrayOf(Step), "List of steps")
+		Attribute("ingredients", CollectionOf("application/recipe.recipe+json"), "List of ingredients")
+		//Attribute("ingredients", ArrayOf(Ingredient), "List of ingredients")
+		//Attribute("sub_recipes", CollectionOf("application/recipe.recipe+json"), "List of ingredients")
+		//Attribute("prep_steps", ArrayOf(Step), "List of steps")
+		Attribute("directions", ArrayOf(Step), "List of steps") // ??? might need to be an array of grouped steps i.e. prep_steps cook_steps, plate_steps..
+		//Attribute("plate_steps", ArrayOf(Step), "List of steps")
 		Attribute("categories", ArrayOf(Category), "List of categories, basically same as tag")
 		Attribute("favorite", Boolean, "Is a favorite, basically a tag")
 		Attribute("tags", ArrayOf(Tag), "List of tags")
@@ -73,6 +78,10 @@ var Recipe = MediaType("application/recipe.recipe+json", func() {
 		Attribute("notes", ArrayOf(Note), "List of dated notes")
 		Attribute("created", DateTime, "First created")
 		Attribute("updated", DateTime, "Last Updated")
+
+		//ingredient
+		Attribute("state", String, "e.g. chopped, sliced, etc.. might need to be array.") // ???
+		Attribute("complete", Boolean, "If it's been added/included")                     // ???
 
 		Required("id", "id", "title")
 	})
@@ -99,6 +108,12 @@ var Recipe = MediaType("application/recipe.recipe+json", func() {
 		Attribute("notes")
 		Attribute("created")
 		Attribute("updated")
+	})
+	View("ingredient", func() {
+		Attribute("title")
+		Attribute("quantity")
+		Attribute("state")
+		Attribute("complete")
 	})
 })
 
@@ -127,7 +142,7 @@ var Cookware = MediaType("application/recipe.cookware+json", func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("name", String, "what's it called")
 		Attribute("description", String, "long description")
-		Attribute("parts", ArrayOf(Cookware), "list of parts or attachments")
+		Attribute("parts", CollectionOf("application/recipe.cookware+json"), "list of parts or attachments")
 		Attribute("settings", ArrayOf(String), "settings, e.g. temprature")
 		Attribute("setup", ArrayOf(Step), "Steps to setting up")
 		Attribute("complete", Boolean, "If it's been checked")
@@ -152,6 +167,7 @@ var Step = MediaType("application/recipe.step+json", func() {
 		Attribute("in_progress", Boolean, "current state") // ??
 		Attribute("complete", Boolean, "is completed")
 		Attribute("time", DateTime, "time to complete. e.g. boil for 20 min")
+		Attribute("ingredients", CollectionOf("application/recipe.recipe+json"), "List of ingredients for this step")
 
 		Required("id", "title")
 	})
@@ -168,7 +184,7 @@ var Category = MediaType("application/recipe.category+json", func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("name", String, "")
 		Attribute("type", String, "")
-		Attribute("categories", ArrayOf(Category), "")
+		Attribute("categories", CollectionOf("application/recipe.category+json"), "")
 
 		Required("id", "name")
 	})
@@ -265,8 +281,7 @@ var ShoppingList = MediaType("application/recipe.shoppinglist+json", func() {
 	})
 	View("default", func() {
 		Attribute("name")
-		Attribute("ingredients")
-		Attribute("cookware")
+		Attribute("items")
 		Attribute("store")
 	})
 })
@@ -277,14 +292,16 @@ var ShoppingItem = MediaType("application/recipe.shoppingitem+json", func() {
 		Attribute("id", Integer, "Unique ID")
 
 		Attribute("name", String, "a name for the list")
-		Attribute("items", ArrayOf(Ingredient), "The list of ingredients")
-		Attribute("store", String, "Store where to tet items")
+
+		// TODO: figure out what to do here....
+		//Attribute("items", ArrayOf(Ingredient), "The list of ingredients")
+		Attribute("store", String, "Store where to get items")
+
 		Required("id", "items")
 	})
 	View("default", func() {
 		Attribute("name")
-		Attribute("ingredients")
-		Attribute("cookware")
+		Attribute("items")
 		Attribute("store")
 	})
 })
