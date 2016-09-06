@@ -90,14 +90,13 @@ var Recipe = MediaType("application/recipe.recipe+json", func() {
 		Attribute("title")
 		Attribute("description")
 		Attribute("images")
-		Attribute("servings")
+		Attribute("quantity")
 		Attribute("prep_time")
 		Attribute("cook_time")
 		Attribute("wait_time")
 		Attribute("cookware")
 		Attribute("version")
 		Attribute("ingredients")
-		Attribute("sub_recipes")
 		Attribute("directions")
 		Attribute("categories")
 		Attribute("favorite")
@@ -117,6 +116,7 @@ var Recipe = MediaType("application/recipe.recipe+json", func() {
 	})
 })
 
+/*
 var Ingredient = MediaType("application/recipe.ingredient+json", func() {
 	Description("An Ingredient")
 	Attributes(func() {
@@ -135,6 +135,7 @@ var Ingredient = MediaType("application/recipe.ingredient+json", func() {
 		Attribute("complete")
 	})
 })
+*/
 
 var Cookware = MediaType("application/recipe.cookware+json", func() {
 	Description("A Cookware")
@@ -168,6 +169,7 @@ var Step = MediaType("application/recipe.step+json", func() {
 		Attribute("complete", Boolean, "is completed")
 		Attribute("time", DateTime, "time to complete. e.g. boil for 20 min")
 		Attribute("ingredients", CollectionOf("application/recipe.recipe+json"), "List of ingredients for this step")
+		Attribute("parts", CollectionOf("application/recipe.cookware+json"), "list of cookware needed for this step")
 
 		Required("id", "title")
 	})
@@ -218,7 +220,9 @@ var Source = MediaType("application/recipe.source+json", func() {
 		Required("id", "name")
 	})
 	View("default", func() {
+		Attribute("id")
 		Attribute("name")
+		Attribute("url")
 	})
 })
 
@@ -226,12 +230,13 @@ var Note = MediaType("application/recipe.note+json", func() {
 	Description("A Note")
 	Attributes(func() {
 		Attribute("id", Integer, "Unique ID")
-		Attribute("name", String, "")
+		Attribute("text", String, "html text")
 
-		Required("id", "name")
+		Required("id", "text")
 	})
 	View("default", func() {
-		Attribute("name")
+		Attribute("id")
+		Attribute("text")
 	})
 })
 
@@ -297,11 +302,12 @@ var ShoppingItem = MediaType("application/recipe.shoppingitem+json", func() {
 		//Attribute("items", ArrayOf(Ingredient), "The list of ingredients")
 		Attribute("store", String, "Store where to get items")
 
-		Required("id", "items")
+		Required("id", "name")
 	})
 	View("default", func() {
+		Attribute("id")
 		Attribute("name")
-		Attribute("items")
+		//Attribute("items")
 		Attribute("store")
 	})
 })

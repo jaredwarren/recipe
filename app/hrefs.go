@@ -15,6 +15,6 @@ package app
 import "fmt"
 
 // RecipeHref returns the resource href.
-func RecipeHref(recipeID interface{}) string {
-	return fmt.Sprintf("/recipes/%v", recipeID)
+func RecipeHref(id interface{}) string {
+	return fmt.Sprintf("/recipe/recipe/%v", id)
 }

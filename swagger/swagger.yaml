@@ -1,50 +1,545 @@
+basePath: /recipe
 consumes:
 - application/json
 - application/xml
 - application/gob
 - application/x-gob
 definitions:
-  RecipeRecipe:
-    description: A recipe (default view)
-    example:
-      Servings:
-      - Facilis commodi autem aut.
-      - Facilis commodi autem aut.
-      id: 3.005556e+18
-      images:
-      - Et non voluptatum amet perspiciatis.
-      title: Sed eum maxime nihil ab.
+  CreateRecipePayload:
     properties:
-      id:
-        description: Unique recipe ID
-        example: 3.005556e+18
+      value:
+        description: Operand value
         format: int64
         type: integer
+    required:
+    - value
+    title: CreateRecipePayload
+    type: object
+  RecipeCategory:
+    description: A Category (default view)
+    properties:
+      categories:
+        $ref: '#/definitions/RecipeCategoryCollection'
+      name:
+        example: Commodi autem aut.
+        type: string
+      type:
+        example: Voluptatum architecto et non.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.category+json'
+    type: object
+  RecipeCategoryCollection:
+    description: RecipeCategoryCollection is the media type for an array of RecipeCategory
+      (default view)
+    items:
+      $ref: '#/definitions/RecipeCategory'
+    title: 'Mediatype identifier: application/recipe.category+json; type=collection'
+    type: array
+  RecipeCookware:
+    description: A Cookware (default view)
+    properties:
+      description:
+        description: long description
+        example: Voluptas quo libero vel numquam sint consequuntur.
+        type: string
+      name:
+        description: what's it called
+        example: Quis esse provident.
+        type: string
+      parts:
+        $ref: '#/definitions/RecipeCookwareCollection'
+      settings:
+        description: settings, e.g. temprature
+        example:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        items:
+          example: Enim voluptatem.
+          type: string
+        type: array
+      setup:
+        description: Steps to setting up
+        example:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        items:
+          $ref: '#/definitions/RecipeStep'
+        type: array
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.cookware+json'
+    type: object
+  RecipeCookwareCollection:
+    description: RecipeCookwareCollection is the media type for an array of RecipeCookware
+      (default view)
+    items:
+      $ref: '#/definitions/RecipeCookware'
+    title: 'Mediatype identifier: application/recipe.cookware+json; type=collection'
+    type: array
+  RecipeNote:
+    description: A Note (default view)
+    properties:
+      id:
+        description: Unique ID
+        example: 8.066596e+16
+        format: int64
+        type: integer
+      text:
+        description: html text
+        example: Laudantium soluta saepe sit eum aperiam deserunt.
+        type: string
+    required:
+    - id
+    - text
+    title: 'Mediatype identifier: application/recipe.note+json'
+    type: object
+  RecipeRecipe:
+    description: A recipe (default view)
+    properties:
+      categories:
+        description: List of categories, basically same as tag
+        example:
+        - categories:
+          - categories: '-'
+            name: Commodi autem aut.
+            type: Voluptatum architecto et non.
+          - categories: '-'
+            name: Commodi autem aut.
+            type: Voluptatum architecto et non.
+          name: Commodi autem aut.
+          type: Voluptatum architecto et non.
+        - categories:
+          - categories: '-'
+            name: Commodi autem aut.
+            type: Voluptatum architecto et non.
+          - categories: '-'
+            name: Commodi autem aut.
+            type: Voluptatum architecto et non.
+          name: Commodi autem aut.
+          type: Voluptatum architecto et non.
+        - categories:
+          - categories: '-'
+            name: Commodi autem aut.
+            type: Voluptatum architecto et non.
+          - categories: '-'
+            name: Commodi autem aut.
+            type: Voluptatum architecto et non.
+          name: Commodi autem aut.
+          type: Voluptatum architecto et non.
+        items:
+          $ref: '#/definitions/RecipeCategory'
+        type: array
+      cook_time:
+        description: Amount of time to cook
+        example: 1987-01-20T08:51:16-07:00
+        format: date-time
+        type: string
+      cookware:
+        description: List of tools needed
+        example:
+        - description: Voluptas quo libero vel numquam sint consequuntur.
+          name: Quis esse provident.
+          parts:
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          settings:
+          - Enim voluptatem.
+          - Enim voluptatem.
+          - Enim voluptatem.
+          setup:
+          - description: Minus nobis debitis corporis odit quo odit.
+            title: Dolor unde natus iusto.
+          - description: Minus nobis debitis corporis odit quo odit.
+            title: Dolor unde natus iusto.
+        - description: Voluptas quo libero vel numquam sint consequuntur.
+          name: Quis esse provident.
+          parts:
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          settings:
+          - Enim voluptatem.
+          - Enim voluptatem.
+          - Enim voluptatem.
+          setup:
+          - description: Minus nobis debitis corporis odit quo odit.
+            title: Dolor unde natus iusto.
+          - description: Minus nobis debitis corporis odit quo odit.
+            title: Dolor unde natus iusto.
+        - description: Voluptas quo libero vel numquam sint consequuntur.
+          name: Quis esse provident.
+          parts:
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          - description: Voluptas quo libero vel numquam sint consequuntur.
+            name: Quis esse provident.
+            parts: '-'
+            settings:
+            - Enim voluptatem.
+            - Enim voluptatem.
+            - Enim voluptatem.
+            setup:
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+            - description: Minus nobis debitis corporis odit quo odit.
+              title: Dolor unde natus iusto.
+          settings:
+          - Enim voluptatem.
+          - Enim voluptatem.
+          - Enim voluptatem.
+          setup:
+          - description: Minus nobis debitis corporis odit quo odit.
+            title: Dolor unde natus iusto.
+          - description: Minus nobis debitis corporis odit quo odit.
+            title: Dolor unde natus iusto.
+        items:
+          $ref: '#/definitions/RecipeCookware'
+        type: array
+      created:
+        description: First created
+        example: 1991-08-27T18:42:04-06:00
+        format: date-time
+        type: string
+      description:
+        description: Long description of recipe
+        example: Rerum ex est voluptas at.
+        type: string
+      difficulty:
+        description: rating between 0-1
+        example: 0.707592
+        maximum: 1
+        type: number
+      directions:
+        description: List of steps
+        example:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        items:
+          $ref: '#/definitions/RecipeStep'
+        type: array
+      favorite:
+        description: Is a favorite, basically a tag
+        example: true
+        type: boolean
+      id:
+        description: Unique recipe ID
+        example: 6.4767986e+18
+        format: int64
+        type: integer
+      images:
+        description: Title of recipe
+        example:
+        - Autem voluptatem.
+        items:
+          example: Autem voluptatem.
+          type: string
+        type: array
+      ingredients:
+        $ref: '#/definitions/RecipeRecipeCollection'
+      notes:
+        description: List of dated notes
+        example:
+        - id: 8.066596e+16
+          text: Laudantium soluta saepe sit eum aperiam deserunt.
+        items:
+          $ref: '#/definitions/RecipeNote'
+        type: array
+      prep_time:
+        description: Amount of time to prepare
+        example: 2007-12-02T15:27:23-07:00
+        format: date-time
+        type: string
+      quantity:
+        $ref: '#/definitions/RecipeUnitofmeasure'
+      rating:
+        description: rating between 0-1
+        example: 0.20031834
+        maximum: 1
+        type: number
+      source:
+        $ref: '#/definitions/RecipeSource'
+      tags:
+        description: List of tags
+        example:
+        - name: Et asperiores.
+        - name: Et asperiores.
+        - name: Et asperiores.
+        items:
+          $ref: '#/definitions/RecipeTag'
+        type: array
       title:
         description: Title of recipe
-        example: Sed eum maxime nihil ab.
+        example: Rerum molestias.
+        type: string
+      updated:
+        description: Last Updated
+        example: 1995-07-30T06:52:28-06:00
+        format: date-time
+        type: string
+      version:
+        description: Version Number e.g. 1.0.1
+        example: Quae quo aut quia voluptas aut.
+        type: string
+      wait_time:
+        description: Amount of time to wait for things such as mairnading
+        example: 1981-01-29T23:53:05-07:00
+        format: date-time
         type: string
     required:
     - id
     - title
     title: 'Mediatype identifier: application/recipe.recipe+json'
     type: object
+  RecipeRecipeCollection:
+    description: RecipeRecipeCollection is the media type for an array of RecipeRecipe
+      (default view)
+    items:
+      $ref: '#/definitions/RecipeRecipe'
+    title: 'Mediatype identifier: application/recipe.recipe+json; type=collection'
+    type: array
+  RecipeSource:
+    description: A Source (default view)
+    properties:
+      id:
+        description: Unique ID
+        example: 2.4359023e+18
+        format: int64
+        type: integer
+      name:
+        example: Repellendus aut quia in rerum doloribus.
+        type: string
+      url:
+        example: Omnis voluptas.
+        type: string
+    required:
+    - id
+    - name
+    title: 'Mediatype identifier: application/recipe.source+json'
+    type: object
+  RecipeStep:
+    description: A Step (default view)
+    properties:
+      description:
+        description: HTML
+        example: Minus nobis debitis corporis odit quo odit.
+        type: string
+      title:
+        example: Dolor unde natus iusto.
+        type: string
+    required:
+    - title
+    title: 'Mediatype identifier: application/recipe.step+json'
+    type: object
+  RecipeTag:
+    description: A Tag (default view)
+    properties:
+      name:
+        example: Et asperiores.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.tag+json'
+    type: object
+  RecipeUnitofmeasure:
+    description: A recipe (default view)
+    properties:
+      name:
+        description: name e.g. Cups, Table Spoon
+        example: Amet adipisci voluptatum.
+        type: string
+      type:
+        default: weight
+        description: volume, weight, time, length...
+        example: Dignissimos labore numquam sequi sit.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.unitofmeasure+json'
+    type: object
+  UpdateRecipePayload:
+    properties:
+      value:
+        description: Operand value
+        format: int64
+        type: integer
+    required:
+    - value
+    title: UpdateRecipePayload
+    type: object
+externalDocs:
+  description: TODO
+  url: http://jlwarren1.com/recipe/docs
 host: localhost:8080
 info:
-  description: A simple recipe service
-  title: Recipe API
+  contact:
+    email: jlwarren1@gmail.com
+    name: Jared Warren
+    url: http://jlwarren1.com
+  description: CRUD API recipe
+  license:
+    name: MIT
+    url: https://github.com/goadesign/goa/blob/master/LICENSE
+  title: Recipe App
   version: ""
 paths:
-  /recipes/{recipeID}:
+  /recipe:
     get:
-      description: Get recipe by id
+      description: Retrieve a list or recipes
+      operationId: recipe#list
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
+      schemes:
+      - http
+      summary: list recipe
+      tags:
+      - recipe
+    post:
+      operationId: recipe#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateRecipePayload'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
+      schemes:
+      - http
+      summary: create recipe
+      tags:
+      - recipe
+  /recipe/{id}:
+    delete:
+      operationId: recipe#delete
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
+      schemes:
+      - http
+      summary: delete recipe
+      tags:
+      - recipe
+    get:
+      description: Display an recipe by id
       operationId: recipe#show
       parameters:
       - description: Recipe ID
         in: path
-        name: recipeID
+        name: id
         required: true
-        type: integer
+        type: string
       responses:
         "200":
           description: OK
@@ -55,6 +550,28 @@ paths:
       schemes:
       - http
       summary: show recipe
+      tags:
+      - recipe
+    put:
+      operationId: recipe#update
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: string
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateRecipePayload'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
+      schemes:
+      - http
+      summary: update recipe
       tags:
       - recipe
 produces:
