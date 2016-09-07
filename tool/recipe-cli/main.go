@@ -15,7 +15,7 @@ func main() {
 	// Create command line parser
 	app := &cobra.Command{
 		Use:   "recipe-cli",
-		Short: `CLI client for the recipe service`,
+		Short: `CLI client for the recipe service (http://jlwarren1.com/recipe/docs)`,
 	}
 
 	// Create client struct

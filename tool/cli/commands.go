@@ -28,11 +28,6 @@ type (
 		PrettyPrint bool
 	}
 
-	// ListRecipeCommand is the command line data structure for the list action of recipe
-	ListRecipeCommand struct {
-		PrettyPrint bool
-	}
-
 	// ShowRecipeCommand is the command line data structure for the show action of recipe
 	ShowRecipeCommand struct {
 		// Recipe ID
@@ -81,12 +76,12 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "list",
-		Short: `Retrieve a list or recipes`,
+		Use:   "show",
+		Short: `Display an recipe by id`,
 	}
-	tmp3 := new(ListRecipeCommand)
+	tmp3 := new(ShowRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipe"]`,
+		Use:   `recipe ["/recipe/recipe/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
@@ -95,10 +90,10 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "show",
-		Short: `Display an recipe by id`,
+		Use:   "update",
+		Short: ``,
 	}
-	tmp4 := new(ShowRecipeCommand)
+	tmp4 := new(UpdateRecipeCommand)
 	sub = &cobra.Command{
 		Use:   `recipe ["/recipe/recipe/ID"]`,
 		Short: ``,
@@ -106,20 +101,6 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	}
 	tmp4.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "update",
-		Short: ``,
-	}
-	tmp5 := new(UpdateRecipeCommand)
-	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipe/ID"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
-	}
-	tmp5.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 }
@@ -218,30 +199,6 @@ func (cmd *DeleteRecipeCommand) Run(c *client.Client, args []string) error {
 func (cmd *DeleteRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var id string
 	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
-}
-
-// Run makes the HTTP request corresponding to the ListRecipeCommand command.
-func (cmd *ListRecipeCommand) Run(c *client.Client, args []string) error {
-	var path string
-	if len(args) > 0 {
-		path = args[0]
-	} else {
-		path = "/recipe/recipe"
-	}
-	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
-	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.ListRecipe(ctx, path)
-	if err != nil {
-		goa.LogError(ctx, "failed", "err", err)
-		return err
-	}
-
-	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
-	return nil
-}
-
-// RegisterFlags registers the command flags with the command line.
-func (cmd *ListRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 }
 
 // Run makes the HTTP request corresponding to the ShowRecipeCommand command.

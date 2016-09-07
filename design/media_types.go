@@ -14,7 +14,7 @@ var Meal = MediaType("application/recipe.meal+json", func() {
 	Attributes(func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("title", String, "title")
-		Attribute("courses", ArrayOf(Course), "all courses")
+		Attribute("courses", CollectionOf("application/recipe.course+json"), "all courses")
 		Attribute("servings", Integer, "How much to scale eacy recipe by")
 
 		Required("id", "courses")
@@ -31,7 +31,7 @@ var Course = MediaType("application/recipe.course+json", func() {
 	Attributes(func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("title", String, "title")
-		Attribute("recipes", ArrayOf(Recipe), "all recipes")
+		Attribute("recipes", CollectionOf("application/recipe.recipe+json"), "all recipes")
 		Attribute("servings", Integer, "How much to scale eacy recipe by, overrides meal")
 
 		Required("id", "recipes")
@@ -43,7 +43,7 @@ var Course = MediaType("application/recipe.course+json", func() {
 	})
 })
 
-var Recipe = MediaType("application/recipe.recipe+json", func() {
+var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 	Description("A recipe")
 	Attributes(func() {
 		Attribute("id", Integer, "Unique recipe ID")
@@ -55,17 +55,17 @@ var Recipe = MediaType("application/recipe.recipe+json", func() {
 		Attribute("prep_time", DateTime, "Amount of time to prepare")
 		Attribute("cook_time", DateTime, "Amount of time to cook")
 		Attribute("wait_time", DateTime, "Amount of time to wait for things such as mairnading")
-		Attribute("cookware", ArrayOf(Cookware), "List of tools needed")
+		Attribute("cookware", CollectionOf("application/recipe.cookware+json"), "List of tools needed")
 		Attribute("version", String, "Version Number e.g. 1.0.1")
 		Attribute("ingredients", CollectionOf("application/recipe.recipe+json"), "List of ingredients")
 		//Attribute("ingredients", ArrayOf(Ingredient), "List of ingredients")
 		//Attribute("sub_recipes", CollectionOf("application/recipe.recipe+json"), "List of ingredients")
 		//Attribute("prep_steps", ArrayOf(Step), "List of steps")
-		Attribute("directions", ArrayOf(Step), "List of steps") // ??? might need to be an array of grouped steps i.e. prep_steps cook_steps, plate_steps..
+		Attribute("directions", CollectionOf("application/recipe.step+json"), "List of steps") // ??? might need to be an array of grouped steps i.e. prep_steps cook_steps, plate_steps..
 		//Attribute("plate_steps", ArrayOf(Step), "List of steps")
-		Attribute("categories", ArrayOf(Category), "List of categories, basically same as tag")
+		Attribute("categories", CollectionOf("application/recipe.category+json"), "List of categories, basically same as tag")
 		Attribute("favorite", Boolean, "Is a favorite, basically a tag")
-		Attribute("tags", ArrayOf(Tag), "List of tags")
+		Attribute("tags", CollectionOf("application/recipe.tag+json"), "List of tags")
 		Attribute("rating", Number, "rating between 0-1", func() {
 			Minimum(0)
 			Maximum(1)
@@ -75,7 +75,7 @@ var Recipe = MediaType("application/recipe.recipe+json", func() {
 			Maximum(1)
 		})
 		Attribute("source", Source, "Source of recipe")
-		Attribute("notes", ArrayOf(Note), "List of dated notes")
+		Attribute("notes", CollectionOf("application/recipe.note+json"), "List of dated notes")
 		Attribute("created", DateTime, "First created")
 		Attribute("updated", DateTime, "Last Updated")
 
@@ -145,7 +145,7 @@ var Cookware = MediaType("application/recipe.cookware+json", func() {
 		Attribute("description", String, "long description")
 		Attribute("parts", CollectionOf("application/recipe.cookware+json"), "list of parts or attachments")
 		Attribute("settings", ArrayOf(String), "settings, e.g. temprature")
-		Attribute("setup", ArrayOf(Step), "Steps to setting up")
+		Attribute("setup", CollectionOf("application/recipe.step+json"), "Steps to setting up")
 		Attribute("complete", Boolean, "If it's been checked")
 
 		Required("id", "name")
@@ -267,7 +267,7 @@ var ShoppingLists = MediaType("application/recipe.shoppinglists+json", func() {
 	Description("A list of shopping lists")
 	Attributes(func() {
 		Attribute("id", Integer, "Unique ID")
-		Attribute("shopping_lists", ArrayOf(ShoppingList), "The list of lists")
+		Attribute("shopping_lists", CollectionOf("application/recipe.shoppinglist+json"), "The list of lists")
 		Required("id", "shopping_lists")
 	})
 	View("default", func() {
@@ -280,7 +280,7 @@ var ShoppingList = MediaType("application/recipe.shoppinglist+json", func() {
 	Attributes(func() {
 		Attribute("id", Integer, "Unique ID")
 		Attribute("name", String, "a name for the list")
-		Attribute("items", ArrayOf(ShoppingItem), "The list of items to buy")
+		Attribute("items", CollectionOf("application/recipe.shoppingitem+json"), "The list of items to buy")
 		Attribute("store", String, "Store where to tet items")
 		Required("id", "items")
 	})

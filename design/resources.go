@@ -5,16 +5,18 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-// Carrier Accounts ...
+// Recipe ...
+
+//this might need fixed
 var _ = Resource("recipe", func() {
 	BasePath("/recipe")
-	DefaultMedia(Recipe)
+	DefaultMedia(RecipeMedia)
 
-	Action("list", func() {
-		Description("Retrieve a list or recipes")
-		Routing(GET("/"))
-		Response(OK, ArrayOf(Recipe))
-	})
+	// Action("list", func() {
+	// 	Description("Retrieve a list or recipes")
+	// 	Routing(GET("/"))
+	// 	Response(OK, ArrayOf(Recipe))
+	// })
 
 	Action("show", func() {
 		Description("Display an recipe by id")

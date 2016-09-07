@@ -114,30 +114,6 @@ func (ctx *DeleteRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// ListRecipeContext provides the recipe list action context.
-type ListRecipeContext struct {
-	context.Context
-	*goa.ResponseData
-	*goa.RequestData
-}
-
-// NewListRecipeContext parses the incoming request URL and body, performs validations and creates the
-// context used by the recipe controller list action.
-func NewListRecipeContext(ctx context.Context, service *goa.Service) (*ListRecipeContext, error) {
-	var err error
-	resp := goa.ContextResponse(ctx)
-	resp.Service = service
-	req := goa.ContextRequest(ctx)
-	rctx := ListRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
-	return &rctx, err
-}
-
-// OK sends a HTTP response with status code 200.
-func (ctx *ListRecipeContext) OK(r []*RecipeRecipe) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
-}
-
 // ShowRecipeContext provides the recipe show action context.
 type ShowRecipeContext struct {
 	context.Context

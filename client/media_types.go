@@ -85,7 +85,7 @@ type RecipeCookware struct {
 	// settings, e.g. temprature
 	Settings []string `form:"settings,omitempty" json:"settings,omitempty" xml:"settings,omitempty"`
 	// Steps to setting up
-	Setup []*RecipeStep `form:"setup,omitempty" json:"setup,omitempty" xml:"setup,omitempty"`
+	Setup RecipeStepCollection `form:"setup,omitempty" json:"setup,omitempty" xml:"setup,omitempty"`
 }
 
 // Validate validates the RecipeCookware media type instance.
@@ -97,17 +97,8 @@ func (mt *RecipeCookware) Validate() (err error) {
 	if err2 := mt.Parts.Validate(); err2 != nil {
 		err = goa.MergeErrors(err, err2)
 	}
-	for _, e := range mt.Setup {
-		if e.Title == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.setup[*]`, "title"))
-		}
-
-		if err2 := e.Ingredients.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-		if err2 := e.Parts.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
+	if err2 := mt.Setup.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	return
 }
@@ -134,17 +125,8 @@ func (mt RecipeCookwareCollection) Validate() (err error) {
 		if err2 := e.Parts.Validate(); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
-		for _, e := range e.Setup {
-			if e.Title == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].setup[*]`, "title"))
-			}
-
-			if err2 := e.Ingredients.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			if err2 := e.Parts.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
+		if err2 := e.Setup.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
 		}
 	}
 	return
@@ -162,7 +144,7 @@ func (c *Client) DecodeRecipeCookwareCollection(resp *http.Response) (RecipeCook
 // Identifier: application/recipe.course+json
 type RecipeCourse struct {
 	// all recipes
-	Recipes []*RecipeRecipe `form:"recipes" json:"recipes" xml:"recipes"`
+	Recipes RecipeRecipeCollection `form:"recipes" json:"recipes" xml:"recipes"`
 	// How much to scale eacy recipe by, overrides meal
 	Servings *int `form:"servings,omitempty" json:"servings,omitempty" xml:"servings,omitempty"`
 	// title
@@ -175,98 +157,8 @@ func (mt *RecipeCourse) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "recipes"))
 	}
 
-	for _, e := range mt.Recipes {
-		if e.Title == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*]`, "title"))
-		}
-
-		for _, e := range e.Categories {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*].categories[*]`, "name"))
-			}
-
-			if err2 := e.Categories.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-		for _, e := range e.Cookware {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*].cookware[*]`, "name"))
-			}
-
-			if err2 := e.Parts.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			for _, e := range e.Setup {
-				if e.Title == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*].cookware[*].setup[*]`, "title"))
-				}
-
-				if err2 := e.Ingredients.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-				if err2 := e.Parts.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-			}
-		}
-		if e.Difficulty != nil {
-			if *e.Difficulty < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`response.recipes[*].difficulty`, *e.Difficulty, 0, true))
-			}
-		}
-		if e.Difficulty != nil {
-			if *e.Difficulty > 1 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`response.recipes[*].difficulty`, *e.Difficulty, 1, false))
-			}
-		}
-		for _, e := range e.Directions {
-			if e.Title == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*].directions[*]`, "title"))
-			}
-
-			if err2 := e.Ingredients.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			if err2 := e.Parts.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-		if err2 := e.Ingredients.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-		for _, e := range e.Notes {
-			if e.Text == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*].notes[*]`, "text"))
-			}
-
-		}
-		if e.Quantity != nil {
-			if err2 := e.Quantity.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-		if e.Rating != nil {
-			if *e.Rating < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`response.recipes[*].rating`, *e.Rating, 0, true))
-			}
-		}
-		if e.Rating != nil {
-			if *e.Rating > 1 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`response.recipes[*].rating`, *e.Rating, 1, false))
-			}
-		}
-		if e.Source != nil {
-			if err2 := e.Source.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-		for _, e := range e.Tags {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.recipes[*].tags[*]`, "name"))
-			}
-
-		}
+	if err2 := mt.Recipes.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	return
 }
@@ -278,12 +170,38 @@ func (c *Client) DecodeRecipeCourse(resp *http.Response) (*RecipeCourse, error) 
 	return &decoded, err
 }
 
+// RecipeCourseCollection is the media type for an array of RecipeCourse (default view)
+//
+// Identifier: application/recipe.course+json; type=collection
+type RecipeCourseCollection []*RecipeCourse
+
+// Validate validates the RecipeCourseCollection media type instance.
+func (mt RecipeCourseCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e.Recipes == nil {
+			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "recipes"))
+		}
+
+		if err2 := e.Recipes.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// DecodeRecipeCourseCollection decodes the RecipeCourseCollection instance encoded in resp body.
+func (c *Client) DecodeRecipeCourseCollection(resp *http.Response) (RecipeCourseCollection, error) {
+	var decoded RecipeCourseCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
 // An Meal (default view)
 //
 // Identifier: application/recipe.meal+json
 type RecipeMeal struct {
 	// all courses
-	Courses []*RecipeCourse `form:"courses" json:"courses" xml:"courses"`
+	Courses RecipeCourseCollection `form:"courses" json:"courses" xml:"courses"`
 	// How much to scale eacy recipe by
 	Servings *int `form:"servings,omitempty" json:"servings,omitempty" xml:"servings,omitempty"`
 	// title
@@ -296,104 +214,8 @@ func (mt *RecipeMeal) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "courses"))
 	}
 
-	for _, e := range mt.Courses {
-		if e.Recipes == nil {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*]`, "recipes"))
-		}
-
-		for _, e := range e.Recipes {
-			if e.Title == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*]`, "title"))
-			}
-
-			for _, e := range e.Categories {
-				if e.Name == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*].categories[*]`, "name"))
-				}
-
-				if err2 := e.Categories.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-			}
-			for _, e := range e.Cookware {
-				if e.Name == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*].cookware[*]`, "name"))
-				}
-
-				if err2 := e.Parts.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-				for _, e := range e.Setup {
-					if e.Title == "" {
-						err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*].cookware[*].setup[*]`, "title"))
-					}
-
-					if err2 := e.Ingredients.Validate(); err2 != nil {
-						err = goa.MergeErrors(err, err2)
-					}
-					if err2 := e.Parts.Validate(); err2 != nil {
-						err = goa.MergeErrors(err, err2)
-					}
-				}
-			}
-			if e.Difficulty != nil {
-				if *e.Difficulty < 0 {
-					err = goa.MergeErrors(err, goa.InvalidRangeError(`response.courses[*].recipes[*].difficulty`, *e.Difficulty, 0, true))
-				}
-			}
-			if e.Difficulty != nil {
-				if *e.Difficulty > 1 {
-					err = goa.MergeErrors(err, goa.InvalidRangeError(`response.courses[*].recipes[*].difficulty`, *e.Difficulty, 1, false))
-				}
-			}
-			for _, e := range e.Directions {
-				if e.Title == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*].directions[*]`, "title"))
-				}
-
-				if err2 := e.Ingredients.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-				if err2 := e.Parts.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-			}
-			if err2 := e.Ingredients.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			for _, e := range e.Notes {
-				if e.Text == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*].notes[*]`, "text"))
-				}
-
-			}
-			if e.Quantity != nil {
-				if err2 := e.Quantity.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-			}
-			if e.Rating != nil {
-				if *e.Rating < 0 {
-					err = goa.MergeErrors(err, goa.InvalidRangeError(`response.courses[*].recipes[*].rating`, *e.Rating, 0, true))
-				}
-			}
-			if e.Rating != nil {
-				if *e.Rating > 1 {
-					err = goa.MergeErrors(err, goa.InvalidRangeError(`response.courses[*].recipes[*].rating`, *e.Rating, 1, false))
-				}
-			}
-			if e.Source != nil {
-				if err2 := e.Source.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-			}
-			for _, e := range e.Tags {
-				if e.Name == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response.courses[*].recipes[*].tags[*]`, "name"))
-				}
-
-			}
-		}
+	if err2 := mt.Courses.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	return
 }
@@ -431,16 +253,39 @@ func (c *Client) DecodeRecipeNote(resp *http.Response) (*RecipeNote, error) {
 	return &decoded, err
 }
 
+// RecipeNoteCollection is the media type for an array of RecipeNote (default view)
+//
+// Identifier: application/recipe.note+json; type=collection
+type RecipeNoteCollection []*RecipeNote
+
+// Validate validates the RecipeNoteCollection media type instance.
+func (mt RecipeNoteCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e.Text == "" {
+			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "text"))
+		}
+
+	}
+	return
+}
+
+// DecodeRecipeNoteCollection decodes the RecipeNoteCollection instance encoded in resp body.
+func (c *Client) DecodeRecipeNoteCollection(resp *http.Response) (RecipeNoteCollection, error) {
+	var decoded RecipeNoteCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
 // A recipe (default view)
 //
 // Identifier: application/recipe.recipe+json
 type RecipeRecipe struct {
 	// List of categories, basically same as tag
-	Categories []*RecipeCategory `form:"categories,omitempty" json:"categories,omitempty" xml:"categories,omitempty"`
+	Categories RecipeCategoryCollection `form:"categories,omitempty" json:"categories,omitempty" xml:"categories,omitempty"`
 	// Amount of time to cook
 	CookTime *time.Time `form:"cook_time,omitempty" json:"cook_time,omitempty" xml:"cook_time,omitempty"`
 	// List of tools needed
-	Cookware []*RecipeCookware `form:"cookware,omitempty" json:"cookware,omitempty" xml:"cookware,omitempty"`
+	Cookware RecipeCookwareCollection `form:"cookware,omitempty" json:"cookware,omitempty" xml:"cookware,omitempty"`
 	// First created
 	Created *time.Time `form:"created,omitempty" json:"created,omitempty" xml:"created,omitempty"`
 	// Long description of recipe
@@ -448,7 +293,7 @@ type RecipeRecipe struct {
 	// rating between 0-1
 	Difficulty *float64 `form:"difficulty,omitempty" json:"difficulty,omitempty" xml:"difficulty,omitempty"`
 	// List of steps
-	Directions []*RecipeStep `form:"directions,omitempty" json:"directions,omitempty" xml:"directions,omitempty"`
+	Directions RecipeStepCollection `form:"directions,omitempty" json:"directions,omitempty" xml:"directions,omitempty"`
 	// Is a favorite, basically a tag
 	Favorite *bool `form:"favorite,omitempty" json:"favorite,omitempty" xml:"favorite,omitempty"`
 	// Unique recipe ID
@@ -458,7 +303,7 @@ type RecipeRecipe struct {
 	// List of ingredients
 	Ingredients RecipeRecipeCollection `form:"ingredients,omitempty" json:"ingredients,omitempty" xml:"ingredients,omitempty"`
 	// List of dated notes
-	Notes []*RecipeNote `form:"notes,omitempty" json:"notes,omitempty" xml:"notes,omitempty"`
+	Notes RecipeNoteCollection `form:"notes,omitempty" json:"notes,omitempty" xml:"notes,omitempty"`
 	// Amount of time to prepare
 	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
 	// quantity, measure, servings, yield e.g. 4 cups.
@@ -468,7 +313,7 @@ type RecipeRecipe struct {
 	// Source of recipe
 	Source *RecipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
 	// List of tags
-	Tags []*RecipeTag `form:"tags,omitempty" json:"tags,omitempty" xml:"tags,omitempty"`
+	Tags RecipeTagCollection `form:"tags,omitempty" json:"tags,omitempty" xml:"tags,omitempty"`
 	// Title of recipe
 	Title string `form:"title" json:"title" xml:"title"`
 	// Last Updated
@@ -485,35 +330,11 @@ func (mt *RecipeRecipe) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
 	}
 
-	for _, e := range mt.Categories {
-		if e.Name == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.categories[*]`, "name"))
-		}
-
-		if err2 := e.Categories.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
+	if err2 := mt.Categories.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
-	for _, e := range mt.Cookware {
-		if e.Name == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.cookware[*]`, "name"))
-		}
-
-		if err2 := e.Parts.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-		for _, e := range e.Setup {
-			if e.Title == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.cookware[*].setup[*]`, "title"))
-			}
-
-			if err2 := e.Ingredients.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			if err2 := e.Parts.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
+	if err2 := mt.Cookware.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	if mt.Difficulty != nil {
 		if *mt.Difficulty < 0 {
@@ -525,26 +346,14 @@ func (mt *RecipeRecipe) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.difficulty`, *mt.Difficulty, 1, false))
 		}
 	}
-	for _, e := range mt.Directions {
-		if e.Title == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.directions[*]`, "title"))
-		}
-
-		if err2 := e.Ingredients.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-		if err2 := e.Parts.Validate(); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
+	if err2 := mt.Directions.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	if err2 := mt.Ingredients.Validate(); err2 != nil {
 		err = goa.MergeErrors(err, err2)
 	}
-	for _, e := range mt.Notes {
-		if e.Text == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.notes[*]`, "text"))
-		}
-
+	if err2 := mt.Notes.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	if mt.Quantity != nil {
 		if err2 := mt.Quantity.Validate(); err2 != nil {
@@ -566,11 +375,8 @@ func (mt *RecipeRecipe) Validate() (err error) {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
-	for _, e := range mt.Tags {
-		if e.Name == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.tags[*]`, "name"))
-		}
-
+	if err2 := mt.Tags.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	return
 }
@@ -629,35 +435,11 @@ func (mt RecipeRecipeCollection) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "title"))
 		}
 
-		for _, e := range e.Categories {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].categories[*]`, "name"))
-			}
-
-			if err2 := e.Categories.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
+		if err2 := e.Categories.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
 		}
-		for _, e := range e.Cookware {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].cookware[*]`, "name"))
-			}
-
-			if err2 := e.Parts.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			for _, e := range e.Setup {
-				if e.Title == "" {
-					err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].cookware[*].setup[*]`, "title"))
-				}
-
-				if err2 := e.Ingredients.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-				if err2 := e.Parts.Validate(); err2 != nil {
-					err = goa.MergeErrors(err, err2)
-				}
-			}
+		if err2 := e.Cookware.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
 		}
 		if e.Difficulty != nil {
 			if *e.Difficulty < 0 {
@@ -669,26 +451,14 @@ func (mt RecipeRecipeCollection) Validate() (err error) {
 				err = goa.MergeErrors(err, goa.InvalidRangeError(`response[*].difficulty`, *e.Difficulty, 1, false))
 			}
 		}
-		for _, e := range e.Directions {
-			if e.Title == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].directions[*]`, "title"))
-			}
-
-			if err2 := e.Ingredients.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-			if err2 := e.Parts.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
+		if err2 := e.Directions.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
 		}
 		if err2 := e.Ingredients.Validate(); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
-		for _, e := range e.Notes {
-			if e.Text == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].notes[*]`, "text"))
-			}
-
+		if err2 := e.Notes.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
 		}
 		if e.Quantity != nil {
 			if err2 := e.Quantity.Validate(); err2 != nil {
@@ -710,11 +480,8 @@ func (mt RecipeRecipeCollection) Validate() (err error) {
 				err = goa.MergeErrors(err, err2)
 			}
 		}
-		for _, e := range e.Tags {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*].tags[*]`, "name"))
-			}
-
+		if err2 := e.Tags.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
 		}
 	}
 	return
@@ -783,12 +550,35 @@ func (c *Client) DecodeRecipeShoppingitem(resp *http.Response) (*RecipeShoppingi
 	return &decoded, err
 }
 
+// RecipeShoppingitemCollection is the media type for an array of RecipeShoppingitem (default view)
+//
+// Identifier: application/recipe.shoppingitem+json; type=collection
+type RecipeShoppingitemCollection []*RecipeShoppingitem
+
+// Validate validates the RecipeShoppingitemCollection media type instance.
+func (mt RecipeShoppingitemCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e.Name == "" {
+			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "name"))
+		}
+
+	}
+	return
+}
+
+// DecodeRecipeShoppingitemCollection decodes the RecipeShoppingitemCollection instance encoded in resp body.
+func (c *Client) DecodeRecipeShoppingitemCollection(resp *http.Response) (RecipeShoppingitemCollection, error) {
+	var decoded RecipeShoppingitemCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
 // A list of ingredients, and/or cookware (default view)
 //
 // Identifier: application/recipe.shoppinglist+json
 type RecipeShoppinglist struct {
 	// The list of items to buy
-	Items []*RecipeShoppingitem `form:"items" json:"items" xml:"items"`
+	Items RecipeShoppingitemCollection `form:"items" json:"items" xml:"items"`
 	// a name for the list
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// Store where to tet items
@@ -801,11 +591,8 @@ func (mt *RecipeShoppinglist) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "items"))
 	}
 
-	for _, e := range mt.Items {
-		if e.Name == "" {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.items[*]`, "name"))
-		}
-
+	if err2 := mt.Items.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	return
 }
@@ -817,12 +604,38 @@ func (c *Client) DecodeRecipeShoppinglist(resp *http.Response) (*RecipeShoppingl
 	return &decoded, err
 }
 
+// RecipeShoppinglistCollection is the media type for an array of RecipeShoppinglist (default view)
+//
+// Identifier: application/recipe.shoppinglist+json; type=collection
+type RecipeShoppinglistCollection []*RecipeShoppinglist
+
+// Validate validates the RecipeShoppinglistCollection media type instance.
+func (mt RecipeShoppinglistCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e.Items == nil {
+			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "items"))
+		}
+
+		if err2 := e.Items.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// DecodeRecipeShoppinglistCollection decodes the RecipeShoppinglistCollection instance encoded in resp body.
+func (c *Client) DecodeRecipeShoppinglistCollection(resp *http.Response) (RecipeShoppinglistCollection, error) {
+	var decoded RecipeShoppinglistCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
 // A list of shopping lists (default view)
 //
 // Identifier: application/recipe.shoppinglists+json
 type RecipeShoppinglists struct {
 	// The list of lists
-	ShoppingLists []*RecipeShoppinglist `form:"shopping_lists" json:"shopping_lists" xml:"shopping_lists"`
+	ShoppingLists RecipeShoppinglistCollection `form:"shopping_lists" json:"shopping_lists" xml:"shopping_lists"`
 }
 
 // Validate validates the RecipeShoppinglists media type instance.
@@ -831,17 +644,8 @@ func (mt *RecipeShoppinglists) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "shopping_lists"))
 	}
 
-	for _, e := range mt.ShoppingLists {
-		if e.Items == nil {
-			err = goa.MergeErrors(err, goa.MissingAttributeError(`response.shopping_lists[*]`, "items"))
-		}
-
-		for _, e := range e.Items {
-			if e.Name == "" {
-				err = goa.MergeErrors(err, goa.MissingAttributeError(`response.shopping_lists[*].items[*]`, "name"))
-			}
-
-		}
+	if err2 := mt.ShoppingLists.Validate(); err2 != nil {
+		err = goa.MergeErrors(err, err2)
 	}
 	return
 }
@@ -904,6 +708,29 @@ func (c *Client) DecodeRecipeStep(resp *http.Response) (*RecipeStep, error) {
 	return &decoded, err
 }
 
+// RecipeStepCollection is the media type for an array of RecipeStep (default view)
+//
+// Identifier: application/recipe.step+json; type=collection
+type RecipeStepCollection []*RecipeStep
+
+// Validate validates the RecipeStepCollection media type instance.
+func (mt RecipeStepCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e.Title == "" {
+			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "title"))
+		}
+
+	}
+	return
+}
+
+// DecodeRecipeStepCollection decodes the RecipeStepCollection instance encoded in resp body.
+func (c *Client) DecodeRecipeStepCollection(resp *http.Response) (RecipeStepCollection, error) {
+	var decoded RecipeStepCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
 // A Tag (default view)
 //
 // Identifier: application/recipe.tag+json
@@ -925,6 +752,29 @@ func (c *Client) DecodeRecipeTag(resp *http.Response) (*RecipeTag, error) {
 	var decoded RecipeTag
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
+}
+
+// RecipeTagCollection is the media type for an array of RecipeTag (default view)
+//
+// Identifier: application/recipe.tag+json; type=collection
+type RecipeTagCollection []*RecipeTag
+
+// Validate validates the RecipeTagCollection media type instance.
+func (mt RecipeTagCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e.Name == "" {
+			err = goa.MergeErrors(err, goa.MissingAttributeError(`response[*]`, "name"))
+		}
+
+	}
+	return
+}
+
+// DecodeRecipeTagCollection decodes the RecipeTagCollection instance encoded in resp body.
+func (c *Client) DecodeRecipeTagCollection(resp *http.Response) (RecipeTagCollection, error) {
+	var decoded RecipeTagCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
 }
 
 // A recipe (default view)

@@ -38,7 +38,6 @@ type RecipeController interface {
 	goa.Muxer
 	Create(*CreateRecipeContext) error
 	Delete(*DeleteRecipeContext) error
-	List(*ListRecipeContext) error
 	Show(*ShowRecipeContext) error
 	Update(*UpdateRecipeContext) error
 }
@@ -83,21 +82,6 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 	}
 	service.Mux.Handle("DELETE", "/recipe/recipe/:id", ctrl.MuxHandler("Delete", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Delete", "route", "DELETE /recipe/recipe/:id")
-
-	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
-		// Check if there was an error loading the request
-		if err := goa.ContextError(ctx); err != nil {
-			return err
-		}
-		// Build the context
-		rctx, err := NewListRecipeContext(ctx, service)
-		if err != nil {
-			return err
-		}
-		return ctrl.List(rctx)
-	}
-	service.Mux.Handle("GET", "/recipe/recipe", ctrl.MuxHandler("List", h, nil))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "List", "route", "GET /recipe/recipe")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request

@@ -20,6 +20,7 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 	// RecipeController_Show: start_implement
 
 	// Put your logic here
+	//res := app.
 
 	// RecipeController_Show: end_implement
 	res := &app.RecipeRecipe{}

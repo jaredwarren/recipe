@@ -33,6 +33,16 @@ definitions:
   RecipeCategoryCollection:
     description: RecipeCategoryCollection is the media type for an array of RecipeCategory
       (default view)
+    example:
+    - categories:
+      - categories: '-'
+        name: Commodi autem aut.
+        type: Voluptatum architecto et non.
+      - categories: '-'
+        name: Commodi autem aut.
+        type: Voluptatum architecto et non.
+      name: Commodi autem aut.
+      type: Voluptatum architecto et non.
     items:
       $ref: '#/definitions/RecipeCategory'
     title: 'Mediatype identifier: application/recipe.category+json; type=collection'
@@ -61,15 +71,7 @@ definitions:
           type: string
         type: array
       setup:
-        description: Steps to setting up
-        example:
-        - description: Minus nobis debitis corporis odit quo odit.
-          title: Dolor unde natus iusto.
-        - description: Minus nobis debitis corporis odit quo odit.
-          title: Dolor unde natus iusto.
-        items:
-          $ref: '#/definitions/RecipeStep'
-        type: array
+        $ref: '#/definitions/RecipeStepCollection'
     required:
     - name
     title: 'Mediatype identifier: application/recipe.cookware+json'
@@ -77,6 +79,103 @@ definitions:
   RecipeCookwareCollection:
     description: RecipeCookwareCollection is the media type for an array of RecipeCookware
       (default view)
+    example:
+    - description: Voluptas quo libero vel numquam sint consequuntur.
+      name: Quis esse provident.
+      parts:
+      - description: Voluptas quo libero vel numquam sint consequuntur.
+        name: Quis esse provident.
+        parts: '-'
+        settings:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        setup:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+      - description: Voluptas quo libero vel numquam sint consequuntur.
+        name: Quis esse provident.
+        parts: '-'
+        settings:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        setup:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+      - description: Voluptas quo libero vel numquam sint consequuntur.
+        name: Quis esse provident.
+        parts: '-'
+        settings:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        setup:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+      settings:
+      - Enim voluptatem.
+      - Enim voluptatem.
+      - Enim voluptatem.
+      setup:
+      - description: Minus nobis debitis corporis odit quo odit.
+        title: Dolor unde natus iusto.
+      - description: Minus nobis debitis corporis odit quo odit.
+        title: Dolor unde natus iusto.
+    - description: Voluptas quo libero vel numquam sint consequuntur.
+      name: Quis esse provident.
+      parts:
+      - description: Voluptas quo libero vel numquam sint consequuntur.
+        name: Quis esse provident.
+        parts: '-'
+        settings:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        setup:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+      - description: Voluptas quo libero vel numquam sint consequuntur.
+        name: Quis esse provident.
+        parts: '-'
+        settings:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        setup:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+      - description: Voluptas quo libero vel numquam sint consequuntur.
+        name: Quis esse provident.
+        parts: '-'
+        settings:
+        - Enim voluptatem.
+        - Enim voluptatem.
+        - Enim voluptatem.
+        setup:
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+        - description: Minus nobis debitis corporis odit quo odit.
+          title: Dolor unde natus iusto.
+      settings:
+      - Enim voluptatem.
+      - Enim voluptatem.
+      - Enim voluptatem.
+      setup:
+      - description: Minus nobis debitis corporis odit quo odit.
+        title: Dolor unde natus iusto.
+      - description: Minus nobis debitis corporis odit quo odit.
+        title: Dolor unde natus iusto.
     items:
       $ref: '#/definitions/RecipeCookware'
     title: 'Mediatype identifier: application/recipe.cookware+json; type=collection'
@@ -86,209 +185,37 @@ definitions:
     properties:
       id:
         description: Unique ID
-        example: 8.066596e+16
+        example: 2.0978439e+18
         format: int64
         type: integer
       text:
         description: html text
-        example: Laudantium soluta saepe sit eum aperiam deserunt.
+        example: Dolorem laudantium soluta saepe.
         type: string
     required:
     - id
     - text
     title: 'Mediatype identifier: application/recipe.note+json'
     type: object
+  RecipeNoteCollection:
+    description: RecipeNoteCollection is the media type for an array of RecipeNote
+      (default view)
+    items:
+      $ref: '#/definitions/RecipeNote'
+    title: 'Mediatype identifier: application/recipe.note+json; type=collection'
+    type: array
   RecipeRecipe:
     description: A recipe (default view)
     properties:
       categories:
-        description: List of categories, basically same as tag
-        example:
-        - categories:
-          - categories: '-'
-            name: Commodi autem aut.
-            type: Voluptatum architecto et non.
-          - categories: '-'
-            name: Commodi autem aut.
-            type: Voluptatum architecto et non.
-          name: Commodi autem aut.
-          type: Voluptatum architecto et non.
-        - categories:
-          - categories: '-'
-            name: Commodi autem aut.
-            type: Voluptatum architecto et non.
-          - categories: '-'
-            name: Commodi autem aut.
-            type: Voluptatum architecto et non.
-          name: Commodi autem aut.
-          type: Voluptatum architecto et non.
-        - categories:
-          - categories: '-'
-            name: Commodi autem aut.
-            type: Voluptatum architecto et non.
-          - categories: '-'
-            name: Commodi autem aut.
-            type: Voluptatum architecto et non.
-          name: Commodi autem aut.
-          type: Voluptatum architecto et non.
-        items:
-          $ref: '#/definitions/RecipeCategory'
-        type: array
+        $ref: '#/definitions/RecipeCategoryCollection'
       cook_time:
         description: Amount of time to cook
         example: 1987-01-20T08:51:16-07:00
         format: date-time
         type: string
       cookware:
-        description: List of tools needed
-        example:
-        - description: Voluptas quo libero vel numquam sint consequuntur.
-          name: Quis esse provident.
-          parts:
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          settings:
-          - Enim voluptatem.
-          - Enim voluptatem.
-          - Enim voluptatem.
-          setup:
-          - description: Minus nobis debitis corporis odit quo odit.
-            title: Dolor unde natus iusto.
-          - description: Minus nobis debitis corporis odit quo odit.
-            title: Dolor unde natus iusto.
-        - description: Voluptas quo libero vel numquam sint consequuntur.
-          name: Quis esse provident.
-          parts:
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          settings:
-          - Enim voluptatem.
-          - Enim voluptatem.
-          - Enim voluptatem.
-          setup:
-          - description: Minus nobis debitis corporis odit quo odit.
-            title: Dolor unde natus iusto.
-          - description: Minus nobis debitis corporis odit quo odit.
-            title: Dolor unde natus iusto.
-        - description: Voluptas quo libero vel numquam sint consequuntur.
-          name: Quis esse provident.
-          parts:
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          - description: Voluptas quo libero vel numquam sint consequuntur.
-            name: Quis esse provident.
-            parts: '-'
-            settings:
-            - Enim voluptatem.
-            - Enim voluptatem.
-            - Enim voluptatem.
-            setup:
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-            - description: Minus nobis debitis corporis odit quo odit.
-              title: Dolor unde natus iusto.
-          settings:
-          - Enim voluptatem.
-          - Enim voluptatem.
-          - Enim voluptatem.
-          setup:
-          - description: Minus nobis debitis corporis odit quo odit.
-            title: Dolor unde natus iusto.
-          - description: Minus nobis debitis corporis odit quo odit.
-            title: Dolor unde natus iusto.
-        items:
-          $ref: '#/definitions/RecipeCookware'
-        type: array
+        $ref: '#/definitions/RecipeCookwareCollection'
       created:
         description: First created
         example: 1991-08-27T18:42:04-06:00
@@ -304,17 +231,7 @@ definitions:
         maximum: 1
         type: number
       directions:
-        description: List of steps
-        example:
-        - description: Minus nobis debitis corporis odit quo odit.
-          title: Dolor unde natus iusto.
-        - description: Minus nobis debitis corporis odit quo odit.
-          title: Dolor unde natus iusto.
-        - description: Minus nobis debitis corporis odit quo odit.
-          title: Dolor unde natus iusto.
-        items:
-          $ref: '#/definitions/RecipeStep'
-        type: array
+        $ref: '#/definitions/RecipeStepCollection'
       favorite:
         description: Is a favorite, basically a tag
         example: true
@@ -335,52 +252,39 @@ definitions:
       ingredients:
         $ref: '#/definitions/RecipeRecipeCollection'
       notes:
-        description: List of dated notes
-        example:
-        - id: 8.066596e+16
-          text: Laudantium soluta saepe sit eum aperiam deserunt.
-        items:
-          $ref: '#/definitions/RecipeNote'
-        type: array
+        $ref: '#/definitions/RecipeNoteCollection'
       prep_time:
         description: Amount of time to prepare
-        example: 2007-12-02T15:27:23-07:00
+        example: 2015-04-16T08:11:47-06:00
         format: date-time
         type: string
       quantity:
         $ref: '#/definitions/RecipeUnitofmeasure'
       rating:
         description: rating between 0-1
-        example: 0.20031834
+        example: 0.25973496
         maximum: 1
         type: number
       source:
         $ref: '#/definitions/RecipeSource'
       tags:
-        description: List of tags
-        example:
-        - name: Et asperiores.
-        - name: Et asperiores.
-        - name: Et asperiores.
-        items:
-          $ref: '#/definitions/RecipeTag'
-        type: array
+        $ref: '#/definitions/RecipeTagCollection'
       title:
         description: Title of recipe
-        example: Rerum molestias.
+        example: Quo aut quia voluptas.
         type: string
       updated:
         description: Last Updated
-        example: 1995-07-30T06:52:28-06:00
+        example: 1988-10-08T08:19:55-06:00
         format: date-time
         type: string
       version:
         description: Version Number e.g. 1.0.1
-        example: Quae quo aut quia voluptas aut.
+        example: Dolorem voluptatem esse explicabo est.
         type: string
       wait_time:
         description: Amount of time to wait for things such as mairnading
-        example: 1981-01-29T23:53:05-07:00
+        example: 2012-02-24T05:39:21-07:00
         format: date-time
         type: string
     required:
@@ -400,14 +304,14 @@ definitions:
     properties:
       id:
         description: Unique ID
-        example: 2.4359023e+18
+        example: 3.3200938e+18
         format: int64
         type: integer
       name:
-        example: Repellendus aut quia in rerum doloribus.
+        example: Sequi sit saepe in eligendi repellendus aut.
         type: string
       url:
-        example: Omnis voluptas.
+        example: In rerum doloribus nihil omnis voluptas eum.
         type: string
     required:
     - id
@@ -428,27 +332,41 @@ definitions:
     - title
     title: 'Mediatype identifier: application/recipe.step+json'
     type: object
+  RecipeStepCollection:
+    description: RecipeStepCollection is the media type for an array of RecipeStep
+      (default view)
+    items:
+      $ref: '#/definitions/RecipeStep'
+    title: 'Mediatype identifier: application/recipe.step+json; type=collection'
+    type: array
   RecipeTag:
     description: A Tag (default view)
     properties:
       name:
-        example: Et asperiores.
+        example: Asperiores alias rerum molestias esse nisi.
         type: string
     required:
     - name
     title: 'Mediatype identifier: application/recipe.tag+json'
     type: object
+  RecipeTagCollection:
+    description: RecipeTagCollection is the media type for an array of RecipeTag (default
+      view)
+    items:
+      $ref: '#/definitions/RecipeTag'
+    title: 'Mediatype identifier: application/recipe.tag+json; type=collection'
+    type: array
   RecipeUnitofmeasure:
     description: A recipe (default view)
     properties:
       name:
         description: name e.g. Cups, Table Spoon
-        example: Amet adipisci voluptatum.
+        example: Aperiam deserunt maiores voluptatum.
         type: string
       type:
         default: weight
         description: volume, weight, time, length...
-        example: Dignissimos labore numquam sequi sit.
+        example: Adipisci voluptatum tenetur.
         type: string
     required:
     - name
@@ -481,19 +399,6 @@ info:
   version: ""
 paths:
   /recipe:
-    get:
-      description: Retrieve a list or recipes
-      operationId: recipe#list
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/RecipeRecipe'
-      schemes:
-      - http
-      summary: list recipe
-      tags:
-      - recipe
     post:
       operationId: recipe#create
       parameters:

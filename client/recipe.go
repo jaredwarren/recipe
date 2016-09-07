@@ -82,34 +82,6 @@ func (c *Client) NewDeleteRecipeRequest(ctx context.Context, path string) (*http
 	return req, nil
 }
 
-// ListRecipePath computes a request path to the list action of recipe.
-func ListRecipePath() string {
-	return fmt.Sprintf("/recipe/recipe")
-}
-
-// Retrieve a list or recipes
-func (c *Client) ListRecipe(ctx context.Context, path string) (*http.Response, error) {
-	req, err := c.NewListRecipeRequest(ctx, path)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewListRecipeRequest create the request corresponding to the list action endpoint of the recipe resource.
-func (c *Client) NewListRecipeRequest(ctx context.Context, path string) (*http.Request, error) {
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // ShowRecipePath computes a request path to the show action of recipe.
 func ShowRecipePath(id string) string {
 	return fmt.Sprintf("/recipe/recipe/%v", id)
