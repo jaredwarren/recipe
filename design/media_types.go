@@ -1,6 +1,6 @@
 package design
 
-// mysql root: asdf1234
+// mysql root: asdf1234  .
 
 // build: goagen bootstrap -d github.com/jaredwarren/recipe/design
 
