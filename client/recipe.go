@@ -8,19 +8,13 @@ import (
 	"net/url"
 )
 
-// CreateRecipePayload is the recipe create action payload.
-type CreateRecipePayload struct {
-	// Operand value
-	Value int `form:"value" json:"value" xml:"value"`
-}
-
 // CreateRecipePath computes a request path to the create action of recipe.
 func CreateRecipePath() string {
 	return fmt.Sprintf("/recipe/recipe")
 }
 
 // CreateRecipe makes a request to the create action endpoint of the recipe resource
-func (c *Client) CreateRecipe(ctx context.Context, path string, payload *CreateRecipePayload, contentType string) (*http.Response, error) {
+func (c *Client) CreateRecipe(ctx context.Context, path string, payload *RecipePayload, contentType string) (*http.Response, error) {
 	req, err := c.NewCreateRecipeRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
@@ -29,7 +23,7 @@ func (c *Client) CreateRecipe(ctx context.Context, path string, payload *CreateR
 }
 
 // NewCreateRecipeRequest create the request corresponding to the create action endpoint of the recipe resource.
-func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payload *CreateRecipePayload, contentType string) (*http.Request, error) {
+func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payload *RecipePayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
 	if contentType == "" {
 		contentType = "*/*" // Use default encoder
@@ -110,19 +104,13 @@ func (c *Client) NewShowRecipeRequest(ctx context.Context, path string) (*http.R
 	return req, nil
 }
 
-// UpdateRecipePayload is the recipe update action payload.
-type UpdateRecipePayload struct {
-	// Operand value
-	Value int `form:"value" json:"value" xml:"value"`
-}
-
 // UpdateRecipePath computes a request path to the update action of recipe.
 func UpdateRecipePath(id string) string {
 	return fmt.Sprintf("/recipe/recipe/%v", id)
 }
 
 // UpdateRecipe makes a request to the update action endpoint of the recipe resource
-func (c *Client) UpdateRecipe(ctx context.Context, path string, payload *UpdateRecipePayload, contentType string) (*http.Response, error) {
+func (c *Client) UpdateRecipe(ctx context.Context, path string, payload *RecipePayload, contentType string) (*http.Response, error) {
 	req, err := c.NewUpdateRecipeRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
@@ -131,7 +119,7 @@ func (c *Client) UpdateRecipe(ctx context.Context, path string, payload *UpdateR
 }
 
 // NewUpdateRecipeRequest create the request corresponding to the update action endpoint of the recipe resource.
-func (c *Client) NewUpdateRecipeRequest(ctx context.Context, path string, payload *UpdateRecipePayload, contentType string) (*http.Request, error) {
+func (c *Client) NewUpdateRecipeRequest(ctx context.Context, path string, payload *RecipePayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
 	if contentType == "" {
 		contentType = "*/*" // Use default encoder

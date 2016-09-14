@@ -1,11 +1,11 @@
 //************************************************************************//
 // API "recipe": Application Media Types
 //
-// Generated with goagen v0.2.dev, command line:
+// Generated with goagen v1.0.0, command line:
 // $ goagen
 // --design=github.com/jaredwarren/recipe/design
 // --out=$(GOPATH)/src/github.com/jaredwarren/recipe
-// --version=v0.2.dev
+// --version=v1.0.0
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -20,7 +20,7 @@ import (
 
 // A Category (default view)
 //
-// Identifier: application/recipe.category+json
+// Identifier: application/recipe.category+json; view=default
 type RecipeCategory struct {
 	Categories RecipeCategoryCollection `form:"categories,omitempty" json:"categories,omitempty" xml:"categories,omitempty"`
 	Name       string                   `form:"name" json:"name" xml:"name"`
@@ -48,7 +48,7 @@ func (c *Client) DecodeRecipeCategory(resp *http.Response) (*RecipeCategory, err
 
 // RecipeCategoryCollection is the media type for an array of RecipeCategory (default view)
 //
-// Identifier: application/recipe.category+json; type=collection
+// Identifier: application/recipe.category+json; type=collection; view=default
 type RecipeCategoryCollection []*RecipeCategory
 
 // Validate validates the RecipeCategoryCollection media type instance.
@@ -74,7 +74,7 @@ func (c *Client) DecodeRecipeCategoryCollection(resp *http.Response) (RecipeCate
 
 // A Cookware (default view)
 //
-// Identifier: application/recipe.cookware+json
+// Identifier: application/recipe.cookware+json; view=default
 type RecipeCookware struct {
 	// long description
 	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
@@ -112,7 +112,7 @@ func (c *Client) DecodeRecipeCookware(resp *http.Response) (*RecipeCookware, err
 
 // RecipeCookwareCollection is the media type for an array of RecipeCookware (default view)
 //
-// Identifier: application/recipe.cookware+json; type=collection
+// Identifier: application/recipe.cookware+json; type=collection; view=default
 type RecipeCookwareCollection []*RecipeCookware
 
 // Validate validates the RecipeCookwareCollection media type instance.
@@ -141,7 +141,7 @@ func (c *Client) DecodeRecipeCookwareCollection(resp *http.Response) (RecipeCook
 
 // An Meal (default view)
 //
-// Identifier: application/recipe.course+json
+// Identifier: application/recipe.course+json; view=default
 type RecipeCourse struct {
 	// all recipes
 	Recipes RecipeRecipeCollection `form:"recipes" json:"recipes" xml:"recipes"`
@@ -172,7 +172,7 @@ func (c *Client) DecodeRecipeCourse(resp *http.Response) (*RecipeCourse, error) 
 
 // RecipeCourseCollection is the media type for an array of RecipeCourse (default view)
 //
-// Identifier: application/recipe.course+json; type=collection
+// Identifier: application/recipe.course+json; type=collection; view=default
 type RecipeCourseCollection []*RecipeCourse
 
 // Validate validates the RecipeCourseCollection media type instance.
@@ -198,7 +198,7 @@ func (c *Client) DecodeRecipeCourseCollection(resp *http.Response) (RecipeCourse
 
 // An Meal (default view)
 //
-// Identifier: application/recipe.meal+json
+// Identifier: application/recipe.meal+json; view=default
 type RecipeMeal struct {
 	// all courses
 	Courses RecipeCourseCollection `form:"courses" json:"courses" xml:"courses"`
@@ -229,7 +229,7 @@ func (c *Client) DecodeRecipeMeal(resp *http.Response) (*RecipeMeal, error) {
 
 // A Note (default view)
 //
-// Identifier: application/recipe.note+json
+// Identifier: application/recipe.note+json; view=default
 type RecipeNote struct {
 	// Unique ID
 	ID int `form:"id" json:"id" xml:"id"`
@@ -255,7 +255,7 @@ func (c *Client) DecodeRecipeNote(resp *http.Response) (*RecipeNote, error) {
 
 // RecipeNoteCollection is the media type for an array of RecipeNote (default view)
 //
-// Identifier: application/recipe.note+json; type=collection
+// Identifier: application/recipe.note+json; type=collection; view=default
 type RecipeNoteCollection []*RecipeNote
 
 // Validate validates the RecipeNoteCollection media type instance.
@@ -278,7 +278,7 @@ func (c *Client) DecodeRecipeNoteCollection(resp *http.Response) (RecipeNoteColl
 
 // A recipe (default view)
 //
-// Identifier: application/recipe.recipe+json
+// Identifier: application/recipe.recipe+json; view=default
 type RecipeRecipe struct {
 	// List of categories, basically same as tag
 	Categories RecipeCategoryCollection `form:"categories,omitempty" json:"categories,omitempty" xml:"categories,omitempty"`
@@ -383,7 +383,7 @@ func (mt *RecipeRecipe) Validate() (err error) {
 
 // A recipe (ingredient view)
 //
-// Identifier: application/recipe.recipe+json
+// Identifier: application/recipe.recipe+json; view=ingredient
 type RecipeRecipeIngredient struct {
 	// If it's been added/included
 	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
@@ -425,7 +425,7 @@ func (c *Client) DecodeRecipeRecipeIngredient(resp *http.Response) (*RecipeRecip
 
 // RecipeRecipeCollection is the media type for an array of RecipeRecipe (default view)
 //
-// Identifier: application/recipe.recipe+json; type=collection
+// Identifier: application/recipe.recipe+json; type=collection; view=default
 type RecipeRecipeCollection []*RecipeRecipe
 
 // Validate validates the RecipeRecipeCollection media type instance.
@@ -489,7 +489,7 @@ func (mt RecipeRecipeCollection) Validate() (err error) {
 
 // RecipeRecipeCollection is the media type for an array of RecipeRecipe (ingredient view)
 //
-// Identifier: application/recipe.recipe+json; type=collection
+// Identifier: application/recipe.recipe+json; type=collection; view=ingredient
 type RecipeRecipeIngredientCollection []*RecipeRecipeIngredient
 
 // Validate validates the RecipeRecipeIngredientCollection media type instance.
@@ -524,7 +524,7 @@ func (c *Client) DecodeRecipeRecipeIngredientCollection(resp *http.Response) (Re
 
 // Converted from ingredient or cookware (default view)
 //
-// Identifier: application/recipe.shoppingitem+json
+// Identifier: application/recipe.shoppingitem+json; view=default
 type RecipeShoppingitem struct {
 	// Unique ID
 	ID int `form:"id" json:"id" xml:"id"`
@@ -552,7 +552,7 @@ func (c *Client) DecodeRecipeShoppingitem(resp *http.Response) (*RecipeShoppingi
 
 // RecipeShoppingitemCollection is the media type for an array of RecipeShoppingitem (default view)
 //
-// Identifier: application/recipe.shoppingitem+json; type=collection
+// Identifier: application/recipe.shoppingitem+json; type=collection; view=default
 type RecipeShoppingitemCollection []*RecipeShoppingitem
 
 // Validate validates the RecipeShoppingitemCollection media type instance.
@@ -575,7 +575,7 @@ func (c *Client) DecodeRecipeShoppingitemCollection(resp *http.Response) (Recipe
 
 // A list of ingredients, and/or cookware (default view)
 //
-// Identifier: application/recipe.shoppinglist+json
+// Identifier: application/recipe.shoppinglist+json; view=default
 type RecipeShoppinglist struct {
 	// The list of items to buy
 	Items RecipeShoppingitemCollection `form:"items" json:"items" xml:"items"`
@@ -606,7 +606,7 @@ func (c *Client) DecodeRecipeShoppinglist(resp *http.Response) (*RecipeShoppingl
 
 // RecipeShoppinglistCollection is the media type for an array of RecipeShoppinglist (default view)
 //
-// Identifier: application/recipe.shoppinglist+json; type=collection
+// Identifier: application/recipe.shoppinglist+json; type=collection; view=default
 type RecipeShoppinglistCollection []*RecipeShoppinglist
 
 // Validate validates the RecipeShoppinglistCollection media type instance.
@@ -632,7 +632,7 @@ func (c *Client) DecodeRecipeShoppinglistCollection(resp *http.Response) (Recipe
 
 // A list of shopping lists (default view)
 //
-// Identifier: application/recipe.shoppinglists+json
+// Identifier: application/recipe.shoppinglists+json; view=default
 type RecipeShoppinglists struct {
 	// The list of lists
 	ShoppingLists RecipeShoppinglistCollection `form:"shopping_lists" json:"shopping_lists" xml:"shopping_lists"`
@@ -659,7 +659,7 @@ func (c *Client) DecodeRecipeShoppinglists(resp *http.Response) (*RecipeShopping
 
 // A Source (default view)
 //
-// Identifier: application/recipe.source+json
+// Identifier: application/recipe.source+json; view=default
 type RecipeSource struct {
 	// Unique ID
 	ID   int     `form:"id" json:"id" xml:"id"`
@@ -685,7 +685,7 @@ func (c *Client) DecodeRecipeSource(resp *http.Response) (*RecipeSource, error) 
 
 // A Step (default view)
 //
-// Identifier: application/recipe.step+json
+// Identifier: application/recipe.step+json; view=default
 type RecipeStep struct {
 	// HTML
 	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
@@ -710,7 +710,7 @@ func (c *Client) DecodeRecipeStep(resp *http.Response) (*RecipeStep, error) {
 
 // RecipeStepCollection is the media type for an array of RecipeStep (default view)
 //
-// Identifier: application/recipe.step+json; type=collection
+// Identifier: application/recipe.step+json; type=collection; view=default
 type RecipeStepCollection []*RecipeStep
 
 // Validate validates the RecipeStepCollection media type instance.
@@ -733,7 +733,7 @@ func (c *Client) DecodeRecipeStepCollection(resp *http.Response) (RecipeStepColl
 
 // A Tag (default view)
 //
-// Identifier: application/recipe.tag+json
+// Identifier: application/recipe.tag+json; view=default
 type RecipeTag struct {
 	Name string `form:"name" json:"name" xml:"name"`
 }
@@ -756,7 +756,7 @@ func (c *Client) DecodeRecipeTag(resp *http.Response) (*RecipeTag, error) {
 
 // RecipeTagCollection is the media type for an array of RecipeTag (default view)
 //
-// Identifier: application/recipe.tag+json; type=collection
+// Identifier: application/recipe.tag+json; type=collection; view=default
 type RecipeTagCollection []*RecipeTag
 
 // Validate validates the RecipeTagCollection media type instance.
@@ -779,7 +779,7 @@ func (c *Client) DecodeRecipeTagCollection(resp *http.Response) (RecipeTagCollec
 
 // A recipe (default view)
 //
-// Identifier: application/recipe.unitofmeasure+json
+// Identifier: application/recipe.unitofmeasure+json; view=default
 type RecipeUnitofmeasure struct {
 	// name e.g. Cups, Table Spoon
 	Name string `form:"name" json:"name" xml:"name"`

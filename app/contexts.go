@@ -1,11 +1,11 @@
 //************************************************************************//
 // API "recipe": Application Contexts
 //
-// Generated with goagen v0.2.dev, command line:
+// Generated with goagen v1.0.0, command line:
 // $ goagen
 // --design=github.com/jaredwarren/recipe/design
 // --out=$(GOPATH)/src/github.com/jaredwarren/recipe
-// --version=v0.2.dev
+// --version=v1.0.0
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -22,7 +22,7 @@ type CreateRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Payload *CreateRecipePayload
+	Payload *RecipePayload
 }
 
 // NewCreateRecipeContext parses the incoming request URL and body, performs validations and creates the
@@ -34,36 +34,6 @@ func NewCreateRecipeContext(ctx context.Context, service *goa.Service) (*CreateR
 	req := goa.ContextRequest(ctx)
 	rctx := CreateRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	return &rctx, err
-}
-
-// createRecipePayload is the recipe create action payload.
-type createRecipePayload struct {
-	// Operand value
-	Value *int `form:"value,omitempty" json:"value,omitempty" xml:"value,omitempty"`
-}
-
-// Validate runs the validation rules defined in the design.
-func (payload *createRecipePayload) Validate() (err error) {
-	if payload.Value == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "value"))
-	}
-
-	return
-}
-
-// Publicize creates CreateRecipePayload from createRecipePayload
-func (payload *createRecipePayload) Publicize() *CreateRecipePayload {
-	var pub CreateRecipePayload
-	if payload.Value != nil {
-		pub.Value = *payload.Value
-	}
-	return &pub
-}
-
-// CreateRecipePayload is the recipe create action payload.
-type CreateRecipePayload struct {
-	// Operand value
-	Value int `form:"value" json:"value" xml:"value"`
 }
 
 // OK sends a HTTP response with status code 200.
@@ -162,7 +132,7 @@ type UpdateRecipeContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	ID      string
-	Payload *UpdateRecipePayload
+	Payload *RecipePayload
 }
 
 // NewUpdateRecipeContext parses the incoming request URL and body, performs validations and creates the
@@ -179,36 +149,6 @@ func NewUpdateRecipeContext(ctx context.Context, service *goa.Service) (*UpdateR
 		rctx.ID = rawID
 	}
 	return &rctx, err
-}
-
-// updateRecipePayload is the recipe update action payload.
-type updateRecipePayload struct {
-	// Operand value
-	Value *int `form:"value,omitempty" json:"value,omitempty" xml:"value,omitempty"`
-}
-
-// Validate runs the validation rules defined in the design.
-func (payload *updateRecipePayload) Validate() (err error) {
-	if payload.Value == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "value"))
-	}
-
-	return
-}
-
-// Publicize creates UpdateRecipePayload from updateRecipePayload
-func (payload *updateRecipePayload) Publicize() *UpdateRecipePayload {
-	var pub UpdateRecipePayload
-	if payload.Value != nil {
-		pub.Value = *payload.Value
-	}
-	return &pub
-}
-
-// UpdateRecipePayload is the recipe update action payload.
-type UpdateRecipePayload struct {
-	// Operand value
-	Value int `form:"value" json:"value" xml:"value"`
 }
 
 // OK sends a HTTP response with status code 200.

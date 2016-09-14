@@ -1,11 +1,11 @@
 //************************************************************************//
 // API "recipe": Application Controllers
 //
-// Generated with goagen v0.2.dev, command line:
+// Generated with goagen v1.0.0, command line:
 // $ goagen
 // --design=github.com/jaredwarren/recipe/design
 // --out=$(GOPATH)/src/github.com/jaredwarren/recipe
-// --version=v0.2.dev
+// --version=v1.0.0
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -59,7 +59,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*CreateRecipePayload)
+			rctx.Payload = rawPayload.(*RecipePayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
@@ -110,7 +110,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*UpdateRecipePayload)
+			rctx.Payload = rawPayload.(*RecipePayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
@@ -122,7 +122,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 
 // unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.
 func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &createRecipePayload{}
+	payload := &recipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
@@ -132,7 +132,7 @@ func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req
 
 // unmarshalUpdateRecipePayload unmarshals the request body into the context request data Payload field.
 func unmarshalUpdateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &updateRecipePayload{}
+	payload := &recipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}

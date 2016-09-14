@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"github.com/goadesign/goa"
 	goaclient "github.com/goadesign/goa/client"
+	uuid "github.com/goadesign/goa/uuid"
 	"github.com/jaredwarren/recipe/client"
 	"github.com/spf13/cobra"
 	"golang.org/x/net/context"
 	"log"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type (
@@ -55,7 +58,14 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	sub = &cobra.Command{
 		Use:   `recipe ["/recipe/recipe"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
+		Long: `
+
+Payload example:
+
+{
+   "value": 2110865526956366554
+}`,
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
 	tmp1.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp1.PrettyPrint, "pp", false, "Pretty print response body")
@@ -97,7 +107,14 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	sub = &cobra.Command{
 		Use:   `recipe ["/recipe/recipe/ID"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
+		Long: `
+
+Payload example:
+
+{
+   "value": 2110865526956366554
+}`,
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
 	}
 	tmp4.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
@@ -142,6 +159,122 @@ func hasFlag(name string) bool {
 	return false
 }
 
+func jsonVal(val string) (*interface{}, error) {
+	var t interface{}
+	err := json.Unmarshal([]byte(val), &t)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func jsonArray(ins []string) ([]interface{}, error) {
+	if ins == nil {
+		return nil, nil
+	}
+	var vals []interface{}
+	for _, id := range ins {
+		val, err := jsonVal(id)
+		if err != nil {
+			return nil, err
+		}
+		vals = append(vals, val)
+	}
+	return vals, nil
+}
+
+func timeVal(val string) (*time.Time, error) {
+	t, err := time.Parse("RFC3339", val)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func timeArray(ins []string) ([]time.Time, error) {
+	if ins == nil {
+		return nil, nil
+	}
+	var vals []time.Time
+	for _, id := range ins {
+		val, err := timeVal(id)
+		if err != nil {
+			return nil, err
+		}
+		vals = append(vals, *val)
+	}
+	return vals, nil
+}
+
+func uuidVal(val string) (*uuid.UUID, error) {
+	t, err := uuid.FromString(val)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func uuidArray(ins []string) ([]uuid.UUID, error) {
+	if ins == nil {
+		return nil, nil
+	}
+	var vals []uuid.UUID
+	for _, id := range ins {
+		val, err := uuidVal(id)
+		if err != nil {
+			return nil, err
+		}
+		vals = append(vals, *val)
+	}
+	return vals, nil
+}
+
+func float64Val(val string) (*float64, error) {
+	t, err := strconv.ParseFloat(val, 64)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func float64Array(ins []string) ([]float64, error) {
+	if ins == nil {
+		return nil, nil
+	}
+	var vals []float64
+	for _, id := range ins {
+		val, err := float64Val(id)
+		if err != nil {
+			return nil, err
+		}
+		vals = append(vals, *val)
+	}
+	return vals, nil
+}
+
+func boolVal(val string) (*bool, error) {
+	t, err := strconv.ParseBool(val)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+func boolArray(ins []string) ([]bool, error) {
+	if ins == nil {
+		return nil, nil
+	}
+	var vals []bool
+	for _, id := range ins {
+		val, err := boolVal(id)
+		if err != nil {
+			return nil, err
+		}
+		vals = append(vals, *val)
+	}
+	return vals, nil
+}
+
 // Run makes the HTTP request corresponding to the CreateRecipeCommand command.
 func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
@@ -150,7 +283,7 @@ func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	} else {
 		path = "/recipe/recipe"
 	}
-	var payload client.CreateRecipePayload
+	var payload client.RecipePayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {
@@ -235,7 +368,7 @@ func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 	} else {
 		path = fmt.Sprintf("/recipe/recipe/%v", cmd.ID)
 	}
-	var payload client.UpdateRecipePayload
+	var payload client.RecipePayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {

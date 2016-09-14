@@ -12,14 +12,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-	"testing"
 )
 
 // CreateRecipeOK runs the method Create of the given controller with the given parameters and payload.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func CreateRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.CreateRecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
+func CreateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -72,7 +71,7 @@ func CreateRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctr
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipe)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -88,7 +87,7 @@ func CreateRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctr
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func CreateRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.CreateRecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func CreateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -141,7 +140,7 @@ func CreateRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Se
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipeIngredient)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -157,7 +156,7 @@ func CreateRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Se
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipe) {
+func DeleteRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -210,7 +209,7 @@ func DeleteRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctr
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipe)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -226,7 +225,7 @@ func DeleteRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctr
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func DeleteRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -279,7 +278,7 @@ func DeleteRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Se
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipeIngredient)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -295,7 +294,7 @@ func DeleteRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Se
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowRecipeNotFound(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) http.ResponseWriter {
+func ShowRecipeNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -352,7 +351,7 @@ func ShowRecipeNotFound(t *testing.T, ctx context.Context, service *goa.Service,
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipe) {
+func ShowRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -405,7 +404,7 @@ func ShowRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctrl 
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipe)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -421,7 +420,7 @@ func ShowRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctrl 
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func ShowRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -474,7 +473,7 @@ func ShowRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Serv
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipeIngredient)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -490,7 +489,7 @@ func ShowRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Serv
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
+func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -544,7 +543,7 @@ func UpdateRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctr
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipe)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
@@ -560,7 +559,7 @@ func UpdateRecipeOK(t *testing.T, ctx context.Context, service *goa.Service, ctr
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -614,7 +613,7 @@ func UpdateRecipeOKIngredient(t *testing.T, ctx context.Context, service *goa.Se
 		var ok bool
 		mt, ok = resp.(*app.RecipeRecipeIngredient)
 		if !ok {
-			t.Errorf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
+			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
 		}
 		err = mt.Validate()
 		if err != nil {
