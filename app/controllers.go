@@ -126,6 +126,11 @@ func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
 	goa.ContextRequest(ctx).Payload = payload.Publicize()
 	return nil
 }
@@ -134,6 +139,11 @@ func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req
 func unmarshalUpdateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &recipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
 		return err
 	}
 	goa.ContextRequest(ctx).Payload = payload.Publicize()

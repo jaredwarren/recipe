@@ -391,15 +391,14 @@ definitions:
     type: array
   RecipePayload:
     example:
-      value: 2.1108655e+18
+      title: Cum esse quas.
     properties:
-      value:
-        description: Operand value
-        example: 2.1108655e+18
-        format: int64
-        type: integer
+      title:
+        description: Recipe Title
+        example: Cum esse quas.
+        type: string
     required:
-    - value
+    - title
     title: RecipePayload
     type: object
   RecipeRecipe:
@@ -8945,8 +8944,6 @@ definitions:
     example:
     - description: Dolor unde natus iusto.
       title: Officia quas fugit corporis et et.
-    - description: Dolor unde natus iusto.
-      title: Officia quas fugit corporis et et.
     items:
       $ref: '#/definitions/RecipeStep'
     title: 'Mediatype identifier: application/recipe.step+json; type=collection; view=default'
@@ -8967,7 +8964,6 @@ definitions:
     description: RecipeTagCollection is the media type for an array of RecipeTag (default
       view)
     example:
-    - name: Et asperiores.
     - name: Et asperiores.
     items:
       $ref: '#/definitions/RecipeTag'
@@ -9022,6 +9018,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/RecipeRecipe'
+        "201":
+          description: Created
       schemes:
       - http
       summary: create recipe
@@ -9095,6 +9093,8 @@ produces:
 - application/gob
 - application/x-gob
 responses:
+  Created:
+    description: Created
   NotFound:
     description: Not Found
   OK:

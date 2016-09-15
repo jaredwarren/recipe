@@ -40,6 +40,7 @@ var _ = Resource("recipe", func() {
 		Payload(RecipePayload)
 		Description("")
 		Response(OK)
+		Response(Created)
 	})
 
 	Action("delete", func() {

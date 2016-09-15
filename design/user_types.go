@@ -9,6 +9,6 @@ import (
 
 var RecipePayload = Type("RecipePayload", func() {
 	// minimum data required to create or update a recipe
-	Attribute("value", Integer, "Operand value") // Attribute value of type integer
-	Required("value")
+	Attribute("title", String, "Recipe Title") // Attribute value of type integer
+	Required("title")
 })

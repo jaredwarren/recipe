@@ -63,7 +63,7 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 Payload example:
 
 {
-   "value": 2110865526956366554
+   "title": "Cum esse quas."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
@@ -112,7 +112,7 @@ Payload example:
 Payload example:
 
 {
-   "value": 2110865526956366554
+   "title": "Cum esse quas."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
 	}

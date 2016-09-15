@@ -3,7 +3,13 @@ package main
 import (
 	"github.com/goadesign/goa"
 	"github.com/jaredwarren/recipe/app"
+	"github.com/jaredwarren/recipe/models"
 )
+
+// ErrDatabaseError is the error returned when a db query fails.
+var ErrDatabaseError = goa.NewErrorClass("db_error", 500)
+
+var adb *models.RecipeDB
 
 // RecipeController implements the recipe resource.
 type RecipeController struct {
@@ -19,11 +25,23 @@ func NewRecipeController(service *goa.Service) *RecipeController {
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 	// RecipeController_Create: start_implement
 
-	// Put your logic here
+	//a := models.Recipe{}
+	a := models.Recipe{}
+	a.Title = ctx.Payload.Title
+	err := adb.Add(ctx.Context, &a)
+
+	//a := models.Account{}
+	//a.Name = ctx.Payload.Name
+	//err := adb.Add(ctx.Context, &a)
+	if err != nil {
+		return ErrDatabaseError(err)
+	}
+	ctx.ResponseData.Header().Set("Location", app.RecipeHref(a.ID))
+	return ctx.Created()
 
 	// RecipeController_Create: end_implement
-	res := &app.RecipeRecipe{}
-	return ctx.OK(res)
+	//res := &app.RecipeRecipe{}
+	//return ctx.OK(res)
 }
 
 // Delete runs the delete action.

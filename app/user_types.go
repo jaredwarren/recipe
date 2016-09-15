@@ -16,14 +16,14 @@ import "github.com/goadesign/goa"
 
 // recipePayload user type.
 type recipePayload struct {
-	// Operand value
-	Value *int `form:"value,omitempty" json:"value,omitempty" xml:"value,omitempty"`
+	// Recipe Title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 }
 
 // Validate validates the recipePayload type instance.
 func (ut *recipePayload) Validate() (err error) {
-	if ut.Value == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "value"))
+	if ut.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
 	}
 
 	return
@@ -32,14 +32,23 @@ func (ut *recipePayload) Validate() (err error) {
 // Publicize creates RecipePayload from recipePayload
 func (ut *recipePayload) Publicize() *RecipePayload {
 	var pub RecipePayload
-	if ut.Value != nil {
-		pub.Value = *ut.Value
+	if ut.Title != nil {
+		pub.Title = *ut.Title
 	}
 	return &pub
 }
 
 // RecipePayload user type.
 type RecipePayload struct {
-	// Operand value
-	Value int `form:"value" json:"value" xml:"value"`
+	// Recipe Title
+	Title string `form:"title" json:"title" xml:"title"`
+}
+
+// Validate validates the RecipePayload type instance.
+func (ut *RecipePayload) Validate() (err error) {
+	if ut.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
+	}
+
+	return
 }

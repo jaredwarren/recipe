@@ -48,6 +48,12 @@ func (ctx *CreateRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
+// Created sends a HTTP response with status code 201.
+func (ctx *CreateRecipeContext) Created() error {
+	ctx.ResponseData.WriteHeader(201)
+	return nil
+}
+
 // DeleteRecipeContext provides the recipe delete action context.
 type DeleteRecipeContext struct {
 	context.Context
