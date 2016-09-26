@@ -3,50 +3,38 @@ package main
 import (
 	"github.com/boltdb/bolt"
 	"github.com/goadesign/goa"
+	// RecipeController_import: start_implement
 	"github.com/jaredwarren/recipe/app"
-	"github.com/jaredwarren/recipe/models"
+	// RecipeController_import: end_implement
 )
-
-// ErrDatabaseError is the error returned when a db query fails.
-var ErrDatabaseError = goa.NewErrorClass("db_error", 500)
-
-var adb *models.RecipeDB
 
 // RecipeController implements the recipe resource.
 type RecipeController struct {
 	*goa.Controller
+	// RecipeController_struct: start_implement
 	*bolt.DB
+	// RecipeController_struct: end_implement
 }
 
 // NewRecipeController creates a recipe controller.
 func NewRecipeController(service *goa.Service, db *bolt.DB) *RecipeController {
+	// NewRecipeController_struct: start_implement
 	return &RecipeController{
 		Controller: service.NewController("RecipeController"),
 		DB:         db,
 	}
+	// NewRecipeController_struct: end_implement
 }
 
 // Create runs the create action.
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 	// RecipeController_Create: start_implement
 
-	//a := models.Recipe{}
-	a := models.Recipe{}
-	a.Title = ctx.Payload.Title
-	err := adb.Add(ctx.Context, &a)
-
-	//a := models.Account{}
-	//a.Name = ctx.Payload.Name
-	//err := adb.Add(ctx.Context, &a)
-	if err != nil {
-		return ErrDatabaseError(err)
-	}
-	ctx.ResponseData.Header().Set("Location", app.RecipeHref(a.ID))
-	return ctx.Created()
+	// Put your logic here
 
 	// RecipeController_Create: end_implement
-	//res := &app.RecipeRecipe{}
-	//return ctx.OK(res)
+	res := &app.RecipeRecipe{}
+	return ctx.OK(res)
 }
 
 // Delete runs the delete action.
@@ -78,6 +66,5 @@ func (c *RecipeController) Update(ctx *app.UpdateRecipeContext) error {
 	// Put your logic here
 
 	// RecipeController_Update: end_implement
-	res := &app.RecipeRecipe{}
-	return ctx.OK(res)
+	return nil
 }

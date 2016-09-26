@@ -411,6 +411,8 @@ definitions:
       text: Laudantium soluta saepe sit eum aperiam deserunt.
     - id: 8.066596e+16
       text: Laudantium soluta saepe sit eum aperiam deserunt.
+    - id: 8.066596e+16
+      text: Laudantium soluta saepe sit eum aperiam deserunt.
     items:
       $ref: '#/definitions/RecipeNote'
     title: 'Mediatype identifier: application/recipe.note+json; type=collection; view=default'
@@ -8992,7 +8994,6 @@ definitions:
     description: RecipeTagCollection is the media type for an array of RecipeTag (default
       view)
     example:
-    - name: Et asperiores.
     - name: Et asperiores.
     - name: Et asperiores.
     items:
