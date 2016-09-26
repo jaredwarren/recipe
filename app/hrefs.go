@@ -17,6 +17,12 @@ import (
 	"strings"
 )
 
+// ImageHref returns the resource href.
+func ImageHref(id interface{}) string {
+	paramid := strings.TrimLeftFunc(fmt.Sprintf("%v", id), func(r rune) bool { return r == '/' })
+	return fmt.Sprintf("/recipe/images/%v", paramid)
+}
+
 // RecipeHref returns the resource href.
 func RecipeHref(id interface{}) string {
 	paramid := strings.TrimLeftFunc(fmt.Sprintf("%v", id), func(r rune) bool { return r == '/' })

@@ -3,12 +3,23 @@
 package main
 
 import (
+	"github.com/boltdb/bolt"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/jaredwarren/recipe/app"
+	"log"
 )
 
 func main() {
+	// Init Db
+	// Open the my.db data file in your current directory.
+	// It will be created if it doesn't exist.
+	db, err := bolt.Open("recipe.db", 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	// Create service
 	service := goa.New("recipe")
 
@@ -19,7 +30,7 @@ func main() {
 	service.Use(middleware.Recover())
 
 	// Mount "recipe" controller
-	c := NewRecipeController(service)
+	c := NewRecipeController(service, db)
 	app.MountRecipeController(service, c)
 
 	// Start service

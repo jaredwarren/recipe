@@ -33,6 +33,58 @@ func initService(service *goa.Service) {
 	service.Decoder.Register(goa.NewJSONDecoder, "*/*")
 }
 
+// ImageController is the controller interface for the Image actions.
+type ImageController interface {
+	goa.Muxer
+	goa.FileServer
+	Show(*ShowImageContext) error
+	Upload(*UploadImageContext) error
+}
+
+// MountImageController "mounts" a Image resource controller on the given service.
+func MountImageController(service *goa.Service, ctrl ImageController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewShowImageContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Show(rctx)
+	}
+	service.Mux.Handle("GET", "/recipe/images/:id", ctrl.MuxHandler("Show", h, nil))
+	service.LogInfo("mount", "ctrl", "Image", "action", "Show", "route", "GET /recipe/images/:id")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewUploadImageContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Upload(rctx)
+	}
+	service.Mux.Handle("POST", "/recipe/images", ctrl.MuxHandler("Upload", h, nil))
+	service.LogInfo("mount", "ctrl", "Image", "action", "Upload", "route", "POST /recipe/images")
+
+	h = ctrl.FileHandler("/download/*filename", "images/")
+	service.Mux.Handle("GET", "/download/*filename", ctrl.MuxHandler("serve", h, nil))
+	service.LogInfo("mount", "ctrl", "Image", "files", "images/", "route", "GET /download/*filename")
+
+	h = ctrl.FileHandler("/download/", "images/index.html")
+	service.Mux.Handle("GET", "/download/", ctrl.MuxHandler("serve", h, nil))
+	service.LogInfo("mount", "ctrl", "Image", "files", "images/index.html", "route", "GET /download/")
+}
+
 // RecipeController is the controller interface for the Recipe actions.
 type RecipeController interface {
 	goa.Muxer
@@ -116,8 +168,8 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Update(rctx)
 	}
-	service.Mux.Handle("PUT", "/recipe/recipe/:id", ctrl.MuxHandler("Update", h, unmarshalUpdateRecipePayload))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PUT /recipe/recipe/:id")
+	service.Mux.Handle("PATCH", "/recipe/recipe/:id", ctrl.MuxHandler("Update", h, unmarshalUpdateRecipePayload))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PATCH /recipe/recipe/:id")
 }
 
 // unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.

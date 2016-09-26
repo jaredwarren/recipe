@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/boltdb/bolt"
 	"github.com/goadesign/goa"
 	"github.com/jaredwarren/recipe/app"
 	"github.com/jaredwarren/recipe/models"
@@ -14,11 +15,15 @@ var adb *models.RecipeDB
 // RecipeController implements the recipe resource.
 type RecipeController struct {
 	*goa.Controller
+	*bolt.DB
 }
 
 // NewRecipeController creates a recipe controller.
-func NewRecipeController(service *goa.Service) *RecipeController {
-	return &RecipeController{Controller: service.NewController("RecipeController")}
+func NewRecipeController(service *goa.Service, db *bolt.DB) *RecipeController {
+	return &RecipeController{
+		Controller: service.NewController("RecipeController"),
+		DB:         db,
+	}
 }
 
 // Create runs the create action.

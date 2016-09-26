@@ -196,6 +196,34 @@ func (c *Client) DecodeRecipeCourseCollection(resp *http.Response) (RecipeCourse
 	return decoded, err
 }
 
+// Image metadata (default view)
+//
+// Identifier: application/recipe.image+json; view=default
+type ImageMedia struct {
+	// Image filename
+	Filename string `form:"filename" json:"filename" xml:"filename"`
+	// Image ID
+	ID int `form:"id" json:"id" xml:"id"`
+	// Upload timestamp
+	UploadedAt time.Time `form:"uploaded_at" json:"uploaded_at" xml:"uploaded_at"`
+}
+
+// Validate validates the ImageMedia media type instance.
+func (mt *ImageMedia) Validate() (err error) {
+	if mt.Filename == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "filename"))
+	}
+
+	return
+}
+
+// DecodeImageMedia decodes the ImageMedia instance encoded in resp body.
+func (c *Client) DecodeImageMedia(resp *http.Response) (*ImageMedia, error) {
+	var decoded ImageMedia
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
 // An Meal (default view)
 //
 // Identifier: application/recipe.meal+json; view=default
@@ -799,6 +827,13 @@ func (mt *RecipeUnitofmeasure) Validate() (err error) {
 // DecodeRecipeUnitofmeasure decodes the RecipeUnitofmeasure instance encoded in resp body.
 func (c *Client) DecodeRecipeUnitofmeasure(resp *http.Response) (*RecipeUnitofmeasure, error) {
 	var decoded RecipeUnitofmeasure
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeErrorResponse decodes the ErrorResponse instance encoded in resp body.
+func (c *Client) DecodeErrorResponse(resp *http.Response) (*goa.ErrorResponse, error) {
+	var decoded goa.ErrorResponse
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
 }

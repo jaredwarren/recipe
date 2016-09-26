@@ -2,7 +2,9 @@ package design
 
 // mysql root: asdf1234  .
 
-// build: goagen bootstrap -d github.com/jaredwarren/recipe/design
+// Build
+// goagen bootstrap -d github.com/jaredwarren/recipe/design
+// goagen --design=github.com/jaredwarren/recipe/design gen --pkg-path=github.com/goadesign/gorma
 
 import (
 	. "github.com/goadesign/goa/design"
@@ -50,19 +52,14 @@ var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 		Attribute("title", String, "Title of recipe")
 		Attribute("description", String, "Long description of recipe")
 		Attribute("images", ArrayOf(String), "Title of recipe")
-		Attribute("quantity", UnitOfMeasure, "quantity, measure, servings, yield e.g. 4 cups.") // ???
-		//Attribute("servings", UnitOfMeasure, "should be quantity and measure e.g. 4 cups. same as ingredients")
+		Attribute("quantity", UnitOfMeasure, "quantity, measure, servings, yield e.g. 4 cups.")
 		Attribute("prep_time", DateTime, "Amount of time to prepare")
 		Attribute("cook_time", DateTime, "Amount of time to cook")
 		Attribute("wait_time", DateTime, "Amount of time to wait for things such as mairnading")
 		Attribute("cookware", CollectionOf("application/recipe.cookware+json"), "List of tools needed")
 		Attribute("version", String, "Version Number e.g. 1.0.1")
 		Attribute("ingredients", CollectionOf("application/recipe.recipe+json"), "List of ingredients")
-		//Attribute("ingredients", ArrayOf(Ingredient), "List of ingredients")
-		//Attribute("sub_recipes", CollectionOf("application/recipe.recipe+json"), "List of ingredients")
-		//Attribute("prep_steps", ArrayOf(Step), "List of steps")
 		Attribute("directions", CollectionOf("application/recipe.step+json"), "List of steps") // ??? might need to be an array of grouped steps i.e. prep_steps cook_steps, plate_steps..
-		//Attribute("plate_steps", ArrayOf(Step), "List of steps")
 		Attribute("categories", CollectionOf("application/recipe.category+json"), "List of categories, basically same as tag")
 		Attribute("favorite", Boolean, "Is a favorite, basically a tag")
 		Attribute("tags", CollectionOf("application/recipe.tag+json"), "List of tags")
@@ -76,14 +73,12 @@ var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 		})
 		Attribute("source", Source, "Source of recipe")
 		Attribute("notes", CollectionOf("application/recipe.note+json"), "List of dated notes")
+		Attribute("state", String, "e.g. chopped, sliced, etc.. might need to be array.")
+		Attribute("complete", Boolean, "If it's been added/included")
 		Attribute("created", DateTime, "First created")
 		Attribute("updated", DateTime, "Last Updated")
 
-		//ingredient
-		Attribute("state", String, "e.g. chopped, sliced, etc.. might need to be array.") // ???
-		Attribute("complete", Boolean, "If it's been added/included")                     // ???
-
-		Required("id", "id", "title")
+		Required("id", "title")
 	})
 	View("default", func() {
 		Attribute("id")
@@ -115,27 +110,6 @@ var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 		Attribute("complete")
 	})
 })
-
-/*
-var Ingredient = MediaType("application/recipe.ingredient+json", func() {
-	Description("An Ingredient")
-	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
-		Attribute("name", String, "what's it called")
-		Attribute("quantity", UnitOfMeasure, "How much")                                                                             // ???
-		Attribute("state", String, "e.g. chopped, sliced, etc.. might need to be array. this might be a mini recipe or just a word") // ???
-		Attribute("complete", Boolean, "If it's been added/included")                                                                // ???
-
-		Required("id", "name")
-	})
-	View("default", func() {
-		Attribute("name")
-		Attribute("quantity")
-		Attribute("state")
-		Attribute("complete")
-	})
-})
-*/
 
 var Cookware = MediaType("application/recipe.cookware+json", func() {
 	Description("A Cookware")
@@ -309,5 +283,21 @@ var ShoppingItem = MediaType("application/recipe.shoppingitem+json", func() {
 		Attribute("name")
 		//Attribute("items")
 		Attribute("store")
+	})
+})
+
+var ImageMedia = MediaType("application/recipe.image+json", func() {
+	Description("Image metadata")
+	TypeName("ImageMedia")
+	Attributes(func() {
+		Attribute("id", Integer, "Image ID")
+		Attribute("filename", String, "Image filename")
+		Attribute("uploaded_at", DateTime, "Upload timestamp")
+		Required("id", "filename", "uploaded_at")
+	})
+	View("default", func() {
+		Attribute("id")
+		Attribute("filename")
+		Attribute("uploaded_at")
 	})
 })

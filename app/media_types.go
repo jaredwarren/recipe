@@ -153,6 +153,27 @@ func (mt RecipeCourseCollection) Validate() (err error) {
 	return
 }
 
+// Image metadata (default view)
+//
+// Identifier: application/recipe.image+json; view=default
+type ImageMedia struct {
+	// Image filename
+	Filename string `form:"filename" json:"filename" xml:"filename"`
+	// Image ID
+	ID int `form:"id" json:"id" xml:"id"`
+	// Upload timestamp
+	UploadedAt time.Time `form:"uploaded_at" json:"uploaded_at" xml:"uploaded_at"`
+}
+
+// Validate validates the ImageMedia media type instance.
+func (mt *ImageMedia) Validate() (err error) {
+	if mt.Filename == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "filename"))
+	}
+
+	return
+}
+
 // An Meal (default view)
 //
 // Identifier: application/recipe.meal+json; view=default

@@ -581,11 +581,11 @@ func ShowRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *
 	return rw, mt
 }
 
-// UpdateRecipeOK runs the method Update of the given controller with the given parameters and payload.
+// UpdateRecipeBadRequest runs the method Update of the given controller with the given parameters and payload.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
+func UpdateRecipeBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -610,10 +610,10 @@ func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 		if !ok {
 			panic(err) // bug
 		}
-		if e.ResponseStatus() != 200 {
+		if e.ResponseStatus() != 400 {
 			t.Errorf("unexpected payload validation error: %+v", e)
 		}
-		return nil, nil
+		return nil, e
 	}
 
 	// Setup request context
@@ -621,7 +621,7 @@ func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	u := &url.URL{
 		Path: fmt.Sprintf("/recipe/recipe/%v", id),
 	}
-	req, err := http.NewRequest("PUT", u.String(), nil)
+	req, err := http.NewRequest("PATCH", u.String(), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
@@ -644,19 +644,15 @@ func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	if err != nil {
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	if rw.Code != 400 {
+		t.Errorf("invalid response status code: got %+v, expected 400", rw.Code)
 	}
-	var mt *app.RecipeRecipe
+	var mt error
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(*app.RecipeRecipe)
+		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipe", resp)
-		}
-		err = mt.Validate()
-		if err != nil {
-			t.Errorf("invalid response media type: %s", err)
+			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
 		}
 	}
 
@@ -664,11 +660,11 @@ func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	return rw, mt
 }
 
-// UpdateRecipeOKIngredient runs the method Update of the given controller with the given parameters and payload.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// UpdateRecipeNoContent runs the method Update of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func UpdateRecipeNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -693,10 +689,10 @@ func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service
 		if !ok {
 			panic(err) // bug
 		}
-		if e.ResponseStatus() != 200 {
+		if e.ResponseStatus() != 204 {
 			t.Errorf("unexpected payload validation error: %+v", e)
 		}
-		return nil, nil
+		return nil
 	}
 
 	// Setup request context
@@ -704,7 +700,7 @@ func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service
 	u := &url.URL{
 		Path: fmt.Sprintf("/recipe/recipe/%v", id),
 	}
-	req, err := http.NewRequest("PUT", u.String(), nil)
+	req, err := http.NewRequest("PATCH", u.String(), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
@@ -727,22 +723,81 @@ func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service
 	if err != nil {
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.RecipeRecipeIngredient
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(*app.RecipeRecipeIngredient)
-		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.RecipeRecipeIngredient", resp)
-		}
-		err = mt.Validate()
-		if err != nil {
-			t.Errorf("invalid response media type: %s", err)
-		}
+	if rw.Code != 204 {
+		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
 	}
 
 	// Return results
-	return rw, mt
+	return rw
+}
+
+// UpdateRecipeNotFound runs the method Update of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func UpdateRecipeNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) http.ResponseWriter {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		if e.ResponseStatus() != 404 {
+			t.Errorf("unexpected payload validation error: %+v", e)
+		}
+		return nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/recipe/recipe/%v", id),
+	}
+	req, err := http.NewRequest("PATCH", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["id"] = []string{fmt.Sprintf("%v", id)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
+	updateCtx, err := app.NewUpdateRecipeContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	updateCtx.Payload = payload
+
+	// Perform action
+	err = ctrl.Update(updateCtx)
+
+	// Validate response
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	}
+
+	// Return results
+	return rw
 }

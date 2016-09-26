@@ -11,12 +11,25 @@ import (
 	"golang.org/x/net/context"
 	"log"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"time"
 )
 
 type (
+	// ShowImageCommand is the command line data structure for the show action of image
+	ShowImageCommand struct {
+		// Image ID
+		ID          int
+		PrettyPrint bool
+	}
+
+	// UploadImageCommand is the command line data structure for the upload action of image
+	UploadImageCommand struct {
+		PrettyPrint bool
+	}
+
 	// CreateRecipeCommand is the command line data structure for the create action of recipe
 	CreateRecipeCommand struct {
 		Payload     string
@@ -42,8 +55,15 @@ type (
 	UpdateRecipeCommand struct {
 		Payload     string
 		ContentType string
+		// Recipe ID
 		ID          string
 		PrettyPrint bool
+	}
+
+	// DownloadCommand is the command line data structure for the download command.
+	DownloadCommand struct {
+		// OutFile is the path to the download output file.
+		OutFile string
 	}
 )
 
@@ -63,7 +83,7 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 Payload example:
 
 {
-   "title": "Cum esse quas."
+   "title": "Nesciunt repellendus mollitia saepe et sed autem."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
@@ -87,23 +107,32 @@ Payload example:
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "show",
-		Short: `Display an recipe by id`,
+		Short: `show action`,
 	}
-	tmp3 := new(ShowRecipeCommand)
+	tmp3 := new(ShowImageCommand)
 	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipe/ID"]`,
+		Use:   `image ["/recipe/images/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
 	tmp3.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
+	tmp4 := new(ShowRecipeCommand)
+	sub = &cobra.Command{
+		Use:   `recipe ["/recipe/recipe/ID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
+	}
+	tmp4.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update",
 		Short: ``,
 	}
-	tmp4 := new(UpdateRecipeCommand)
+	tmp5 := new(UpdateRecipeCommand)
 	sub = &cobra.Command{
 		Use:   `recipe ["/recipe/recipe/ID"]`,
 		Short: ``,
@@ -112,14 +141,39 @@ Payload example:
 Payload example:
 
 {
-   "title": "Cum esse quas."
+   "title": "Nesciunt repellendus mollitia saepe et sed autem."
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
-	tmp4.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp5.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "upload",
+		Short: `Upload an image`,
+	}
+	tmp6 := new(UploadImageCommand)
+	sub = &cobra.Command{
+		Use:   `image ["/recipe/images"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
+	}
+	tmp6.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp6.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+
+	dl := new(DownloadCommand)
+	dlc := &cobra.Command{
+		Use:   "download [PATH]",
+		Short: "Download file with given path",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return dl.Run(c, args)
+		},
+	}
+	dlc.Flags().StringVar(&dl.OutFile, "out", "", "Output file")
+	app.AddCommand(dlc)
 }
 
 func intFlagVal(name string, parsed int) *int {
@@ -275,6 +329,96 @@ func boolArray(ins []string) ([]bool, error) {
 	return vals, nil
 }
 
+// Run downloads files with given paths.
+func (cmd *DownloadCommand) Run(c *client.Client, args []string) error {
+	var (
+		fnf func(context.Context, string) (int64, error)
+		fnd func(context.Context, string, string) (int64, error)
+
+		rpath   = args[0]
+		outfile = cmd.OutFile
+		logger  = goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+		ctx     = goa.WithLogger(context.Background(), logger)
+		err     error
+	)
+
+	if rpath[0] != '/' {
+		rpath = "/" + rpath
+	}
+	if strings.HasPrefix(rpath, "/download/") {
+		fnd = c.DownloadDownload
+		rpath = rpath[10:]
+		if outfile == "" {
+			_, outfile = path.Split(rpath)
+		}
+		goto found
+	}
+	return fmt.Errorf("don't know how to download %s", rpath)
+found:
+	ctx = goa.WithLogContext(ctx, "file", outfile)
+	if fnf != nil {
+		_, err = fnf(ctx, outfile)
+	} else {
+		_, err = fnd(ctx, rpath, outfile)
+	}
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	return nil
+}
+
+// Run makes the HTTP request corresponding to the ShowImageCommand command.
+func (cmd *ShowImageCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/recipe/images/%v", cmd.ID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.ShowImage(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *ShowImageCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var id int
+	cc.Flags().IntVar(&cmd.ID, "id", id, `Image ID`)
+}
+
+// Run makes the HTTP request corresponding to the UploadImageCommand command.
+func (cmd *UploadImageCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/recipe/images"
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.UploadImage(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *UploadImageCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+}
+
 // Run makes the HTTP request corresponding to the CreateRecipeCommand command.
 func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
@@ -392,5 +536,5 @@ func (cmd *UpdateRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Clien
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var id string
-	cc.Flags().StringVar(&cmd.ID, "id", id, ``)
+	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
 }

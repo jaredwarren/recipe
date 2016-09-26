@@ -15,7 +15,72 @@ package app
 import (
 	"github.com/goadesign/goa"
 	"golang.org/x/net/context"
+	"strconv"
 )
+
+// ShowImageContext provides the image show action context.
+type ShowImageContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ID int
+}
+
+// NewShowImageContext parses the incoming request URL and body, performs validations and creates the
+// context used by the image controller show action.
+func NewShowImageContext(ctx context.Context, service *goa.Service) (*ShowImageContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	rctx := ShowImageContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramID := req.Params["id"]
+	if len(paramID) > 0 {
+		rawID := paramID[0]
+		if id, err2 := strconv.Atoi(rawID); err2 == nil {
+			rctx.ID = id
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("id", rawID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *ShowImageContext) OK(r *ImageMedia) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.image+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *ShowImageContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// UploadImageContext provides the image upload action context.
+type UploadImageContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+}
+
+// NewUploadImageContext parses the incoming request URL and body, performs validations and creates the
+// context used by the image controller upload action.
+func NewUploadImageContext(ctx context.Context, service *goa.Service) (*UploadImageContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	rctx := UploadImageContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *UploadImageContext) OK(r *ImageMedia) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.image+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
 
 // CreateRecipeContext provides the recipe create action context.
 type CreateRecipeContext struct {
@@ -157,14 +222,20 @@ func NewUpdateRecipeContext(ctx context.Context, service *goa.Service) (*UpdateR
 	return &rctx, err
 }
 
-// OK sends a HTTP response with status code 200.
-func (ctx *UpdateRecipeContext) OK(r *RecipeRecipe) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+// NoContent sends a HTTP response with status code 204.
+func (ctx *UpdateRecipeContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
 }
 
-// OKIngredient sends a HTTP response with status code 200.
-func (ctx *UpdateRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *UpdateRecipeContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *UpdateRecipeContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
 }

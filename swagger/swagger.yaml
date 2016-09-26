@@ -1,10 +1,36 @@
-basePath: /recipe
 consumes:
 - application/json
 - application/xml
 - application/gob
 - application/x-gob
 definitions:
+  ImageMedia:
+    description: Image metadata (default view)
+    example:
+      filename: Et sunt soluta.
+      id: 9.0046127e+18
+      uploaded_at: 1994-02-26T18:39:46-07:00
+    properties:
+      filename:
+        description: Image filename
+        example: Et sunt soluta.
+        type: string
+      id:
+        description: Image ID
+        example: 9.0046127e+18
+        format: int64
+        type: integer
+      uploaded_at:
+        description: Upload timestamp
+        example: 1994-02-26T18:39:46-07:00
+        format: date-time
+        type: string
+    required:
+    - id
+    - filename
+    - uploaded_at
+    title: 'Mediatype identifier: application/recipe.image+json'
+    type: object
   RecipeCategory:
     description: A Category (default view)
     example:
@@ -391,11 +417,11 @@ definitions:
     type: array
   RecipePayload:
     example:
-      title: Cum esse quas.
+      title: Nesciunt repellendus mollitia saepe et sed autem.
     properties:
       title:
         description: Recipe Title
-        example: Cum esse quas.
+        example: Nesciunt repellendus mollitia saepe et sed autem.
         type: string
     required:
     - title
@@ -8944,6 +8970,8 @@ definitions:
     example:
     - description: Dolor unde natus iusto.
       title: Officia quas fugit corporis et et.
+    - description: Dolor unde natus iusto.
+      title: Officia quas fugit corporis et et.
     items:
       $ref: '#/definitions/RecipeStep'
     title: 'Mediatype identifier: application/recipe.step+json; type=collection; view=default'
@@ -8964,6 +8992,8 @@ definitions:
     description: RecipeTagCollection is the media type for an array of RecipeTag (default
       view)
     example:
+    - name: Et asperiores.
+    - name: Et asperiores.
     - name: Et asperiores.
     items:
       $ref: '#/definitions/RecipeTag'
@@ -8988,6 +9018,43 @@ definitions:
     - name
     title: 'Mediatype identifier: application/recipe.unitofmeasure+json; view=default'
     type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error'
+    type: object
 externalDocs:
   description: TODO
   url: http://jlwarren1.com/recipe/docs
@@ -9004,7 +9071,64 @@ info:
   title: Recipe App
   version: ""
 paths:
-  /recipe:
+  /download/{filename}:
+    get:
+      operationId: image#/download/*filename
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filename
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: Download images/
+  /recipe/images:
+    post:
+      description: Upload an image
+      operationId: image#upload
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ImageMedia'
+      schemes:
+      - http
+      summary: upload image
+      tags:
+      - image
+  /recipe/images/{id}:
+    get:
+      description: Show an image metadata
+      operationId: image#show
+      parameters:
+      - description: Image ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ImageMedia'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show image
+      tags:
+      - image
+  /recipe/recipe:
     post:
       operationId: recipe#create
       parameters:
@@ -9025,7 +9149,7 @@ paths:
       summary: create recipe
       tags:
       - recipe
-  /recipe/{id}:
+  /recipe/recipe/{id}:
     delete:
       operationId: recipe#delete
       parameters:
@@ -9065,10 +9189,11 @@ paths:
       summary: show recipe
       tags:
       - recipe
-    put:
+    patch:
       operationId: recipe#update
       parameters:
-      - in: path
+      - description: Recipe ID
+        in: path
         name: id
         required: true
         type: string
@@ -9078,10 +9203,14 @@ paths:
         schema:
           $ref: '#/definitions/RecipePayload'
       responses:
-        "200":
-          description: OK
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
           schema:
-            $ref: '#/definitions/RecipeRecipe'
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
       schemes:
       - http
       summary: update recipe
@@ -9095,6 +9224,8 @@ produces:
 responses:
   Created:
     description: Created
+  NoContent:
+    description: No Content
   NotFound:
     description: Not Found
   OK:
