@@ -40,15 +40,19 @@ var _ = Resource("recipe", func() {
 		Payload(RecipePayload)
 
 		Response(NoContent)
+		Response(OK)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
+		Response(InternalServerError, ErrorMedia)
 	})
 
 	Action("create", func() {
 		Routing(POST("/"))
 		Payload(RecipePayload)
 		Description("")
+
 		Response(OK)
+		Response(InternalServerError, ErrorMedia)
 		Response(Created)
 	})
 
@@ -59,6 +63,8 @@ var _ = Resource("recipe", func() {
 			Param("id", String, "Recipe ID")
 		})
 		Response(OK)
+		Response(NotFound)
+		Response(InternalServerError, ErrorMedia)
 	})
 
 	/*Action("add_image", func() {

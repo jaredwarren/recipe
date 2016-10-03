@@ -119,6 +119,12 @@ func (ctx *CreateRecipeContext) Created() error {
 	return nil
 }
 
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *CreateRecipeContext) InternalServerError(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
+}
+
 // DeleteRecipeContext provides the recipe delete action context.
 type DeleteRecipeContext struct {
 	context.Context
@@ -153,6 +159,18 @@ func (ctx *DeleteRecipeContext) OK(r *RecipeRecipe) error {
 func (ctx *DeleteRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *DeleteRecipeContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *DeleteRecipeContext) InternalServerError(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
 }
 
 // ShowRecipeContext provides the recipe show action context.
@@ -222,6 +240,18 @@ func NewUpdateRecipeContext(ctx context.Context, service *goa.Service) (*UpdateR
 	return &rctx, err
 }
 
+// OK sends a HTTP response with status code 200.
+func (ctx *UpdateRecipeContext) OK(r *RecipeRecipe) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKIngredient sends a HTTP response with status code 200.
+func (ctx *UpdateRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
 // NoContent sends a HTTP response with status code 204.
 func (ctx *UpdateRecipeContext) NoContent() error {
 	ctx.ResponseData.WriteHeader(204)
@@ -238,4 +268,10 @@ func (ctx *UpdateRecipeContext) BadRequest(r error) error {
 func (ctx *UpdateRecipeContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
 	return nil
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *UpdateRecipeContext) InternalServerError(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
 }

@@ -3,12 +3,13 @@
 package main
 
 import (
-	"github.com/boltdb/bolt"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
-	// main_import start_implement
 	"github.com/jaredwarren/recipe/app"
+	// main_import start_implement
 	"log"
+
+	"github.com/boltdb/bolt"
 	// main_import end_implement
 )
 
@@ -24,13 +25,16 @@ func main() {
 	defer db.Close()
 
 	// make sure buckets exsists
-	db.Update(func(tx *bolt.Tx) error {
-		b, err := tx.CreateBucketIfNotExists([]byte("Recipe"))
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte("Recipe"))
 		if err != nil {
-			return log.Fatal(err)
+			return err
 		}
 		return nil
 	})
+	if err != nil {
+		panic(err)
+	}
 	// main_db end_implement
 
 	// Create service

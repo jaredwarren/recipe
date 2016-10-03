@@ -411,8 +411,6 @@ definitions:
       text: Laudantium soluta saepe sit eum aperiam deserunt.
     - id: 8.066596e+16
       text: Laudantium soluta saepe sit eum aperiam deserunt.
-    - id: 8.066596e+16
-      text: Laudantium soluta saepe sit eum aperiam deserunt.
     items:
       $ref: '#/definitions/RecipeNote'
     title: 'Mediatype identifier: application/recipe.note+json; type=collection; view=default'
@@ -8996,6 +8994,7 @@ definitions:
     example:
     - name: Et asperiores.
     - name: Et asperiores.
+    - name: Et asperiores.
     items:
       $ref: '#/definitions/RecipeTag'
     title: 'Mediatype identifier: application/recipe.tag+json; type=collection; view=default'
@@ -9145,6 +9144,10 @@ paths:
             $ref: '#/definitions/RecipeRecipe'
         "201":
           description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
       schemes:
       - http
       summary: create recipe
@@ -9164,6 +9167,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/RecipeRecipe'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
       schemes:
       - http
       summary: delete recipe
@@ -9204,6 +9213,10 @@ paths:
         schema:
           $ref: '#/definitions/RecipePayload'
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
         "204":
           description: No Content
         "400":
@@ -9212,6 +9225,10 @@ paths:
             $ref: '#/definitions/error'
         "404":
           description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
       schemes:
       - http
       summary: update recipe

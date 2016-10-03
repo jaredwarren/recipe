@@ -11,6 +11,7 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
+// Meal has course and servings.
 var Meal = MediaType("application/recipe.meal+json", func() {
 	Description("An Meal")
 	Attributes(func() {
