@@ -1,3 +1,15 @@
+//************************************************************************//
+// API "recipe": recipe TestHelpers
+//
+// Generated with goagen v1.0.0, command line:
+// $ goagen
+// --design=github.com/jaredwarren/recipe/design
+// --out=$(GOPATH)/src/github.com/jaredwarren/recipe
+// --version=v1.0.0
+//
+// The content of this file is auto-generated, DO NOT MODIFY
+//************************************************************************//
+
 package test
 
 import (
@@ -18,7 +30,7 @@ import (
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func CreateRecipeCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.RecipePayload) http.ResponseWriter {
+func CreateRecipeCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.CreateRecipePayload) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -88,7 +100,7 @@ func CreateRecipeCreated(t goatest.TInterface, ctx context.Context, service *goa
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func CreateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.RecipePayload) (http.ResponseWriter, error) {
+func CreateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.CreateRecipePayload) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -166,7 +178,7 @@ func CreateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, 
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func CreateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
+func CreateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.CreateRecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -248,7 +260,7 @@ func CreateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func CreateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func CreateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, payload *app.CreateRecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -785,7 +797,7 @@ func ShowRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, error) {
+func UpdateRecipeBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -864,7 +876,7 @@ func UpdateRecipeBadRequest(t goatest.TInterface, ctx context.Context, service *
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, error) {
+func UpdateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -943,7 +955,7 @@ func UpdateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, 
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) http.ResponseWriter {
+func UpdateRecipeNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1014,7 +1026,7 @@ func UpdateRecipeNoContent(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) http.ResponseWriter {
+func UpdateRecipeNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1085,7 +1097,7 @@ func UpdateRecipeNotFound(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
+func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1168,7 +1180,7 @@ func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.RecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string, payload *app.UpdateRecipePayload) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer

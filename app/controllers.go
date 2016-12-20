@@ -111,7 +111,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*RecipePayload)
+			rctx.Payload = rawPayload.(*CreateRecipePayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
@@ -162,7 +162,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*RecipePayload)
+			rctx.Payload = rawPayload.(*UpdateRecipePayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
@@ -174,10 +174,11 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 
 // unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.
 func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &recipePayload{}
+	payload := &createRecipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
+	payload.Finalize()
 	if err := payload.Validate(); err != nil {
 		// Initialize payload with private data structure so it can be logged
 		goa.ContextRequest(ctx).Payload = payload
@@ -189,10 +190,11 @@ func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req
 
 // unmarshalUpdateRecipePayload unmarshals the request body into the context request data Payload field.
 func unmarshalUpdateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &recipePayload{}
+	payload := &updateRecipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
+	payload.Finalize()
 	if err := payload.Validate(); err != nil {
 		// Initialize payload with private data structure so it can be logged
 		goa.ContextRequest(ctx).Payload = payload

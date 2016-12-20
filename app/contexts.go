@@ -16,6 +16,7 @@ import (
 	"github.com/goadesign/goa"
 	"golang.org/x/net/context"
 	"strconv"
+	"time"
 )
 
 // ShowImageContext provides the image show action context.
@@ -87,7 +88,7 @@ type CreateRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Payload *RecipePayload
+	Payload *CreateRecipePayload
 }
 
 // NewCreateRecipeContext parses the incoming request URL and body, performs validations and creates the
@@ -99,6 +100,213 @@ func NewCreateRecipeContext(ctx context.Context, service *goa.Service) (*CreateR
 	req := goa.ContextRequest(ctx)
 	rctx := CreateRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	return &rctx, err
+}
+
+// createRecipePayload is the recipe create action payload.
+type createRecipePayload struct {
+	// If it's been added/included
+	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
+	// Amount of time to cook
+	CookTime *time.Time `form:"cook_time,omitempty" json:"cook_time,omitempty" xml:"cook_time,omitempty"`
+	// Long description of recipe
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// rating between 0-1
+	Difficulty *float64 `form:"difficulty,omitempty" json:"difficulty,omitempty" xml:"difficulty,omitempty"`
+	// Is a favorite, basically a tag
+	Favorite *bool `form:"favorite,omitempty" json:"favorite,omitempty" xml:"favorite,omitempty"`
+	// Image of recipe
+	Image *string `form:"image,omitempty" json:"image,omitempty" xml:"image,omitempty"`
+	// Images of recipe
+	Images []string `form:"images,omitempty" json:"images,omitempty" xml:"images,omitempty"`
+	// Amount of time to prepare
+	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
+	// quantity, measure, servings, yield e.g. 4 cups.
+	Quantity *recipeUnitofmeasure `form:"quantity,omitempty" json:"quantity,omitempty" xml:"quantity,omitempty"`
+	// rating between 0-1
+	Rating *float64 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
+	// Source of recipe
+	Source *recipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
+	// e.g. chopped, sliced, etc.. might need to be array.
+	State *string `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	// Recipe Title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// Version Number e.g. 1.0.1
+	Version *string `form:"version,omitempty" json:"version,omitempty" xml:"version,omitempty"`
+	// Amount of time to wait for things such as mairnading
+	WaitTime *time.Time `form:"wait_time,omitempty" json:"wait_time,omitempty" xml:"wait_time,omitempty"`
+}
+
+// Finalize sets the default values defined in the design.
+func (payload *createRecipePayload) Finalize() {
+	if payload.Quantity != nil {
+		var defaultType = "weight"
+		if payload.Quantity.Type == nil {
+			payload.Quantity.Type = &defaultType
+		}
+	}
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *createRecipePayload) Validate() (err error) {
+	if payload.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
+	}
+
+	if payload.Difficulty != nil {
+		if *payload.Difficulty < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 0, true))
+		}
+	}
+	if payload.Difficulty != nil {
+		if *payload.Difficulty > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 1, false))
+		}
+	}
+	if payload.Quantity != nil {
+		if err2 := payload.Quantity.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 0, true))
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 1, false))
+		}
+	}
+	if payload.Source != nil {
+		if err2 := payload.Source.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// Publicize creates CreateRecipePayload from createRecipePayload
+func (payload *createRecipePayload) Publicize() *CreateRecipePayload {
+	var pub CreateRecipePayload
+	if payload.Complete != nil {
+		pub.Complete = payload.Complete
+	}
+	if payload.CookTime != nil {
+		pub.CookTime = payload.CookTime
+	}
+	if payload.Description != nil {
+		pub.Description = payload.Description
+	}
+	if payload.Difficulty != nil {
+		pub.Difficulty = payload.Difficulty
+	}
+	if payload.Favorite != nil {
+		pub.Favorite = payload.Favorite
+	}
+	if payload.Image != nil {
+		pub.Image = payload.Image
+	}
+	if payload.Images != nil {
+		pub.Images = payload.Images
+	}
+	if payload.PrepTime != nil {
+		pub.PrepTime = payload.PrepTime
+	}
+	if payload.Quantity != nil {
+		pub.Quantity = payload.Quantity.Publicize()
+	}
+	if payload.Rating != nil {
+		pub.Rating = payload.Rating
+	}
+	if payload.Source != nil {
+		pub.Source = payload.Source.Publicize()
+	}
+	if payload.State != nil {
+		pub.State = payload.State
+	}
+	if payload.Title != nil {
+		pub.Title = *payload.Title
+	}
+	if payload.Version != nil {
+		pub.Version = payload.Version
+	}
+	if payload.WaitTime != nil {
+		pub.WaitTime = payload.WaitTime
+	}
+	return &pub
+}
+
+// CreateRecipePayload is the recipe create action payload.
+type CreateRecipePayload struct {
+	// If it's been added/included
+	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
+	// Amount of time to cook
+	CookTime *time.Time `form:"cook_time,omitempty" json:"cook_time,omitempty" xml:"cook_time,omitempty"`
+	// Long description of recipe
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// rating between 0-1
+	Difficulty *float64 `form:"difficulty,omitempty" json:"difficulty,omitempty" xml:"difficulty,omitempty"`
+	// Is a favorite, basically a tag
+	Favorite *bool `form:"favorite,omitempty" json:"favorite,omitempty" xml:"favorite,omitempty"`
+	// Image of recipe
+	Image *string `form:"image,omitempty" json:"image,omitempty" xml:"image,omitempty"`
+	// Images of recipe
+	Images []string `form:"images,omitempty" json:"images,omitempty" xml:"images,omitempty"`
+	// Amount of time to prepare
+	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
+	// quantity, measure, servings, yield e.g. 4 cups.
+	Quantity *RecipeUnitofmeasure `form:"quantity,omitempty" json:"quantity,omitempty" xml:"quantity,omitempty"`
+	// rating between 0-1
+	Rating *float64 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
+	// Source of recipe
+	Source *RecipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
+	// e.g. chopped, sliced, etc.. might need to be array.
+	State *string `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	// Recipe Title
+	Title string `form:"title" json:"title" xml:"title"`
+	// Version Number e.g. 1.0.1
+	Version *string `form:"version,omitempty" json:"version,omitempty" xml:"version,omitempty"`
+	// Amount of time to wait for things such as mairnading
+	WaitTime *time.Time `form:"wait_time,omitempty" json:"wait_time,omitempty" xml:"wait_time,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *CreateRecipePayload) Validate() (err error) {
+	if payload.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
+	}
+
+	if payload.Difficulty != nil {
+		if *payload.Difficulty < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 0, true))
+		}
+	}
+	if payload.Difficulty != nil {
+		if *payload.Difficulty > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 1, false))
+		}
+	}
+	if payload.Quantity != nil {
+		if err2 := payload.Quantity.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 0, true))
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 1, false))
+		}
+	}
+	if payload.Source != nil {
+		if err2 := payload.Source.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
 }
 
 // OK sends a HTTP response with status code 200.
@@ -221,7 +429,7 @@ type UpdateRecipeContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	ID      string
-	Payload *RecipePayload
+	Payload *UpdateRecipePayload
 }
 
 // NewUpdateRecipeContext parses the incoming request URL and body, performs validations and creates the
@@ -238,6 +446,213 @@ func NewUpdateRecipeContext(ctx context.Context, service *goa.Service) (*UpdateR
 		rctx.ID = rawID
 	}
 	return &rctx, err
+}
+
+// updateRecipePayload is the recipe update action payload.
+type updateRecipePayload struct {
+	// If it's been added/included
+	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
+	// Amount of time to cook
+	CookTime *time.Time `form:"cook_time,omitempty" json:"cook_time,omitempty" xml:"cook_time,omitempty"`
+	// Long description of recipe
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// rating between 0-1
+	Difficulty *float64 `form:"difficulty,omitempty" json:"difficulty,omitempty" xml:"difficulty,omitempty"`
+	// Is a favorite, basically a tag
+	Favorite *bool `form:"favorite,omitempty" json:"favorite,omitempty" xml:"favorite,omitempty"`
+	// Image of recipe
+	Image *string `form:"image,omitempty" json:"image,omitempty" xml:"image,omitempty"`
+	// Images of recipe
+	Images []string `form:"images,omitempty" json:"images,omitempty" xml:"images,omitempty"`
+	// Amount of time to prepare
+	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
+	// quantity, measure, servings, yield e.g. 4 cups.
+	Quantity *recipeUnitofmeasure `form:"quantity,omitempty" json:"quantity,omitempty" xml:"quantity,omitempty"`
+	// rating between 0-1
+	Rating *float64 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
+	// Source of recipe
+	Source *recipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
+	// e.g. chopped, sliced, etc.. might need to be array.
+	State *string `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	// Recipe Title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// Version Number e.g. 1.0.1
+	Version *string `form:"version,omitempty" json:"version,omitempty" xml:"version,omitempty"`
+	// Amount of time to wait for things such as mairnading
+	WaitTime *time.Time `form:"wait_time,omitempty" json:"wait_time,omitempty" xml:"wait_time,omitempty"`
+}
+
+// Finalize sets the default values defined in the design.
+func (payload *updateRecipePayload) Finalize() {
+	if payload.Quantity != nil {
+		var defaultType = "weight"
+		if payload.Quantity.Type == nil {
+			payload.Quantity.Type = &defaultType
+		}
+	}
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *updateRecipePayload) Validate() (err error) {
+	if payload.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
+	}
+
+	if payload.Difficulty != nil {
+		if *payload.Difficulty < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 0, true))
+		}
+	}
+	if payload.Difficulty != nil {
+		if *payload.Difficulty > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 1, false))
+		}
+	}
+	if payload.Quantity != nil {
+		if err2 := payload.Quantity.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 0, true))
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 1, false))
+		}
+	}
+	if payload.Source != nil {
+		if err2 := payload.Source.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
+}
+
+// Publicize creates UpdateRecipePayload from updateRecipePayload
+func (payload *updateRecipePayload) Publicize() *UpdateRecipePayload {
+	var pub UpdateRecipePayload
+	if payload.Complete != nil {
+		pub.Complete = payload.Complete
+	}
+	if payload.CookTime != nil {
+		pub.CookTime = payload.CookTime
+	}
+	if payload.Description != nil {
+		pub.Description = payload.Description
+	}
+	if payload.Difficulty != nil {
+		pub.Difficulty = payload.Difficulty
+	}
+	if payload.Favorite != nil {
+		pub.Favorite = payload.Favorite
+	}
+	if payload.Image != nil {
+		pub.Image = payload.Image
+	}
+	if payload.Images != nil {
+		pub.Images = payload.Images
+	}
+	if payload.PrepTime != nil {
+		pub.PrepTime = payload.PrepTime
+	}
+	if payload.Quantity != nil {
+		pub.Quantity = payload.Quantity.Publicize()
+	}
+	if payload.Rating != nil {
+		pub.Rating = payload.Rating
+	}
+	if payload.Source != nil {
+		pub.Source = payload.Source.Publicize()
+	}
+	if payload.State != nil {
+		pub.State = payload.State
+	}
+	if payload.Title != nil {
+		pub.Title = *payload.Title
+	}
+	if payload.Version != nil {
+		pub.Version = payload.Version
+	}
+	if payload.WaitTime != nil {
+		pub.WaitTime = payload.WaitTime
+	}
+	return &pub
+}
+
+// UpdateRecipePayload is the recipe update action payload.
+type UpdateRecipePayload struct {
+	// If it's been added/included
+	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
+	// Amount of time to cook
+	CookTime *time.Time `form:"cook_time,omitempty" json:"cook_time,omitempty" xml:"cook_time,omitempty"`
+	// Long description of recipe
+	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// rating between 0-1
+	Difficulty *float64 `form:"difficulty,omitempty" json:"difficulty,omitempty" xml:"difficulty,omitempty"`
+	// Is a favorite, basically a tag
+	Favorite *bool `form:"favorite,omitempty" json:"favorite,omitempty" xml:"favorite,omitempty"`
+	// Image of recipe
+	Image *string `form:"image,omitempty" json:"image,omitempty" xml:"image,omitempty"`
+	// Images of recipe
+	Images []string `form:"images,omitempty" json:"images,omitempty" xml:"images,omitempty"`
+	// Amount of time to prepare
+	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
+	// quantity, measure, servings, yield e.g. 4 cups.
+	Quantity *RecipeUnitofmeasure `form:"quantity,omitempty" json:"quantity,omitempty" xml:"quantity,omitempty"`
+	// rating between 0-1
+	Rating *float64 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
+	// Source of recipe
+	Source *RecipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
+	// e.g. chopped, sliced, etc.. might need to be array.
+	State *string `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	// Recipe Title
+	Title string `form:"title" json:"title" xml:"title"`
+	// Version Number e.g. 1.0.1
+	Version *string `form:"version,omitempty" json:"version,omitempty" xml:"version,omitempty"`
+	// Amount of time to wait for things such as mairnading
+	WaitTime *time.Time `form:"wait_time,omitempty" json:"wait_time,omitempty" xml:"wait_time,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *UpdateRecipePayload) Validate() (err error) {
+	if payload.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
+	}
+
+	if payload.Difficulty != nil {
+		if *payload.Difficulty < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 0, true))
+		}
+	}
+	if payload.Difficulty != nil {
+		if *payload.Difficulty > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.difficulty`, *payload.Difficulty, 1, false))
+		}
+	}
+	if payload.Quantity != nil {
+		if err2 := payload.Quantity.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 0, true))
+		}
+	}
+	if payload.Rating != nil {
+		if *payload.Rating > 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.rating`, *payload.Rating, 1, false))
+		}
+	}
+	if payload.Source != nil {
+		if err2 := payload.Source.Validate(); err2 != nil {
+			err = goa.MergeErrors(err, err2)
+		}
+	}
+	return
 }
 
 // OK sends a HTTP response with status code 200.

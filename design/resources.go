@@ -37,7 +37,7 @@ var _ = Resource("recipe", func() {
 			Param("id", String, "Recipe ID")
 		})
 
-		Payload(RecipePayload)
+		Payload("RecipePayload")
 
 		Response(NoContent)
 		Response(OK)
@@ -48,7 +48,7 @@ var _ = Resource("recipe", func() {
 
 	Action("create", func() {
 		Routing(POST("/"))
-		Payload(RecipePayload)
+		Payload("RecipePayload")
 		Description("")
 
 		Response(OK)

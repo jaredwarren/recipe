@@ -83,7 +83,32 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 Payload example:
 
 {
-   "title": "Nesciunt repellendus mollitia saepe et sed autem."
+   "complete": false,
+   "cook_time": "1976-03-29T19:10:48-07:00",
+   "description": "Mollitia saepe et sed autem.",
+   "difficulty": 0.2926241103669299,
+   "favorite": false,
+   "image": "Et expedita commodi deleniti vel dolores minus.",
+   "images": [
+      "Voluptas perferendis ea.",
+      "Voluptas perferendis ea.",
+      "Voluptas perferendis ea."
+   ],
+   "prep_time": "1982-12-12T13:15:11-07:00",
+   "quantity": {
+      "name": "Amet adipisci voluptatum.",
+      "type": "Dignissimos labore numquam sequi sit."
+   },
+   "rating": 0.8674836761330333,
+   "source": {
+      "id": 2435902180373496402,
+      "name": "Repellendus aut quia in rerum doloribus.",
+      "url": "Omnis voluptas."
+   },
+   "state": "Repellat doloribus harum repudiandae ipsa dolor.",
+   "title": "Voluptas tempore.",
+   "version": "Autem id sint vero soluta necessitatibus voluptas.",
+   "wait_time": "1970-02-07T14:08:50-07:00"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
@@ -141,7 +166,32 @@ Payload example:
 Payload example:
 
 {
-   "title": "Nesciunt repellendus mollitia saepe et sed autem."
+   "complete": false,
+   "cook_time": "1976-03-29T19:10:48-07:00",
+   "description": "Mollitia saepe et sed autem.",
+   "difficulty": 0.2926241103669299,
+   "favorite": false,
+   "image": "Et expedita commodi deleniti vel dolores minus.",
+   "images": [
+      "Voluptas perferendis ea.",
+      "Voluptas perferendis ea.",
+      "Voluptas perferendis ea."
+   ],
+   "prep_time": "1982-12-12T13:15:11-07:00",
+   "quantity": {
+      "name": "Amet adipisci voluptatum.",
+      "type": "Dignissimos labore numquam sequi sit."
+   },
+   "rating": 0.8674836761330333,
+   "source": {
+      "id": 2435902180373496402,
+      "name": "Repellendus aut quia in rerum doloribus.",
+      "url": "Omnis voluptas."
+   },
+   "state": "Repellat doloribus harum repudiandae ipsa dolor.",
+   "title": "Voluptas tempore.",
+   "version": "Autem id sint vero soluta necessitatibus voluptas.",
+   "wait_time": "1970-02-07T14:08:50-07:00"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
@@ -427,7 +477,7 @@ func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	} else {
 		path = "/recipe/recipe"
 	}
-	var payload client.RecipePayload
+	var payload client.CreateRecipePayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {
@@ -512,7 +562,7 @@ func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 	} else {
 		path = fmt.Sprintf("/recipe/recipe/%v", cmd.ID)
 	}
-	var payload client.RecipePayload
+	var payload client.UpdateRecipePayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {
