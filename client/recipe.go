@@ -25,14 +25,14 @@ type CreateRecipePayload struct {
 	Image *string `form:"image,omitempty" json:"image,omitempty" xml:"image,omitempty"`
 	// Images of recipe
 	Images []string `form:"images,omitempty" json:"images,omitempty" xml:"images,omitempty"`
+	// List of ingredients
+	Ingredients []*RecipePayload `form:"ingredients,omitempty" json:"ingredients,omitempty" xml:"ingredients,omitempty"`
 	// Amount of time to prepare
 	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
-	// quantity, measure, servings, yield e.g. 4 cups.
-	Quantity *RecipeUnitofmeasure `form:"quantity,omitempty" json:"quantity,omitempty" xml:"quantity,omitempty"`
 	// rating between 0-1
 	Rating *float64 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
 	// Source of recipe
-	Source *RecipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
+	Source *string `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
 	// e.g. chopped, sliced, etc.. might need to be array.
 	State *string `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
 	// Recipe Title
@@ -45,6 +45,7 @@ type CreateRecipePayload struct {
 
 // CreateRecipePath computes a request path to the create action of recipe.
 func CreateRecipePath() string {
+
 	return fmt.Sprintf("/recipe/recipe")
 }
 
@@ -85,7 +86,9 @@ func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payloa
 
 // DeleteRecipePath computes a request path to the delete action of recipe.
 func DeleteRecipePath(id string) string {
-	return fmt.Sprintf("/recipe/recipe/%v", id)
+	param0 := id
+
+	return fmt.Sprintf("/recipe/recipe/%s", param0)
 }
 
 // DeleteRecipe makes a request to the delete action endpoint of the recipe resource
@@ -113,7 +116,9 @@ func (c *Client) NewDeleteRecipeRequest(ctx context.Context, path string) (*http
 
 // ShowRecipePath computes a request path to the show action of recipe.
 func ShowRecipePath(id string) string {
-	return fmt.Sprintf("/recipe/recipe/%v", id)
+	param0 := id
+
+	return fmt.Sprintf("/recipe/recipe/%s", param0)
 }
 
 // Display an recipe by id
@@ -155,14 +160,14 @@ type UpdateRecipePayload struct {
 	Image *string `form:"image,omitempty" json:"image,omitempty" xml:"image,omitempty"`
 	// Images of recipe
 	Images []string `form:"images,omitempty" json:"images,omitempty" xml:"images,omitempty"`
+	// List of ingredients
+	Ingredients []*RecipePayload `form:"ingredients,omitempty" json:"ingredients,omitempty" xml:"ingredients,omitempty"`
 	// Amount of time to prepare
 	PrepTime *time.Time `form:"prep_time,omitempty" json:"prep_time,omitempty" xml:"prep_time,omitempty"`
-	// quantity, measure, servings, yield e.g. 4 cups.
-	Quantity *RecipeUnitofmeasure `form:"quantity,omitempty" json:"quantity,omitempty" xml:"quantity,omitempty"`
 	// rating between 0-1
 	Rating *float64 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
 	// Source of recipe
-	Source *RecipeSource `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
+	Source *string `form:"source,omitempty" json:"source,omitempty" xml:"source,omitempty"`
 	// e.g. chopped, sliced, etc.. might need to be array.
 	State *string `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
 	// Recipe Title
@@ -175,7 +180,9 @@ type UpdateRecipePayload struct {
 
 // UpdateRecipePath computes a request path to the update action of recipe.
 func UpdateRecipePath(id string) string {
-	return fmt.Sprintf("/recipe/recipe/%v", id)
+	param0 := id
+
+	return fmt.Sprintf("/recipe/recipe/%s", param0)
 }
 
 // UpdateRecipe makes a request to the update action endpoint of the recipe resource

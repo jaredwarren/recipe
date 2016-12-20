@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/net/context"
 	"log"
+	"net/url"
 	"os"
 	"path"
 	"strconv"
@@ -94,21 +95,261 @@ Payload example:
       "Voluptas perferendis ea.",
       "Voluptas perferendis ea."
    ],
-   "prep_time": "1982-12-12T13:15:11-07:00",
-   "quantity": {
-      "name": "Amet adipisci voluptatum.",
-      "type": "Dignissimos labore numquam sequi sit."
-   },
-   "rating": 0.8674836761330333,
-   "source": {
-      "id": 2435902180373496402,
-      "name": "Repellendus aut quia in rerum doloribus.",
-      "url": "Omnis voluptas."
-   },
-   "state": "Repellat doloribus harum repudiandae ipsa dolor.",
-   "title": "Voluptas tempore.",
-   "version": "Autem id sint vero soluta necessitatibus voluptas.",
-   "wait_time": "1970-02-07T14:08:50-07:00"
+   "ingredients": [
+      {
+         "complete": false,
+         "cook_time": "1976-03-29T19:10:48-07:00",
+         "description": "Mollitia saepe et sed autem.",
+         "difficulty": 0.2926241103669299,
+         "favorite": false,
+         "image": "Et expedita commodi deleniti vel dolores minus.",
+         "images": [
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            }
+         ],
+         "prep_time": "1983-08-06T03:20:04-06:00",
+         "rating": 0.9093573579975659,
+         "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+         "state": "Autem id sint vero soluta necessitatibus voluptas.",
+         "title": "Provident ipsum omnis.",
+         "version": "Nemo dolores labore ad totam voluptatem.",
+         "wait_time": "1971-05-21T01:42:02-06:00"
+      },
+      {
+         "complete": false,
+         "cook_time": "1976-03-29T19:10:48-07:00",
+         "description": "Mollitia saepe et sed autem.",
+         "difficulty": 0.2926241103669299,
+         "favorite": false,
+         "image": "Et expedita commodi deleniti vel dolores minus.",
+         "images": [
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            }
+         ],
+         "prep_time": "1983-08-06T03:20:04-06:00",
+         "rating": 0.9093573579975659,
+         "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+         "state": "Autem id sint vero soluta necessitatibus voluptas.",
+         "title": "Provident ipsum omnis.",
+         "version": "Nemo dolores labore ad totam voluptatem.",
+         "wait_time": "1971-05-21T01:42:02-06:00"
+      },
+      {
+         "complete": false,
+         "cook_time": "1976-03-29T19:10:48-07:00",
+         "description": "Mollitia saepe et sed autem.",
+         "difficulty": 0.2926241103669299,
+         "favorite": false,
+         "image": "Et expedita commodi deleniti vel dolores minus.",
+         "images": [
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            }
+         ],
+         "prep_time": "1983-08-06T03:20:04-06:00",
+         "rating": 0.9093573579975659,
+         "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+         "state": "Autem id sint vero soluta necessitatibus voluptas.",
+         "title": "Provident ipsum omnis.",
+         "version": "Nemo dolores labore ad totam voluptatem.",
+         "wait_time": "1971-05-21T01:42:02-06:00"
+      }
+   ],
+   "prep_time": "1983-08-06T03:20:04-06:00",
+   "rating": 0.9093573579975659,
+   "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+   "state": "Autem id sint vero soluta necessitatibus voluptas.",
+   "title": "Provident ipsum omnis.",
+   "version": "Nemo dolores labore ad totam voluptatem.",
+   "wait_time": "1971-05-21T01:42:02-06:00"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
@@ -177,21 +418,261 @@ Payload example:
       "Voluptas perferendis ea.",
       "Voluptas perferendis ea."
    ],
-   "prep_time": "1982-12-12T13:15:11-07:00",
-   "quantity": {
-      "name": "Amet adipisci voluptatum.",
-      "type": "Dignissimos labore numquam sequi sit."
-   },
-   "rating": 0.8674836761330333,
-   "source": {
-      "id": 2435902180373496402,
-      "name": "Repellendus aut quia in rerum doloribus.",
-      "url": "Omnis voluptas."
-   },
-   "state": "Repellat doloribus harum repudiandae ipsa dolor.",
-   "title": "Voluptas tempore.",
-   "version": "Autem id sint vero soluta necessitatibus voluptas.",
-   "wait_time": "1970-02-07T14:08:50-07:00"
+   "ingredients": [
+      {
+         "complete": false,
+         "cook_time": "1976-03-29T19:10:48-07:00",
+         "description": "Mollitia saepe et sed autem.",
+         "difficulty": 0.2926241103669299,
+         "favorite": false,
+         "image": "Et expedita commodi deleniti vel dolores minus.",
+         "images": [
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            }
+         ],
+         "prep_time": "1983-08-06T03:20:04-06:00",
+         "rating": 0.9093573579975659,
+         "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+         "state": "Autem id sint vero soluta necessitatibus voluptas.",
+         "title": "Provident ipsum omnis.",
+         "version": "Nemo dolores labore ad totam voluptatem.",
+         "wait_time": "1971-05-21T01:42:02-06:00"
+      },
+      {
+         "complete": false,
+         "cook_time": "1976-03-29T19:10:48-07:00",
+         "description": "Mollitia saepe et sed autem.",
+         "difficulty": 0.2926241103669299,
+         "favorite": false,
+         "image": "Et expedita commodi deleniti vel dolores minus.",
+         "images": [
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            }
+         ],
+         "prep_time": "1983-08-06T03:20:04-06:00",
+         "rating": 0.9093573579975659,
+         "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+         "state": "Autem id sint vero soluta necessitatibus voluptas.",
+         "title": "Provident ipsum omnis.",
+         "version": "Nemo dolores labore ad totam voluptatem.",
+         "wait_time": "1971-05-21T01:42:02-06:00"
+      },
+      {
+         "complete": false,
+         "cook_time": "1976-03-29T19:10:48-07:00",
+         "description": "Mollitia saepe et sed autem.",
+         "difficulty": 0.2926241103669299,
+         "favorite": false,
+         "image": "Et expedita commodi deleniti vel dolores minus.",
+         "images": [
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea.",
+            "Voluptas perferendis ea."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            },
+            {
+               "complete": false,
+               "cook_time": "1976-03-29T19:10:48-07:00",
+               "description": "Mollitia saepe et sed autem.",
+               "difficulty": 0.2926241103669299,
+               "favorite": false,
+               "image": "Et expedita commodi deleniti vel dolores minus.",
+               "images": [
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea.",
+                  "Voluptas perferendis ea."
+               ],
+               "prep_time": "1983-08-06T03:20:04-06:00",
+               "rating": 0.9093573579975659,
+               "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+               "state": "Autem id sint vero soluta necessitatibus voluptas.",
+               "title": "Provident ipsum omnis.",
+               "version": "Nemo dolores labore ad totam voluptatem.",
+               "wait_time": "1971-05-21T01:42:02-06:00"
+            }
+         ],
+         "prep_time": "1983-08-06T03:20:04-06:00",
+         "rating": 0.9093573579975659,
+         "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+         "state": "Autem id sint vero soluta necessitatibus voluptas.",
+         "title": "Provident ipsum omnis.",
+         "version": "Nemo dolores labore ad totam voluptatem.",
+         "wait_time": "1971-05-21T01:42:02-06:00"
+      }
+   ],
+   "prep_time": "1983-08-06T03:20:04-06:00",
+   "rating": 0.9093573579975659,
+   "source": "Repudiandae ipsa dolor iste voluptas tempore.",
+   "state": "Autem id sint vero soluta necessitatibus voluptas.",
+   "title": "Provident ipsum omnis.",
+   "version": "Nemo dolores labore ad totam voluptatem.",
+   "wait_time": "1971-05-21T01:42:02-06:00"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
@@ -288,7 +769,7 @@ func jsonArray(ins []string) ([]interface{}, error) {
 }
 
 func timeVal(val string) (*time.Time, error) {
-	t, err := time.Parse("RFC3339", val)
+	t, err := time.Parse(time.RFC3339, val)
 	if err != nil {
 		return nil, err
 	}
@@ -508,7 +989,7 @@ func (cmd *DeleteRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/recipe/%v", cmd.ID)
+		path = fmt.Sprintf("/recipe/recipe/%v", url.QueryEscape(cmd.ID))
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -534,7 +1015,7 @@ func (cmd *ShowRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/recipe/%v", cmd.ID)
+		path = fmt.Sprintf("/recipe/recipe/%v", url.QueryEscape(cmd.ID))
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -560,7 +1041,7 @@ func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/recipe/%v", cmd.ID)
+		path = fmt.Sprintf("/recipe/recipe/%v", url.QueryEscape(cmd.ID))
 	}
 	var payload client.UpdateRecipePayload
 	if cmd.Payload != "" {

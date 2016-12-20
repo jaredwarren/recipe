@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"strconv"
 )
 
 // DownloadDownload downloads /files with the given filename and writes it to the file dest.
@@ -48,7 +49,9 @@ func (c *Client) DownloadDownload(ctx context.Context, filename, dest string) (i
 
 // ShowImagePath computes a request path to the show action of image.
 func ShowImagePath(id int) string {
-	return fmt.Sprintf("/recipe/images/%v", id)
+	param0 := strconv.Itoa(id)
+
+	return fmt.Sprintf("/recipe/images/%s", param0)
 }
 
 // Show an image metadata
@@ -76,6 +79,7 @@ func (c *Client) NewShowImageRequest(ctx context.Context, path string) (*http.Re
 
 // UploadImagePath computes a request path to the upload action of image.
 func UploadImagePath() string {
+
 	return fmt.Sprintf("/recipe/images")
 }
 

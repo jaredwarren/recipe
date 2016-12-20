@@ -10,6 +10,7 @@ import (
 	// RecipeController_import: start_implement
 	"github.com/jaredwarren/recipe/app"
 	// RecipeController_import: end_implement
+	"fmt"
 )
 
 // RecipeController implements the recipe resource.
@@ -34,6 +35,7 @@ func NewRecipeController(service *goa.Service, db *bolt.DB) *RecipeController {
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 	// RecipeController_Create: start_implement
 	res := &app.RecipeRecipe{}
+	fmt.Printf("---CREATE:::%+v", ctx.Payload)
 	res.Title = ctx.Payload.Title
 	// TODO: add other stuff here......
 
