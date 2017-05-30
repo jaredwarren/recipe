@@ -1,10 +1,7 @@
 package design
 
-// mysql root: asdf1234  .
-
 // Build
 // goagen bootstrap -d github.com/jaredwarren/recipe/design
-// goagen --design=github.com/jaredwarren/recipe/design gen --pkg-path=github.com/goadesign/gorma
 
 import (
 	. "github.com/goadesign/goa/design"
@@ -15,7 +12,7 @@ import (
 var Meal = MediaType("application/recipe.meal+json", func() {
 	Description("An Meal")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("title", String, "title")
 		Attribute("courses", CollectionOf("application/recipe.course+json"), "all courses")
 		Attribute("servings", Integer, "How much to scale eacy recipe by")
@@ -32,7 +29,7 @@ var Meal = MediaType("application/recipe.meal+json", func() {
 var Course = MediaType("application/recipe.course+json", func() {
 	Description("An Meal")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("title", String, "title")
 		Attribute("recipes", CollectionOf("application/recipe.recipe+json"), "all recipes")
 		Attribute("servings", Integer, "How much to scale eacy recipe by, overrides meal")
@@ -49,7 +46,7 @@ var Course = MediaType("application/recipe.course+json", func() {
 var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 	Description("A recipe")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique recipe ID")
+		Attribute("id", String, "Unique recipe ID")
 		Attribute("title", String, "Title of recipe")
 		Attribute("description", String, "Long description of recipe")
 		Attribute("images", ArrayOf(String), "Title of recipe")
@@ -115,7 +112,7 @@ var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 var Cookware = MediaType("application/recipe.cookware+json", func() {
 	Description("A Cookware")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("name", String, "what's it called")
 		Attribute("description", String, "long description")
 		Attribute("parts", CollectionOf("application/recipe.cookware+json"), "list of parts or attachments")
@@ -137,7 +134,7 @@ var Cookware = MediaType("application/recipe.cookware+json", func() {
 var Step = MediaType("application/recipe.step+json", func() {
 	Description("A Step")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("title", String, "")
 		Attribute("description", String, "HTML")
 		Attribute("in_progress", Boolean, "current state") // ??
@@ -158,7 +155,7 @@ var Category = MediaType("application/recipe.category+json", func() {
 	Description("A Category")
 	Reference(Tag)
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("name", String, "")
 		Attribute("type", String, "")
 		Attribute("categories", CollectionOf("application/recipe.category+json"), "")
@@ -175,7 +172,7 @@ var Category = MediaType("application/recipe.category+json", func() {
 var Tag = MediaType("application/recipe.tag+json", func() {
 	Description("A Tag")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("name", String, "")
 
 		Required("id", "name")
@@ -188,7 +185,7 @@ var Tag = MediaType("application/recipe.tag+json", func() {
 var Source = MediaType("application/recipe.source+json", func() {
 	Description("A Source")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("name", String, "")
 		Attribute("url", String, "")
 
@@ -204,7 +201,7 @@ var Source = MediaType("application/recipe.source+json", func() {
 var Note = MediaType("application/recipe.note+json", func() {
 	Description("A Note")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("text", String, "html text")
 
 		Required("id", "text")
@@ -218,7 +215,7 @@ var Note = MediaType("application/recipe.note+json", func() {
 var UnitOfMeasure = MediaType("application/recipe.unitofmeasure+json", func() {
 	Description("A recipe")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("name", String, "name e.g. Cups, Table Spoon")
 		Attribute("abbreviation", String, "Abbreviation e.g C, Tb")
 		Attribute("type", String, "volume, weight, time, length...", func() {
@@ -241,7 +238,7 @@ var UnitOfMeasure = MediaType("application/recipe.unitofmeasure+json", func() {
 var ShoppingLists = MediaType("application/recipe.shoppinglists+json", func() {
 	Description("A list of shopping lists")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("shopping_lists", CollectionOf("application/recipe.shoppinglist+json"), "The list of lists")
 		Required("id", "shopping_lists")
 	})
@@ -253,7 +250,7 @@ var ShoppingLists = MediaType("application/recipe.shoppinglists+json", func() {
 var ShoppingList = MediaType("application/recipe.shoppinglist+json", func() {
 	Description("A list of ingredients, and/or cookware")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 		Attribute("name", String, "a name for the list")
 		Attribute("items", CollectionOf("application/recipe.shoppingitem+json"), "The list of items to buy")
 		Attribute("store", String, "Store where to tet items")
@@ -269,7 +266,7 @@ var ShoppingList = MediaType("application/recipe.shoppinglist+json", func() {
 var ShoppingItem = MediaType("application/recipe.shoppingitem+json", func() {
 	Description("Converted from ingredient or cookware")
 	Attributes(func() {
-		Attribute("id", Integer, "Unique ID")
+		Attribute("id", String, "Unique ID")
 
 		Attribute("name", String, "a name for the list")
 
@@ -291,7 +288,7 @@ var ImageMedia = MediaType("application/recipe.image+json", func() {
 	Description("Image metadata")
 	TypeName("ImageMedia")
 	Attributes(func() {
-		Attribute("id", Integer, "Image ID")
+		Attribute("id", String, "Image ID")
 		Attribute("filename", String, "Image filename")
 		Attribute("uploaded_at", DateTime, "Upload timestamp")
 		Required("id", "filename", "uploaded_at")

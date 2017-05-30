@@ -6,6 +6,8 @@ import (
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/jaredwarren/recipe/app"
+	"github.com/jaredwarren/recipe/models"
+
 	// main_import start_implement
 	"log"
 
@@ -13,7 +15,21 @@ import (
 	// main_import end_implement
 )
 
+// goagen bootstrap -d github.com/jaredwarren/recipe/design
+
+// go build -o cellar && ./cellar
+//curl -H "Content-Type: application/json" -X POST -d '{"name":"xyz"}' http://localhost:8080/admin/category
+
+var (
+	// ErrUnauthorized is the error returned for unauthorized requests.
+	ErrUnauthorized = goa.NewErrorClass("unauthorized", 401)
+)
+
+var db *bolt.DB
+var rdb *models.RecipeDB
+
 func main() {
+
 	// main_db start_implement
 	// Init Db
 	// Open the my.db data file in your current directory.
@@ -23,6 +39,8 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+
+	rdb = models.NewRecipeDB(db)
 
 	// make sure buckets exsists
 	err = db.Update(func(tx *bolt.Tx) error {

@@ -2,13 +2,12 @@ package main
 
 import (
 	"encoding/binary"
-	"encoding/json"
-	"strconv"
 
 	"github.com/boltdb/bolt"
 	"github.com/goadesign/goa"
 	// RecipeController_import: start_implement
 	"github.com/jaredwarren/recipe/app"
+	"github.com/sergi/go-diff/diffmatchpatch"
 	// RecipeController_import: end_implement
 	"fmt"
 )
@@ -32,40 +31,16 @@ func NewRecipeController(service *goa.Service, db *bolt.DB) *RecipeController {
 }
 
 // Create runs the create action.
+// curl -H "Content-Type: application/json" -X POST -d '{"title":"xyz"}' http://localhost:8080/recipe/recipe
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
-	// RecipeController_Create: start_implement
 	res := &app.RecipeRecipe{}
-	fmt.Printf("---CREATE:::%+v", ctx.Payload)
 	res.Title = ctx.Payload.Title
 	// TODO: add other stuff here......
 
-	// Put your logic here
-	err := c.DB.Update(func(tx *bolt.Tx) error {
-		// Retrieve the Recipe bucket.
-		// This should be created when the DB is first opened.
-		b := tx.Bucket([]byte("Recipe"))
-
-		// Generate ID for the user.
-		// This returns an error only if the Tx is closed or not writeable.
-		// That can't happen in an Update() call so I ignore the error check.
-		id, _ := b.NextSequence()
-		res.ID = int(id)
-
-		// Marshal user data into bytes.
-		buf, err := json.Marshal(res)
-		if err != nil {
-			return err
-		}
-
-		// Persist bytes to users bucket.
-		return b.Put([]byte(strconv.Itoa(res.ID)), buf)
-	})
+	err := rdb.Add(res)
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
-
-	// RecipeController_Create: end_implement
-
 	return ctx.OK(res)
 }
 
@@ -90,49 +65,50 @@ func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
 }
 
 // Show runs the show action.
+// curl http://localhost:8080/recipe/recipe/1
 func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
-	// RecipeController_Show: start_implement
-	res := &app.RecipeRecipe{}
-	c.DB.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte("Recipe"))
-		v := b.Get([]byte(ctx.ID))
-		json.Unmarshal(v, res)
-
-		return nil
-	})
-
-	// RecipeController_Show: end_implement
-
+	res, err := rdb.Get(ctx.ID)
+	if err != nil {
+		return ctx.NotFound()
+	}
 	return ctx.OK(res)
 }
 
 // Update runs the update action.
+/*
+curl --user admin:admin \
+ --header "Content-Type:application/json" \
+ --header "Accept: application/json" \
+ --request PATCH \
+ --data '{"title":"new"}' \
+ http://localhost:8080/recipe/recipe/2
+*/
+// curl -H "Content-Type: application/json" -X PATCH -d '{"title":"new2"}' http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Update(ctx *app.UpdateRecipeContext) error {
 	// RecipeController_Update: start_implement
 
-	res := &app.RecipeRecipe{}
+	oldRes, err := rdb.Get(ctx.ID)
+	if err != nil {
+		return ctx.NotFound()
+	}
 
-	// Put your logic here
-	err := c.DB.Update(func(tx *bolt.Tx) error {
-		// Retrieve the Recipe bucket.
-		// This should be created when the DB is first opened.
-		b := tx.Bucket([]byte("Recipe"))
+	newRes := &app.RecipeRecipe{
+		ID: ctx.ID,
+	}
+	dmp := diffmatchpatch.New()
+	//TODO: change id to string
+	//TODO: add version control here
 
-		v := b.Get([]byte(ctx.ID))
-		json.Unmarshal(v, res)
+	// TODO: load by id, if not found either create or throw not found error
+	newRes.Title = ctx.Payload.Title
+	// TODO: add other stuff here......
 
-		res.Title = ctx.Payload.Title
-		// TODO: add other properties here...
+	diffs := dmp.DiffMain(newRes.Title, oldRes.Title, false)
+	TODO: for now just store the diff(s), then figure out how to display/patch later
+	fmt.Printf("%+v\n", diffs)
 
-		// Marshal user data into bytes.
-		buf, err := json.Marshal(res)
-		if err != nil {
-			return err
-		}
 
-		// Persist bytes to users bucket.
-		return b.Put([]byte(strconv.Itoa(res.ID)), buf)
-	})
+	err = rdb.Update(newRes)
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}

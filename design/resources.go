@@ -95,7 +95,7 @@ var _ = Resource("image", func() {
 		Routing(GET("/:id"))
 		Description("Show an image metadata")
 		Params(func() {
-			Param("id", Integer, "Image ID")
+			Param("id", String, "Image ID")
 		})
 		Response(OK, ImageMedia)
 		Response(NotFound)
