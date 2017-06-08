@@ -27,6 +27,7 @@ var (
 
 var db *bolt.DB
 var rdb *models.RecipeDB
+var ddb *models.DiffDB
 
 func main() {
 
@@ -41,10 +42,15 @@ func main() {
 	defer db.Close()
 
 	rdb = models.NewRecipeDB(db)
+	ddb = models.NewDiffDB(db)
 
 	// make sure buckets exsists
 	err = db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("Recipe"))
+		if err != nil {
+			return err
+		}
+		_, err = tx.CreateBucketIfNotExists([]byte("Diff"))
 		if err != nil {
 			return err
 		}

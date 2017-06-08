@@ -1,7 +1,9 @@
 package models
 
 import (
-	"encoding/json"
+	"bytes"
+	"encoding/gob"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -10,14 +12,20 @@ import (
 	"github.com/jaredwarren/recipe/app"
 )
 
+// DbInterface ...
+type DbInterface interface {
+	View(func(tx *bolt.Tx) error) error
+	Update(func(tx *bolt.Tx) error) error
+}
+
 // RecipeDB is the implementation of the storage interface for
 // Recipe.
 type RecipeDB struct {
-	Db *bolt.DB
+	Db DbInterface
 }
 
 // NewRecipeDB creates a new storage type.
-func NewRecipeDB(db *bolt.DB) *RecipeDB {
+func NewRecipeDB(db DbInterface) *RecipeDB {
 	return &RecipeDB{Db: db}
 }
 
@@ -48,10 +56,9 @@ type RecipeStorage interface {
 // in the database.
 func (m *RecipeDB) TableName() string {
 	return "recipes"
-
 }
 
-// CRUD Functions
+// CRUD Functions.
 
 // Get returns a single Recipe as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
@@ -60,7 +67,7 @@ func (m *RecipeDB) Get(id string) (*app.RecipeRecipe, error) {
 	m.Db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("Recipe"))
 		v := b.Get([]byte(id))
-		json.Unmarshal(v, res)
+		res = RecipeFromGob(v)
 		return nil
 	})
 	return res, nil
@@ -71,10 +78,7 @@ func (m *RecipeDB) List() ([]*app.RecipeRecipe, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "recipe", "list"}, time.Now())
 
 	var objs []*app.RecipeRecipe
-	// err := m.Db.Table(m.TableName()).Find(&objs).Error
-	// if err != nil && err != gorm.ErrRecordNotFound {
-	// 	return nil, err
-	// }
+	// TODO: figure out how to iterate bolt db
 
 	return objs, nil
 }
@@ -82,22 +86,13 @@ func (m *RecipeDB) List() ([]*app.RecipeRecipe, error) {
 // Add creates a new record.
 func (m *RecipeDB) Add(model *app.RecipeRecipe) error {
 	err := m.Db.Update(func(tx *bolt.Tx) error {
-		// Retrieve the Recipe bucket.
-		// This should be created when the DB is first opened.
 		b := tx.Bucket([]byte("Recipe"))
 
-		// Generate ID for the user.
-		// This returns an error only if the Tx is closed or not writeable.
-		// That can't happen in an Update() call so I ignore the error check.
+		// Generate ID.
 		id, _ := b.NextSequence()
 		model.ID = strconv.Itoa(int(id))
 
-		// Marshal user data into bytes.
-		buf, err := json.Marshal(model)
-		if err != nil {
-			return err
-		}
-
+		buf := RecipeToGob(model)
 		// Persist bytes to users bucket.
 		return b.Put([]byte(model.ID), buf)
 	})
@@ -120,10 +115,12 @@ func (m *RecipeDB) Update(model *app.RecipeRecipe) error {
 		// TODO: add other properties here...
 
 		// Marshal user data into bytes.
-		buf, err := json.Marshal(model)
-		if err != nil {
-			return err
-		}
+		// buf, err := json.Marshal(model)
+		// if err != nil {
+		// 	return err
+		// }
+
+		buf := RecipeToGob(model)
 
 		// Persist bytes to users bucket.
 		return b.Put([]byte(model.ID), buf)
@@ -132,18 +129,12 @@ func (m *RecipeDB) Update(model *app.RecipeRecipe) error {
 }
 
 // Delete removes a single record.
-func (m *RecipeDB) Delete(id int) error {
-	defer goa.MeasureSince([]string{"goa", "db", "recipe", "delete"}, time.Now())
-
-	// var obj Recipe
-
-	// err := m.Db.Delete(&obj, id).Error
-
-	// if err != nil {
-	// 	goa.LogError(ctx, "error deleting Recipe", "error", err.Error())
-	// 	return err
-	// }
-
+func (m *RecipeDB) Delete(id string) error {
+	m.Db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("Recipe"))
+		b.Delete([]byte(id))
+		return nil
+	})
 	return nil
 }
 
@@ -170,4 +161,31 @@ func (m *RecipeDB) UpdateFromRecipePayload(payload *app.RecipePayload, id int) e
 
 	// err = m.Db.Save(&obj).Error
 	return nil
+}
+
+//type SX map[string]interface{}
+
+// RecipeToGob binary encoder
+func RecipeToGob(m *app.RecipeRecipe) []byte {
+	b := bytes.Buffer{}
+	e := gob.NewEncoder(&b)
+	err := e.Encode(m)
+	if err != nil {
+		fmt.Println(`failed gob Encode`, err)
+	}
+	return b.Bytes()
+	//return base64.StdEncoding.EncodeToString(b.Bytes())
+}
+
+// RecipeFromGob binary decoder
+func RecipeFromGob(str []byte) *app.RecipeRecipe {
+	m := &app.RecipeRecipe{}
+	b := bytes.Buffer{}
+	b.Write(str)
+	d := gob.NewDecoder(&b)
+	err := d.Decode(&m)
+	if err != nil {
+		fmt.Println(`failed gob Decode`, err)
+	}
+	return m
 }

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/binary"
-
 	"github.com/boltdb/bolt"
 	"github.com/goadesign/goa"
 	// RecipeController_import: start_implement
@@ -12,16 +10,22 @@ import (
 	"fmt"
 )
 
+// DbInterface ...
+type DbInterface interface {
+	View(func(tx *bolt.Tx) error) error
+	Update(func(tx *bolt.Tx) error) error
+}
+
 // RecipeController implements the recipe resource.
 type RecipeController struct {
 	*goa.Controller
 	// RecipeController_struct: start_implement
-	*bolt.DB
+	DB DbInterface
 	// RecipeController_struct: end_implement
 }
 
 // NewRecipeController creates a recipe controller.
-func NewRecipeController(service *goa.Service, db *bolt.DB) *RecipeController {
+func NewRecipeController(service *goa.Service, db DbInterface) *RecipeController {
 	// NewRecipeController_struct: start_implement
 	return &RecipeController{
 		Controller: service.NewController("RecipeController"),
@@ -45,9 +49,8 @@ func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 }
 
 // Delete runs the delete action.
+// curl -X DELETE http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
-	// RecipeController_Delete: start_implement
-
 	err := c.DB.Update(func(tx *bolt.Tx) error {
 		// Retrieve the Recipe bucket.
 		// This should be created when the DB is first opened.
@@ -60,7 +63,6 @@ func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
 		return ctx.InternalServerError(err)
 	}
 
-	// RecipeController_Delete: end_implement
 	return ctx.OK(nil)
 }
 
@@ -75,51 +77,34 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 }
 
 // Update runs the update action.
-/*
-curl --user admin:admin \
- --header "Content-Type:application/json" \
- --header "Accept: application/json" \
- --request PATCH \
- --data '{"title":"new"}' \
- http://localhost:8080/recipe/recipe/2
-*/
 // curl -H "Content-Type: application/json" -X PATCH -d '{"title":"new2"}' http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Update(ctx *app.UpdateRecipeContext) error {
-	// RecipeController_Update: start_implement
-
 	oldRes, err := rdb.Get(ctx.ID)
 	if err != nil {
 		return ctx.NotFound()
 	}
 
 	newRes := &app.RecipeRecipe{
-		ID: ctx.ID,
+		ID:    ctx.ID,
+		Title: ctx.Payload.Title,
 	}
+
 	dmp := diffmatchpatch.New()
-	//TODO: change id to string
-	//TODO: add version control here
-
-	// TODO: load by id, if not found either create or throw not found error
-	newRes.Title = ctx.Payload.Title
-	// TODO: add other stuff here......
-
 	diffs := dmp.DiffMain(newRes.Title, oldRes.Title, false)
-	TODO: for now just store the diff(s), then figure out how to display/patch later
-	fmt.Printf("%+v\n", diffs)
+	if len(diffs) > 1 {
 
+	}
+	// description
+	// cook_time
+	// prep_time
+	//
+	//TODO: for now just store the diff(s), then figure out how to display/patch later
+	fmt.Printf("%+v\n", diffs)
 
 	err = rdb.Update(newRes)
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
 
-	// RecipeController_Update: end_implement
 	return nil
-}
-
-// itob returns an 8-byte big endian representation of v.
-func itob(v int) []byte {
-	b := make([]byte, 8)
-	binary.BigEndian.PutUint64(b, uint64(v))
-	return b
 }
