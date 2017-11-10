@@ -3,16 +3,13 @@
 package main
 
 import (
+	"database/sql"
+	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/jaredwarren/recipe/app"
-	"github.com/jaredwarren/recipe/models"
-
-	// main_import start_implement
-	"log"
-
-	"github.com/boltdb/bolt"
-	// main_import end_implement
 )
 
 // goagen bootstrap -d github.com/jaredwarren/recipe/design
@@ -25,41 +22,15 @@ var (
 	ErrUnauthorized = goa.NewErrorClass("unauthorized", 401)
 )
 
-var db *bolt.DB
-var rdb *models.RecipeDB
-var ddb *models.DiffDB
+var db *sql.DB
 
 func main() {
 
-	// main_db start_implement
-	// Init Db
-	// Open the my.db data file in your current directory.
-	// It will be created if it doesn't exist.
-	db, err := bolt.Open("recipe.db", 0600, nil)
+	db, err := sql.Open("mysql", "root:bladehq@1234@tcp(192.168.100.106:3306)/recipe")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
-	rdb = models.NewRecipeDB(db)
-	ddb = models.NewDiffDB(db)
-
-	// make sure buckets exsists
-	err = db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte("Recipe"))
-		if err != nil {
-			return err
-		}
-		_, err = tx.CreateBucketIfNotExists([]byte("Diff"))
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		panic(err)
-	}
-	// main_db end_implement
 
 	// Create service
 	service := goa.New("recipe")

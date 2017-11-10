@@ -14,12 +14,6 @@ var _ = Resource("recipe", func() {
 
 	//Parent("course")
 
-	// Action("list", func() {
-	// 	Description("Retrieve a list or recipes")
-	// 	Routing(GET("/"))
-	// 	Response(OK, ArrayOf(Recipe))
-	// })
-
 	Action("list", func() {
 		Description("List recipes")
 		Scheme("http")
@@ -35,6 +29,7 @@ var _ = Resource("recipe", func() {
 			Param("id", String, "Recipe ID")
 		})
 		Response(OK, "text/html")
+		Response(InternalServerError, ErrorMedia)
 		Response(NotFound)
 	})
 

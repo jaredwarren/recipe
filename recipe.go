@@ -1,31 +1,32 @@
 package main
 
 import (
-	"github.com/boltdb/bolt"
+	"bytes"
+	"database/sql"
+	"fmt"
+	"html/template"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
-	// RecipeController_import: start_implement
 	"github.com/jaredwarren/recipe/app"
 	"github.com/sergi/go-diff/diffmatchpatch"
-	// RecipeController_import: end_implement
-	"fmt"
 )
-
-// DbInterface ...
-type DbInterface interface {
-	View(func(tx *bolt.Tx) error) error
-	Update(func(tx *bolt.Tx) error) error
-}
 
 // RecipeController implements the recipe resource.
 type RecipeController struct {
 	*goa.Controller
-	// RecipeController_struct: start_implement
-	DB DbInterface
-	// RecipeController_struct: end_implement
+	*sql.DB
+}
+
+// Page ...
+type Page struct {
+	Title   string
+	Recipes []*app.RecipeRecipe
+	//GameID string // temporary
 }
 
 // NewRecipeController creates a recipe controller.
-func NewRecipeController(service *goa.Service, db DbInterface) *RecipeController {
+func NewRecipeController(service *goa.Service, db *sql.DB) *RecipeController {
 	// NewRecipeController_struct: start_implement
 	return &RecipeController{
 		Controller: service.NewController("RecipeController"),
@@ -51,17 +52,17 @@ func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 // Delete runs the delete action.
 // curl -X DELETE http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
-	err := c.DB.Update(func(tx *bolt.Tx) error {
-		// Retrieve the Recipe bucket.
-		// This should be created when the DB is first opened.
-		b := tx.Bucket([]byte("Recipe"))
-
-		// Persist bytes to users bucket.
-		return b.Delete([]byte(ctx.ID))
-	})
+	stmt, err := c.DB.Prepare("DELETE FROM recipe WHERE id = ?;")
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
+
+	res, err := stmt.Exec(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(err)
+	}
+
+	fmt.Println(res)
 
 	return ctx.OK(nil)
 }
@@ -69,11 +70,43 @@ func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
 // Show runs the show action.
 // curl http://localhost:8080/recipe/recipe/1
 func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
-	res, err := rdb.Get(ctx.ID)
+	stmt, err := c.DB.Prepare("SELECT * FROM recipe WHERE id = ?;")
 	if err != nil {
-		return ctx.NotFound()
+		return ctx.InternalServerError(err)
 	}
-	return ctx.OK(res)
+
+	res, err := stmt.Exec(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(err)
+	}
+
+	// if empty
+	//return ctx.NotFound()
+
+	fmt.Println(res)
+
+	templatePath := "game/game.html"
+	// TODO: Move to outside or insice MakeMuxer func in production; user here to test, so templates are recompiled every request
+	tpl := template.Must(template.New(templatePath).ParseFiles(fmt.Sprintf("templates/%s", templatePath), "templates/base.html"))
+
+	recipes := []*app.RecipeRecipe{}
+	recipes = append(recipes, &app.RecipeRecipe{
+		Title: "ASDR",
+	})
+	page := &Page{
+		Title: "Games",
+		//Games:  games,
+		//GameID: ctx.GameID,
+	}
+
+	var doc bytes.Buffer
+	err = tpl.ExecuteTemplate(&doc, "base", page)
+	if err != nil {
+		ctx.InternalServerError(err)
+	}
+
+	// GameController_Start: end_implement
+	return ctx.OK(doc.Bytes())
 }
 
 // Update runs the update action.

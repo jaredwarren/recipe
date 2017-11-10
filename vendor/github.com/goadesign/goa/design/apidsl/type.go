@@ -14,17 +14,11 @@ import (
 // structure of a request payload. They can also be used by media type definitions as reference, see
 // Reference. Here is an example:
 //
-//	var UpdatePayload = Type("UpdatePayload", func() {
-//		Description("UpdatePayload describes the update action request bodies")
-//		Attribute("origin", Origin, "Details on wine origin")  // See Origin definition below
-//	})
-//
-//	Type("CreatePayload", func() {
-//              Reference(UpdatePayload)
-//		Description("CreatePayload describes the create action request bodies")
+//	Type("createPayload", func() {
+//		Description("Type of create and upload action payloads")
 //		Attribute("name", String, "name of bottle")
-//		Attribute("origin") // Inherits description, type from UpdatePayload
-//		Required("name", "origin")
+//		Attribute("origin", Origin, "Details on wine origin")  // See Origin definition below
+//		Required("name")
 //	})
 //
 //	var Origin = Type("origin", func() {
@@ -59,31 +53,35 @@ func Type(name string, dsl func()) *design.UserTypeDefinition {
 	return t
 }
 
-// ArrayOf creates an array type from its element type. The result can be used anywhere a type can.
-// Examples:
+// ArrayOf creates an array type from its element type. The result can be used
+// anywhere a type can. Examples:
 //
 //	var Bottle = Type("bottle", func() {
 //		Attribute("name")
 //	})
 //
-//	var Bottles = ArrayOf(Bottle)
-//
 //	Action("update", func() {
 //		Params(func() {
 //			Param("ids", ArrayOf(Integer))
 //		})
-//		Payload(ArrayOf(Bottle))  // Equivalent to Payload(Bottles)
+//		Payload(ArrayOf(Bottle))
 //	})
 //
-// ArrayOf accepts an optional DSL as second argument which allows providing validations for the
-// elements of the array:
+// ArrayOf accepts an optional DSL as second argument which allows providing
+// validations for the elements of the array:
 //
-//      var Names = ArrayOf(String, func() {
-//          Pattern("[a-zA-Z]+")
-//      })
+//	Action("update", func() {
+//		Params(func() {
+//			Param("ids", ArrayOf(Integer, func() {
+//				Minimum(1)
+//			}))
+//		})
+//		Payload(ArrayOf(Bottle))
+//	})
 //
-// If you are looking to return a collection of elements in a Response clause, refer to
-// CollectionOf.  ArrayOf creates a type, where CollectionOf creates a media type.
+// If you are looking to return a collection of elements in a Response clause,
+// refer to CollectionOf. ArrayOf creates a type, where CollectionOf creates a
+// media type.
 func ArrayOf(v interface{}, dsl ...func()) *design.Array {
 	var t design.DataType
 	var ok bool
@@ -114,8 +112,8 @@ func ArrayOf(v interface{}, dsl ...func()) *design.Array {
 	return &design.Array{ElemType: &at}
 }
 
-// HashOf creates a hash map from its key and element types. The result can be used anywhere a type
-// can. Examples:
+// HashOf creates a hash map from its key and element types. The result can be
+// used anywhere a type can. Examples:
 //
 //	var Bottle = Type("bottle", func() {
 //		Attribute("name")
@@ -129,8 +127,8 @@ func ArrayOf(v interface{}, dsl ...func()) *design.Array {
 //			Member("bottles", RatedBottles)
 //	})
 //
-// HashOf accepts optional DSLs as third and fourth argument which allows providing validations for
-// the keys and values of the hash respectively:
+// HashOf accepts optional DSLs as third and fourth argument which allows
+// providing validations for the keys and values of the hash respectively:
 //
 //	var RatedBottles = HashOf(String, Bottle, func() {
 //          Pattern("[a-zA-Z]+") // Validate bottle names
