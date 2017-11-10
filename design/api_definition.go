@@ -26,6 +26,12 @@ var _ = API("recipe", func() {
 	Host("localhost:8080")
 	Scheme("http")
 	BasePath("/recipe")
+	Consumes("application/x-www-form-urlencoded", func() {
+		Package("github.com/goadesign/goa/encoding/form")
+	})
+	Produces("application/x-www-form-urlencoded", func() {
+		Package("github.com/goadesign/goa/encoding/form")
+	})
 
 	/*Origin("http://swagger.goa.design", func() {
 		Methods("GET", "POST", "PUT", "PATCH", "DELETE")

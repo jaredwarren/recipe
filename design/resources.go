@@ -20,13 +20,21 @@ var _ = Resource("recipe", func() {
 	// 	Response(OK, ArrayOf(Recipe))
 	// })
 
+	Action("list", func() {
+		Description("List recipes")
+		Scheme("http")
+		Routing(GET("/"))
+		Response(OK, "text/html")
+		Response(InternalServerError, ErrorMedia)
+	})
+
 	Action("show", func() {
 		Description("Display an recipe by id")
 		Routing(GET("/:id"))
 		Params(func() {
 			Param("id", String, "Recipe ID")
 		})
-		Response(OK)
+		Response(OK, "text/html")
 		Response(NotFound)
 	})
 
