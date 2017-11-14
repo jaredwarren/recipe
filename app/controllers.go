@@ -5,6 +5,7 @@
 // Command:
 // $ goagen
 // --design=github.com/jaredwarren/recipe/design
+// --force=true
 // --out=$(GOPATH)/src/github.com/jaredwarren/recipe
 // --version=v1.3.0
 

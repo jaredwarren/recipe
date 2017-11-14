@@ -9,14 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
 	"github.com/jaredwarren/recipe/app"
-	"github.com/sergi/go-diff/diffmatchpatch"
 )
-
-// RecipeController implements the recipe resource.
-type RecipeController struct {
-	*goa.Controller
-	*sql.DB
-}
 
 // Page ...
 type Page struct {
@@ -25,28 +18,47 @@ type Page struct {
 	//GameID string // temporary
 }
 
+// RecipeController implements the recipe resource.
+type RecipeController struct {
+	*goa.Controller
+	*sql.DB
+}
+
 // NewRecipeController creates a recipe controller.
 func NewRecipeController(service *goa.Service, db *sql.DB) *RecipeController {
-	// NewRecipeController_struct: start_implement
 	return &RecipeController{
 		Controller: service.NewController("RecipeController"),
 		DB:         db,
 	}
-	// NewRecipeController_struct: end_implement
 }
 
 // Create runs the create action.
+// TODO: fix this to a form instead of json
 // curl -H "Content-Type: application/json" -X POST -d '{"title":"xyz"}' http://localhost:8080/recipe/recipe
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
-	res := &app.RecipeRecipe{}
-	res.Title = ctx.Payload.Title
-	// TODO: add other stuff here......
+	// RecipeController_Create: start_implement
 
-	err := rdb.Add(res)
+	stmt, err := c.DB.Prepare("INSERT INTO recipe (title) VALUES (?)")
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
-	return ctx.OK(res)
+
+	res, err := stmt.Exec(ctx.Payload.Title)
+	if err != nil {
+		return ctx.InternalServerError(err)
+	}
+
+	recID, err := res.LastInsertId()
+	if err != nil {
+		return ctx.InternalServerError(err)
+	}
+	rec := &app.RecipeRecipe{
+		ID:    fmt.Sprintf("%d", recID),
+		Title: ctx.Payload.Title,
+	}
+
+	// RecipeController_Create: end_implement
+	return ctx.OK(rec)
 }
 
 // Delete runs the delete action.
@@ -65,6 +77,16 @@ func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
 	fmt.Println(res)
 
 	return ctx.OK(nil)
+}
+
+// List runs the list action.
+func (c *RecipeController) List(ctx *app.ListRecipeContext) error {
+	// RecipeController_List: start_implement
+
+	// Put your logic here
+
+	// RecipeController_List: end_implement
+	return nil
 }
 
 // Show runs the show action.
@@ -110,34 +132,12 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 }
 
 // Update runs the update action.
-// curl -H "Content-Type: application/json" -X PATCH -d '{"title":"new2"}' http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Update(ctx *app.UpdateRecipeContext) error {
-	oldRes, err := rdb.Get(ctx.ID)
-	if err != nil {
-		return ctx.NotFound()
-	}
+	// RecipeController_Update: start_implement
 
-	newRes := &app.RecipeRecipe{
-		ID:    ctx.ID,
-		Title: ctx.Payload.Title,
-	}
+	// Put your logic here
 
-	dmp := diffmatchpatch.New()
-	diffs := dmp.DiffMain(newRes.Title, oldRes.Title, false)
-	if len(diffs) > 1 {
-
-	}
-	// description
-	// cook_time
-	// prep_time
-	//
-	//TODO: for now just store the diff(s), then figure out how to display/patch later
-	fmt.Printf("%+v\n", diffs)
-
-	err = rdb.Update(newRes)
-	if err != nil {
-		return ctx.InternalServerError(err)
-	}
-
-	return nil
+	// RecipeController_Update: end_implement
+	res := &app.RecipeRecipe{}
+	return ctx.OK(res)
 }

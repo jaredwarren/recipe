@@ -6,32 +6,19 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/jaredwarren/recipe/app"
 )
 
-// goagen bootstrap -d github.com/jaredwarren/recipe/design
-
-// go build -o cellar && ./cellar
-//curl -H "Content-Type: application/json" -X POST -d '{"name":"xyz"}' http://localhost:8080/admin/category
-
-var (
-	// ErrUnauthorized is the error returned for unauthorized requests.
-	ErrUnauthorized = goa.NewErrorClass("unauthorized", 401)
-)
-
 var db *sql.DB
 
 func main() {
-
 	db, err := sql.Open("mysql", "root:bladehq@1234@tcp(192.168.100.106:3306)/recipe")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
 	// Create service
 	service := goa.New("recipe")
 
