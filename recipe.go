@@ -33,8 +33,6 @@ func NewRecipeController(service *goa.Service, db *sql.DB) *RecipeController {
 }
 
 // Create runs the create action.
-// TODO: fix this to a form instead of json
-// curl -H "Content-Type: application/json" -X POST -d '{"title":"xyz"}' http://localhost:8080/recipe/recipe
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 	// RecipeController_Create: start_implement
 
@@ -58,25 +56,20 @@ func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 	}
 
 	// RecipeController_Create: end_implement
-	return ctx.OK(rec)
+	ctx.ResponseData.Header().Set("Location", app.RecipeHref(rec.ID))
+	return ctx.Created()
+	//return ctx.OK(rec)
 }
 
 // Delete runs the delete action.
 // curl -X DELETE http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
-	stmt, err := c.DB.Prepare("DELETE FROM recipe WHERE id = ?;")
+	_, err := c.DB.Exec("DELETE FROM recipe WHERE id = ?;", ctx.ID)
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
 
-	res, err := stmt.Exec(ctx.ID)
-	if err != nil {
-		return ctx.InternalServerError(err)
-	}
-
-	fmt.Println(res)
-
-	return ctx.OK(nil)
+	return ctx.NoContent()
 }
 
 // List runs the list action.

@@ -540,6 +540,72 @@ definitions:
       setup:
       - description: Quas fugit corporis et et tenetur quia.
         title: Est enim nihil asperiores et.
+    - description: Numquam sint consequuntur.
+      name: Quis id enim voluptatem sed non.
+      parts:
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      settings:
+      - Quo odit magni dolor unde natus iusto.
+      setup:
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
     items:
       $ref: '#/definitions/RecipeCookware'
     title: 'Mediatype identifier: application/recipe.cookware+json; type=collection;
@@ -568,6 +634,10 @@ definitions:
     description: RecipeNoteCollection is the media type for an array of RecipeNote
       (default view)
     example:
+    - id: Sequi sit saepe in eligendi repellendus aut.
+      text: In rerum doloribus nihil omnis voluptas eum.
+    - id: Sequi sit saepe in eligendi repellendus aut.
+      text: In rerum doloribus nihil omnis voluptas eum.
     - id: Sequi sit saepe in eligendi repellendus aut.
       text: In rerum doloribus nihil omnis voluptas eum.
     items:
@@ -3657,8 +3727,6 @@ definitions:
     example:
     - description: Quas fugit corporis et et tenetur quia.
       title: Est enim nihil asperiores et.
-    - description: Quas fugit corporis et et tenetur quia.
-      title: Est enim nihil asperiores et.
     items:
       $ref: '#/definitions/RecipeStep'
     title: 'Mediatype identifier: application/recipe.step+json; type=collection; view=default'
@@ -3679,8 +3747,6 @@ definitions:
     description: RecipeTagCollection is the media type for an array of RecipeTag (default
       view)
     example:
-    - name: Perspiciatis voluptatem eum.
-    - name: Perspiciatis voluptatem eum.
     - name: Perspiciatis voluptatem eum.
     items:
       $ref: '#/definitions/RecipeTag'
@@ -4158,12 +4224,9 @@ paths:
         type: string
       produces:
       - application/vnd.goa.error
-      - application/recipe.recipe+json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/RecipeRecipe'
+        "204":
+          description: No Content
         "404":
           description: Not Found
         "500":
@@ -4190,6 +4253,13 @@ paths:
       responses:
         "200":
           description: OK
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: href to created resource
+              pattern: text/html
+              type: string
         "404":
           description: Not Found
         "500":

@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jaredwarren/recipe/design
-// --force=true
 // --out=$(GOPATH)/src/github.com/jaredwarren/recipe
 // --version=v1.3.0
 
@@ -341,16 +340,10 @@ func NewDeleteRecipeContext(ctx context.Context, r *http.Request, service *goa.S
 	return &rctx, err
 }
 
-// OK sends a HTTP response with status code 200.
-func (ctx *DeleteRecipeContext) OK(r *RecipeRecipe) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
-}
-
-// OKIngredient sends a HTTP response with status code 200.
-func (ctx *DeleteRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/recipe.recipe+json")
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+// NoContent sends a HTTP response with status code 204.
+func (ctx *DeleteRecipeContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
 }
 
 // NotFound sends a HTTP response with status code 404.
@@ -429,6 +422,12 @@ func (ctx *ShowRecipeContext) OK(resp []byte) error {
 	ctx.ResponseData.WriteHeader(200)
 	_, err := ctx.ResponseData.Write(resp)
 	return err
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *ShowRecipeContext) Created() error {
+	ctx.ResponseData.WriteHeader(201)
+	return nil
 }
 
 // NotFound sends a HTTP response with status code 404.

@@ -5,7 +5,6 @@
 // Command:
 // $ goagen
 // --design=github.com/jaredwarren/recipe/design
-// --force=true
 // --out=$(GOPATH)/src/github.com/jaredwarren/recipe
 // --version=v1.3.0
 
@@ -393,6 +392,63 @@ func DeleteRecipeInternalServerError(t goatest.TInterface, ctx context.Context, 
 	return rw, mt
 }
 
+// DeleteRecipeNoContent runs the method Delete of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func DeleteRecipeNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) http.ResponseWriter {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/recipe/recipe/%v", id),
+	}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["id"] = []string{fmt.Sprintf("%v", id)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
+	deleteCtx, _err := app.NewDeleteRecipeContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.Delete(deleteCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 204 {
+		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
+	}
+
+	// Return results
+	return rw
+}
+
 // DeleteRecipeNotFound runs the method Delete of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
@@ -448,144 +504,6 @@ func DeleteRecipeNotFound(t goatest.TInterface, ctx context.Context, service *go
 
 	// Return results
 	return rw
-}
-
-// DeleteRecipeOK runs the method Delete of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func DeleteRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipe) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipe/%v", id),
-	}
-	req, err := http.NewRequest("DELETE", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["id"] = []string{fmt.Sprintf("%v", id)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
-	deleteCtx, _err := app.NewDeleteRecipeContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.Delete(deleteCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.RecipeRecipe
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(*app.RecipeRecipe)
-		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.RecipeRecipe", resp, resp)
-		}
-		_err = mt.Validate()
-		if _err != nil {
-			t.Errorf("invalid response media type: %s", _err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
-// DeleteRecipeOKIngredient runs the method Delete of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func DeleteRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipe/%v", id),
-	}
-	req, err := http.NewRequest("DELETE", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["id"] = []string{fmt.Sprintf("%v", id)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
-	deleteCtx, _err := app.NewDeleteRecipeContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.Delete(deleteCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.RecipeRecipeIngredient
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(*app.RecipeRecipeIngredient)
-		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.RecipeRecipeIngredient", resp, resp)
-		}
-		_err = mt.Validate()
-		if _err != nil {
-			t.Errorf("invalid response media type: %s", _err)
-		}
-	}
-
-	// Return results
-	return rw, mt
 }
 
 // ListRecipeInternalServerError runs the method List of the given controller with the given parameters.
@@ -702,6 +620,63 @@ func ListRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	}
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+
+	// Return results
+	return rw
+}
+
+// ShowRecipeCreated runs the method Show of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func ShowRecipeCreated(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) http.ResponseWriter {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/recipe/recipe/%v", id),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["id"] = []string{fmt.Sprintf("%v", id)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
+	showCtx, _err := app.NewShowRecipeContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.Show(showCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 201 {
+		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
 	}
 
 	// Return results

@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"log"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/jaredwarren/recipe/app"

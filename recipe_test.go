@@ -2,76 +2,151 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	"database/sql"
+	"fmt"
 	"log"
-	"net/http"
-	"os"
+	"math/rand"
+	"path/filepath"
 	"testing"
 
-	"github.com/boltdb/bolt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
-	goaclient "github.com/goadesign/goa/client"
-	"github.com/jaredwarren/recipe/client"
+	"github.com/jaredwarren/recipe/app"
+	"github.com/jaredwarren/recipe/app/test"
 )
 
-type testpair struct {
-	values  []float64
-	average float64
-}
+var testDB *sql.DB
 
-var tests = []testpair{
-	{[]float64{1, 2}, 1.5},
-	{[]float64{1, 1, 1, 1, 1, 1}, 1},
-	{[]float64{-1, 1}, 0},
-}
-
-type testDb struct{}
-
-func (d *testDb) View(func(tx *bolt.Tx) error) error {
-	return nil
-}
-func (d *testDb) Update(func(tx *bolt.Tx) error) error {
-	return nil
-}
-func TestAverage(t *testing.T) {
-	path := "/recipe/recipe"
-	httpClient := http.DefaultClient
-	c := client.New(goaclient.HTTPClientDoer(httpClient))
-
-	var payload client.CreateRecipePayload
-	err := json.Unmarshal([]byte(`{"title":"xyz"}`), &payload)
+func setupTestCase(t *testing.T) func(t *testing.T) {
+	// setup
+	var err error
+	testDB, err = sql.Open("mysql", "root:bladehq@1234@tcp(192.168.100.106:3306)/")
 	if err != nil {
-		t.Errorf("failed to deserialize payload: %s", err)
-	}
-	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
-	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.CreateRecipe(ctx, path, &payload, "application/json")
-	if err != nil {
-		goa.LogError(ctx, "failed", "err", err)
-		t.Errorf("failed to deserialize payload: %s", err)
+		log.Fatal(err)
 	}
 
-	goaclient.HandleResponse(c.Client, resp, true)
+	_, err = testDB.Exec("DROP DATABASE IF EXISTS test_db;")
+	if err != nil {
+		panic(err)
+	}
 
-	//
-	//
-	//
+	_, err = testDB.Exec("CREATE DATABASE test_db;")
+	if err != nil {
+		panic(err)
+	}
 
-	// service := goa.New("recipe")
-	// db := &testDb{}
-	// rdb = models.NewRecipeDB(db)
-	// c2 := NewRecipeController(service, db)
+	// reconnect to test_db
+	testDB, err = sql.Open("mysql", "root:bladehq@1234@tcp(192.168.100.106:3306)/test_db")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// type favContextKey string
-	// //k := favContextKey("2")
-	// //c := context.WithValue(context.Background(), k, "Go")
-	// c := context.Background()
+	rows, err := testDB.Query("SHOW TABLES FROM recipe;")
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
 
-	// var jsonStr = []byte(`{"title":"xyz"}`)
-	// req, _ := http.NewRequest("POST", "http://localhost:8080/recipe/recipe", bytes.NewBuffer(jsonStr))
-	// req.Header.Set("Content-Type", "application/json")
-	// ctx, _ := app.NewCreateRecipeContext(c, req, service)
+	// copy all tables from recipe
+	for rows.Next() {
+		var (
+			tablename string
+		)
+		if err := rows.Scan(&tablename); err != nil {
+			panic(err)
+		}
 
-	// c2.Create(ctx)
+		_, err = testDB.Exec(fmt.Sprintf("CREATE TABLE test_db.%s LIKE recipe.%s;", tablename, tablename))
+		if err := rows.Scan(&tablename); err != nil {
+			panic(err)
+		}
+	}
 
+	return func(t *testing.T) {
+		defer testDB.Close()
+		/*/ optionally cleanup
+		_, err = testDB.Exec("DROP DATABASE IF EXISTS test_db;")
+		if err != nil {
+			panic(err)
+		}
+		//*/
+	}
+}
+
+// TestCreate ...
+func TestCreate(t *testing.T) {
+	teardownTestCase := setupTestCase(t)
+	defer teardownTestCase(t)
+
+	var (
+		service = goa.New("recipe")
+		ctrl    = NewRecipeController(service, testDB)
+		ctx     = context.Background()
+	)
+	payload := &app.CreateRecipePayload{
+		Title: randSeq(10),
+	}
+
+	r := test.CreateRecipeCreated(t, ctx, service, ctrl, payload)
+	loc := r.Header().Get("Location")
+	if loc == "" {
+		t.Fatalf("missing Location header")
+	}
+	_, recID := filepath.Split(loc)
+
+	// test
+	var rowtitle string
+	err := testDB.QueryRow("SELECT title FROM recipe WHERE id=?", recID).Scan(&rowtitle)
+	switch {
+	case err == sql.ErrNoRows:
+		t.Fatal("Failed to insert")
+	case err != nil:
+		t.Fatal(err)
+	case rowtitle != payload.Title:
+		t.Fatal("Title didn't match id")
+	}
+}
+
+// TestDelete ...
+func TestDelete(t *testing.T) {
+	teardownTestCase := setupTestCase(t)
+	defer teardownTestCase(t)
+
+	// insert
+	result, err := testDB.Exec("INSERT INTO recipe (title) VALUES('ASDF');")
+	if err != nil {
+		t.Fatal("Failed to insert")
+	}
+	recID, err := result.LastInsertId()
+	if err != nil {
+		t.Fatal("Failed to insert")
+	}
+
+	var (
+		service = goa.New("recipe")
+		ctrl    = NewRecipeController(service, testDB)
+		ctx     = context.Background()
+	)
+
+	test.DeleteRecipeNoContent(t, ctx, service, ctrl, fmt.Sprintf("%d", recID))
+
+	// test
+	var numRows int
+	err = testDB.QueryRow("SELECT COUNT(*) FROM recipe WHERE id=?", recID).Scan(&numRows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if numRows > 0 {
+		t.Fatal("didn't delete")
+	}
+}
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

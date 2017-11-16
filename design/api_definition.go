@@ -33,12 +33,15 @@ var _ = API("recipe", func() {
 		Package("github.com/goadesign/goa/encoding/form")
 	})
 
+	//Produces("text/html")
+
 	/*Origin("http://swagger.goa.design", func() {
 		Methods("GET", "POST", "PUT", "PATCH", "DELETE")
 		MaxAge(600)
 		Credentials()
 	})
 
+	*/
 	ResponseTemplate(Created, func(pattern string) {
 		Description("Resource created")
 		Status(201)
@@ -47,5 +50,5 @@ var _ = API("recipe", func() {
 				Pattern(pattern)
 			})
 		})
-	})*/
+	})
 })

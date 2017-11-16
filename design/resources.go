@@ -29,6 +29,7 @@ var _ = Resource("recipe", func() {
 			Param("id", String, "Recipe ID")
 		})
 		Response(OK, "text/html")
+		Response(Created, "text/html")
 		Response(InternalServerError, ErrorMedia)
 		Response(NotFound)
 	})
@@ -65,7 +66,7 @@ var _ = Resource("recipe", func() {
 		Params(func() {
 			Param("id", String, "Recipe ID")
 		})
-		Response(OK)
+		Response(NoContent)
 		Response(NotFound)
 		Response(InternalServerError, ErrorMedia)
 	})
