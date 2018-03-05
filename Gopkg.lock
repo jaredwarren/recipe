@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/armon/go-metrics"
   packages = ["."]
-  revision = "9a4b6e10bed6220a1665955aa2b75afc91eb10b3"
+  revision = "783273d703149aaeb9897cf58613d5af48861c25"
 
 [[projects]]
   name = "github.com/boltdb/bolt"
@@ -28,8 +28,8 @@
 [[projects]]
   name = "github.com/dimfeld/httptreemux"
   packages = ["."]
-  revision = "8cc36ee10f84b82d0742ffcab770815c7d3f9ad7"
-  version = "v5.0.0"
+  revision = "7f532489e7739b3d49df5c602bf63549881fe753"
+  version = "v5.0.1"
 
 [[projects]]
   name = "github.com/go-sql-driver/mysql"
@@ -50,20 +50,20 @@
     "middleware",
     "uuid"
   ]
-  revision = "5646a430cdeb66983d5ace3384e0a667c185abc7"
-  version = "v1.3.0"
+  revision = "fc29b77a218fb9e190849c81911ed12d25e771de"
+  version = "v1.3.1"
 
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/go-immutable-radix"
   packages = ["."]
-  revision = "8aac2701530899b64bdea735a1de8da899815220"
+  revision = "7f3cd4390caab3250a57f30efdb2a65dd7649ecf"
 
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/golang-lru"
   packages = ["simplelru"]
-  revision = "0a025b7e63adc15a622f29b0b2c4c3848243bbf6"
+  revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
 
 [[projects]]
   name = "github.com/inconshreveable/mousetrap"
@@ -80,14 +80,13 @@
 [[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
-  revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
-  version = "v1.1.0"
+  revision = "c596ec57260fd2ad47b2ae6809d6890a2f99c3b2"
 
 [[projects]]
   branch = "master"
   name = "github.com/sergi/go-diff"
   packages = ["diffmatchpatch"]
-  revision = "1744e2970ca51c86172c8190fadad617561ed6e7"
+  revision = "da645544ed44df016359bd4c0e3dc60ee3a0da43"
 
 [[projects]]
   name = "github.com/spf13/cobra"
@@ -111,17 +110,17 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["websocket"]
-  revision = "a337091b0525af65de94df2eb7e98bd9962dcbe2"
+  revision = "22ae77b79946ea320088417e4d50825671d82d57"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "1e2299c37cc91a509f1b12369872d27be0ce98a6"
+  revision = "dd2ff4accc098aceecb86b36eaa7829b2a17b1c9"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5275e2d592af646848782e37787c0e2c81b30458bcc5faac710ac7106055c1ec"
+  inputs-digest = "6a761b20efadbee7a7ca73b9054a9e53e85b0620918c08cd3929551118cd9468"
   solver-name = "gps-cdcl"
   solver-version = 1

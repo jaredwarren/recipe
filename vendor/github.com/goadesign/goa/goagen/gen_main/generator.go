@@ -46,7 +46,7 @@ type Generator struct {
 func Generate() (files []string, err error) {
 	var (
 		outDir, toolDir, designPkg, target, ver string
-		force, regen                            bool
+		force, notool, regen                    bool
 	)
 
 	set := flag.NewFlagSet("main", flag.PanicOnError)
@@ -55,6 +55,7 @@ func Generate() (files []string, err error) {
 	set.StringVar(&target, "pkg", "app", "")
 	set.StringVar(&ver, "version", "", "")
 	set.StringVar(&toolDir, "tooldir", "tool", "")
+	set.BoolVar(&notool, "notool", false, "")
 	set.BoolVar(&force, "force", false, "")
 	set.BoolVar(&regen, "regen", false, "")
 	set.Bool("notest", false, "")
@@ -375,14 +376,15 @@ func funcMap(appPkg string, actionImpls map[string]string) template.FuncMap {
 		"okResp":    okResp,
 		"targetPkg": func() string { return appPkg },
 		"actionBody": func(name string) string {
-			if actionImpls == nil {
-				return defaultActionBody
-			}
 			body, ok := actionImpls[name]
 			if !ok {
 				return defaultActionBody
 			}
 			return body
+		},
+		"printResp": func(name string) bool {
+			_, ok := actionImpls[name]
+			return !ok
 		},
 	}
 }
@@ -411,9 +413,10 @@ func (c *{{ $ctrlName }}) {{ goify .Name true }}(ctx *{{ targetPkg }}.{{ goify .
 
 	{{ actionBody $actionDescr }}
 
-	// {{ $actionDescr }}: end_implement
+{{ if printResp $actionDescr }}
 {{ $ok := okResp . targetPkg }}{{ if $ok }} res := {{ $ok.TypeRef }}
 {{ end }} return {{ if $ok }}ctx.{{ $ok.Name }}(res){{ else }}nil{{ end }}
+{{ end }}	// {{ $actionDescr }}: end_implement
 }
 `
 
@@ -432,11 +435,11 @@ func (c *{{ $ctrlName }}) {{ goify .Name true }}WSHandler(ctx *{{ targetPkg }}.{
 		// {{ $actionDescr }}: start_implement
 
 		{{ actionBody $actionDescr }}
-
-		// {{ $actionDescr }}: end_implement
+{{ if printResp $actionDescr }}
 		ws.Write([]byte("{{ .Name }} {{ .Parent.Name }}"))
 		// Dummy echo websocket server
 		io.Copy(ws, ws)
+{{ end }}		// {{ $actionDescr }}: end_implement
 	}
 }`
 
