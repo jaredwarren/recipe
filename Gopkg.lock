@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/ajg/form"
+  packages = ["."]
+  revision = "cc2954064ec9ea8d93917f0f87456e11d7b881ad"
+  version = "v1.5"
+
+[[projects]]
   branch = "master"
   name = "github.com/armon/go-metrics"
   packages = ["."]
@@ -33,7 +39,17 @@
 
 [[projects]]
   name = "github.com/goadesign/goa"
-  packages = [".","client","design","design/apidsl","dslengine","goatest","middleware","uuid"]
+  packages = [
+    ".",
+    "client",
+    "design",
+    "design/apidsl",
+    "dslengine",
+    "encoding/form",
+    "goatest",
+    "middleware",
+    "uuid"
+  ]
   revision = "5646a430cdeb66983d5ace3384e0a667c185abc7"
   version = "v1.3.0"
 
@@ -106,6 +122,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "be3c953c01cd17ce271f6b052eb53201565a2b9240d5e4a0fac0d4a8963a2f59"
+  inputs-digest = "5275e2d592af646848782e37787c0e2c81b30458bcc5faac710ac7106055c1ec"
   solver-name = "gps-cdcl"
   solver-version = 1

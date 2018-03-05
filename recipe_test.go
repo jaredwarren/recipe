@@ -141,6 +141,45 @@ func TestDelete(t *testing.T) {
 	}
 }
 
+// TestUpdate ...
+func TestUpdate(t *testing.T) {
+	teardownTestCase := setupTestCase(t)
+	defer teardownTestCase(t)
+
+	// insert
+	result, err := testDB.Exec("INSERT INTO recipe (title) VALUES('ASDF');")
+	if err != nil {
+		t.Fatal("Failed to insert")
+	}
+	recID, err := result.LastInsertId()
+	if err != nil {
+		t.Fatal("Failed to insert")
+	}
+
+	var (
+		service = goa.New("recipe")
+		ctrl    = NewRecipeController(service, testDB)
+		ctx     = context.Background()
+	)
+
+	payload := &app.UpdateRecipePayload{
+		Title: randSeq(10),
+	}
+	test.UpdateRecipeNoContent(t, ctx, service, ctrl, fmt.Sprintf("%d", recID), payload)
+
+	// test
+	var rowtitle string
+	err = testDB.QueryRow("SELECT title FROM recipe WHERE id=?", recID).Scan(&rowtitle)
+	switch {
+	case err == sql.ErrNoRows:
+		t.Fatal("Failed to insert")
+	case err != nil:
+		t.Fatal(err)
+	case rowtitle != payload.Title:
+		t.Fatal("Title didn't match id")
+	}
+}
+
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randSeq(n int) string {

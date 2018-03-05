@@ -58,13 +58,12 @@ func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
 	// RecipeController_Create: end_implement
 	ctx.ResponseData.Header().Set("Location", app.RecipeHref(rec.ID))
 	return ctx.Created()
-	//return ctx.OK(rec)
 }
 
 // Delete runs the delete action.
 // curl -X DELETE http://localhost:8080/recipe/recipe/2
 func (c *RecipeController) Delete(ctx *app.DeleteRecipeContext) error {
-	_, err := c.DB.Exec("DELETE FROM recipe WHERE id = ?;", ctx.ID)
+	_, err := c.DB.Exec("DELETE FROM recipe WHERE id = ? LIMIT 1;", ctx.ID)
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
@@ -95,12 +94,9 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 		return ctx.InternalServerError(err)
 	}
 
-	// if empty
-	//return ctx.NotFound()
-
 	fmt.Println(res)
 
-	templatePath := "game/game.html"
+	templatePath := "recipe/recipe.html"
 	// TODO: Move to outside or insice MakeMuxer func in production; user here to test, so templates are recompiled every request
 	tpl := template.Must(template.New(templatePath).ParseFiles(fmt.Sprintf("templates/%s", templatePath), "templates/base.html"))
 
@@ -110,8 +106,6 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 	})
 	page := &Page{
 		Title: "Games",
-		//Games:  games,
-		//GameID: ctx.GameID,
 	}
 
 	var doc bytes.Buffer
@@ -128,9 +122,11 @@ func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 func (c *RecipeController) Update(ctx *app.UpdateRecipeContext) error {
 	// RecipeController_Update: start_implement
 
-	// Put your logic here
+	_, err := c.DB.Exec("UPDATE recipe SET title = ?, updated_at = NOW() WHERE id = ? LIMIT 1;", ctx.Payload.Title, ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(err)
+	}
 
 	// RecipeController_Update: end_implement
-	res := &app.RecipeRecipe{}
-	return ctx.OK(res)
+	return ctx.NoContent()
 }

@@ -12,8 +12,6 @@ var _ = Resource("recipe", func() {
 	BasePath("/recipe")
 	DefaultMedia(RecipeMedia)
 
-	//Parent("course")
-
 	Action("list", func() {
 		Description("List recipes")
 		Scheme("http")
