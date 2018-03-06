@@ -1,0 +1,25 @@
+{{define "head"}} {{end}} {{define "body"}}
+<div class="page-content">
+    <!-- <div class="nav">
+        <a class="link-button" href="#">Home</a>
+    </div> -->
+    <h2>Recipes</h2>
+    <ul>
+        {{ range $key, $value := .Recipes }}
+        <li>
+            <strong>{{ $key }}</strong>: {{ $value.Title }}
+        </li>
+        {{ end }}
+    </ul>
+    <br/>
+</div>
+<div>
+    <fieldset>
+        <legend>Create New Recipe</legend>
+        <form action="/recipe/recipes/" method="POST">
+            <input type="text" name="title" placeholder="Title">
+            <input type="submit" value="Create">
+        </form>
+    </fieldset>
+</div>
+{{end}}

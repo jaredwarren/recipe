@@ -9,7 +9,7 @@ import (
 
 //this might need fixed
 var _ = Resource("recipe", func() {
-	BasePath("/recipe")
+	BasePath("/recipes")
 	DefaultMedia(RecipeMedia)
 
 	Action("list", func() {

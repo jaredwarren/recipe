@@ -4,7 +4,9 @@ package main
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
+	"io/ioutil"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goadesign/goa"
@@ -15,9 +17,26 @@ import (
 var db *sql.DB
 
 func main() {
-	db, err := sql.Open("mysql", "root:bladehq@1234@tcp(192.168.100.106:3306)/recipe")
+	dbName, err := ioutil.ReadFile("/run/secrets/mysql_name")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+
+	dbUser, err := ioutil.ReadFile("/run/secrets/mysql_user")
+	if err != nil {
+		panic(err)
+	}
+
+	dbPassword, err := ioutil.ReadFile("/run/secrets/mysql_password")
+	if err != nil {
+		panic(err)
+	}
+
+	dbHost := os.Getenv("DB_HOST")
+
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPassword, dbHost, dbName))
+	if err != nil {
+		panic(err)
 	}
 	defer db.Close()
 	// Create service
@@ -37,7 +56,7 @@ func main() {
 	app.MountRecipeController(service, c2)
 
 	// Start service
-	if err := service.ListenAndServe(":8080"); err != nil {
+	if err := service.ListenAndServe(":80"); err != nil {
 		service.LogError("startup", "err", err)
 	}
 }

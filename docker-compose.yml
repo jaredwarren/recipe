@@ -1,0 +1,63 @@
+version: '3.5'
+services:
+  recipe:
+    image: jlwarren1/recipe
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./templates:/templates
+      - ./static:/static
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      DB_HOST: mysql:3306
+    networks:
+      - mysql
+    depends_on:
+      - mysql
+    secrets:
+      - mysql_root_password
+      - mysql_name
+      - mysql_user
+      - mysql_password
+  mysql:
+    image: mariadb:10.3
+    restart: always
+    ports:
+      - '3306:3306'
+    networks:
+      - mysql
+    volumes:
+      - ./.docker/database/_data:/var/lib/mysql
+      - ./.docker/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE_FILE: /run/secrets/mysql_name
+      MYSQL_USER_FILE: /run/secrets/mysql_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    secrets:
+      - mysql_root_password
+      - mysql_name
+      - mysql_user
+      - mysql_password
+secrets:
+  mysql_root_password:
+    file: ./.docker/database/secrets/mysql_root_password.txt
+  mysql_name:
+    file: ./.docker/database/secrets/mysql_name.txt
+  mysql_user:
+    file: ./.docker/database/secrets/mysql_user.txt
+  mysql_password:
+    file: ./.docker/database/secrets/mysql_password.txt
+networks:
+  mysql:
+    driver: bridge
