@@ -21,6 +21,7 @@ generate:
 
 build:
 	@CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -o recipe -ldflags '-w' .
+	docker-compose build recipe
 
 ae-build:
 	@if [ ! -d $(HOME)/recipe ]; then \

@@ -1,14 +1,23 @@
 {{define "head"}} {{end}} {{define "body"}}
 <div class="page-content">
-    <div class="nav">
+    <!-- <div class="nav">
         <a class="link-button" href="#">Home</a>
-    </div>
-    <h2>Admin Options</h2>
+    </div> -->
+    <h2>Recipe</h2>
     <ul>
         <li>
-            <a class="link-button" href="#">Logs</a>
+            {{ .Recipe.Title }}
         </li>
     </ul>
     <br/>
+</div>
+<div>
+    <fieldset>
+        <legend>Create New Recipe</legend>
+        <form action="/recipe/recipes/" method="POST">
+            <input type="text" name="title" placeholder="Title">
+            <input type="submit" value="Create">
+        </form>
+    </fieldset>
 </div>
 {{end}}

@@ -32,7 +32,10 @@ func main() {
 		panic(err)
 	}
 
-	dbHost := os.Getenv("DB_HOST")
+	dbHost, ok := os.LookupEnv("DB_HOST")
+	if !ok {
+		dbHost = "mysql:3306"
+	}
 
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPassword, dbHost, dbName))
 	if err != nil {

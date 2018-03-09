@@ -12,12 +12,6 @@ import (
 	"github.com/jaredwarren/recipe/app"
 )
 
-// Page ...
-type Page struct {
-	Title   string
-	Recipes []*app.RecipeRecipe
-}
-
 // RecipeController implements the recipe resource.
 type RecipeController struct {
 	*goa.Controller
@@ -34,7 +28,6 @@ func NewRecipeController(service *goa.Service, db *sql.DB) *RecipeController {
 
 // Create runs the create action.
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
-	fmt.Println(" - Create Recipe:", ctx.Payload.Title)
 	stmt, err := c.DB.Prepare("INSERT INTO recipe (title, created_at, updated_at) VALUES (?, NOW(), NOW())")
 	if err != nil {
 		return ctx.InternalServerError(err)
@@ -98,18 +91,15 @@ func (c *RecipeController) List(ctx *app.ListRecipeContext) error {
 		recipes = append(recipes, &r)
 	}
 
-	fmt.Printf("~~~%+v~~~", recipes)
-
 	templatePath := "recipe/recipeList.html"
 	// TODO: Move to outside or insice MakeMuxer func in production; user here to test, so templates are recompiled every request
 	tpl := template.Must(template.New(templatePath).ParseFiles(fmt.Sprintf("templates/%s", templatePath), "templates/base.html"))
 
-	// recipes := []*app.RecipeRecipe{}
-	// recipes = append(recipes, &app.RecipeRecipe{
-	// 	Title: "ASDR",
-	// })
-	page := &Page{
-		Title:   "Games",
+	page := struct {
+		Title   string
+		Recipes app.RecipeRecipeCollection
+	}{
+		Title:   "Recipe:",
 		Recipes: recipes,
 	}
 
@@ -120,7 +110,6 @@ func (c *RecipeController) List(ctx *app.ListRecipeContext) error {
 		ctx.InternalServerError(err)
 	}
 
-	// GameController_Start: end_implement
 	return ctx.OK(doc.Bytes())
 }
 
@@ -129,48 +118,52 @@ func (c *RecipeController) List(ctx *app.ListRecipeContext) error {
 func (c *RecipeController) Show(ctx *app.ShowRecipeContext) error {
 	row := c.DB.QueryRow("SELECT * FROM recipe WHERE id = ?;", ctx.ID)
 	if row == nil {
+		fmt.Println("~~~404~~")
 		return ctx.NotFound()
 	}
 
 	recipe := app.RecipeRecipe{}
-	err := row.Scan(&recipe.ID, &recipe.Title, &recipe.Created, &recipe.Updated)
+	createdDate := ""
+	updateDate := ""
+	// TODO: updateDate can be null, either fix in db, or scan for possible null here... somehow
+	err := row.Scan(&recipe.ID, &recipe.Title, &createdDate, &updateDate)
 	if err != nil {
+		fmt.Println(err)
 		return ctx.InternalServerError(err)
 	}
-
-	fmt.Printf("~~~%+v~~~", recipe)
+	ct, _ := time.Parse("2006-01-02", createdDate)
+	recipe.Created = &ct
+	ut, _ := time.Parse("2006-01-02", createdDate)
+	recipe.Updated = &ut
 
 	templatePath := "recipe/recipe.html"
 	// TODO: Move to outside or insice MakeMuxer func in production; user here to test, so templates are recompiled every request
 	tpl := template.Must(template.New(templatePath).ParseFiles(fmt.Sprintf("templates/%s", templatePath), "templates/base.html"))
 
-	recipes := []*app.RecipeRecipe{}
-	recipes = append(recipes, &app.RecipeRecipe{
-		Title: "ASDR",
-	})
-	page := &Page{
-		Title: "Games",
+	page := struct {
+		Title  string
+		Recipe *app.RecipeRecipe
+	}{
+		Title:  "Recipe:",
+		Recipe: &recipe,
 	}
 
 	var doc bytes.Buffer
 	err = tpl.ExecuteTemplate(&doc, "base", page)
 	if err != nil {
+		panic(err)
 		ctx.InternalServerError(err)
 	}
 
-	// GameController_Start: end_implement
 	return ctx.OK(doc.Bytes())
 }
 
 // Update runs the update action.
 func (c *RecipeController) Update(ctx *app.UpdateRecipeContext) error {
-	// RecipeController_Update: start_implement
-
 	_, err := c.DB.Exec("UPDATE recipe SET title = ?, updated_at = NOW() WHERE id = ? LIMIT 1;", ctx.Payload.Title, ctx.ID)
 	if err != nil {
 		return ctx.InternalServerError(err)
 	}
 
-	// RecipeController_Update: end_implement
 	return ctx.NoContent()
 }
