@@ -21,7 +21,9 @@ import (
 func initService(service *goa.Service) {
 	// Setup encoders and decoders
 	service.Encoder.Register(form.NewEncoder, "application/x-www-form-urlencoded")
+	service.Encoder.Register(goa.NewJSONEncoder, "application/json")
 	service.Decoder.Register(form.NewDecoder, "application/x-www-form-urlencoded")
+	service.Decoder.Register(goa.NewJSONDecoder, "application/json")
 
 	// Setup default encoder and decoder
 	service.Encoder.Register(form.NewEncoder, "*/*")
@@ -53,8 +55,8 @@ func MountImageController(service *goa.Service, ctrl ImageController) {
 		}
 		return ctrl.Show(rctx)
 	}
-	service.Mux.Handle("GET", "/recipe/images/:id", ctrl.MuxHandler("show", h, nil))
-	service.LogInfo("mount", "ctrl", "Image", "action", "Show", "route", "GET /recipe/images/:id")
+	service.Mux.Handle("GET", "/images/:id", ctrl.MuxHandler("show", h, nil))
+	service.LogInfo("mount", "ctrl", "Image", "action", "Show", "route", "GET /images/:id")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -68,8 +70,8 @@ func MountImageController(service *goa.Service, ctrl ImageController) {
 		}
 		return ctrl.Upload(rctx)
 	}
-	service.Mux.Handle("POST", "/recipe/images/", ctrl.MuxHandler("upload", h, nil))
-	service.LogInfo("mount", "ctrl", "Image", "action", "Upload", "route", "POST /recipe/images/")
+	service.Mux.Handle("POST", "/images/", ctrl.MuxHandler("upload", h, nil))
+	service.LogInfo("mount", "ctrl", "Image", "action", "Upload", "route", "POST /images/")
 
 	h = ctrl.FileHandler("/download/*filename", "images/")
 	service.Mux.Handle("GET", "/download/*filename", ctrl.MuxHandler("serve", h, nil))
@@ -113,8 +115,8 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Create(rctx)
 	}
-	service.Mux.Handle("POST", "/recipe/recipes/", ctrl.MuxHandler("create", h, unmarshalCreateRecipePayload))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "Create", "route", "POST /recipe/recipes/")
+	service.Mux.Handle("POST", "/api/", ctrl.MuxHandler("create", h, unmarshalCreateRecipePayload))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Create", "route", "POST /api/")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -128,8 +130,8 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Delete(rctx)
 	}
-	service.Mux.Handle("DELETE", "/recipe/recipes/:id", ctrl.MuxHandler("delete", h, nil))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "Delete", "route", "DELETE /recipe/recipes/:id")
+	service.Mux.Handle("DELETE", "/api/:id", ctrl.MuxHandler("delete", h, nil))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Delete", "route", "DELETE /api/:id")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -143,8 +145,8 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.List(rctx)
 	}
-	service.Mux.Handle("GET", "/recipe/recipes/", ctrl.MuxHandler("list", h, nil))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "List", "route", "GET /recipe/recipes/")
+	service.Mux.Handle("GET", "/api/", ctrl.MuxHandler("list", h, nil))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "List", "route", "GET /api/")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -158,8 +160,8 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Show(rctx)
 	}
-	service.Mux.Handle("GET", "/recipe/recipes/:id", ctrl.MuxHandler("show", h, nil))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "Show", "route", "GET /recipe/recipes/:id")
+	service.Mux.Handle("GET", "/api/:id", ctrl.MuxHandler("show", h, nil))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Show", "route", "GET /api/:id")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -179,8 +181,8 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Update(rctx)
 	}
-	service.Mux.Handle("PATCH", "/recipe/recipes/:id", ctrl.MuxHandler("update", h, unmarshalUpdateRecipePayload))
-	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PATCH /recipe/recipes/:id")
+	service.Mux.Handle("PATCH", "/api/:id", ctrl.MuxHandler("update", h, unmarshalUpdateRecipePayload))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PATCH /api/:id")
 }
 
 // unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.
@@ -201,6 +203,139 @@ func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req
 // unmarshalUpdateRecipePayload unmarshals the request body into the context request data Payload field.
 func unmarshalUpdateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &updateRecipePayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// WebController is the controller interface for the Web actions.
+type WebController interface {
+	goa.Muxer
+	Create(*CreateWebContext) error
+	Delete(*DeleteWebContext) error
+	List(*ListWebContext) error
+	Show(*ShowWebContext) error
+	Update(*UpdateWebContext) error
+}
+
+// MountWebController "mounts" a Web resource controller on the given service.
+func MountWebController(service *goa.Service, ctrl WebController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewCreateWebContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*CreateWebPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Create(rctx)
+	}
+	service.Mux.Handle("POST", "/recipe/", ctrl.MuxHandler("create", h, unmarshalCreateWebPayload))
+	service.LogInfo("mount", "ctrl", "Web", "action", "Create", "route", "POST /recipe/")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewDeleteWebContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Delete(rctx)
+	}
+	service.Mux.Handle("DELETE", "/recipe/:id", ctrl.MuxHandler("delete", h, nil))
+	service.LogInfo("mount", "ctrl", "Web", "action", "Delete", "route", "DELETE /recipe/:id")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewListWebContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.List(rctx)
+	}
+	service.Mux.Handle("GET", "/recipe/", ctrl.MuxHandler("list", h, nil))
+	service.LogInfo("mount", "ctrl", "Web", "action", "List", "route", "GET /recipe/")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewShowWebContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Show(rctx)
+	}
+	service.Mux.Handle("GET", "/recipe/:id", ctrl.MuxHandler("show", h, nil))
+	service.LogInfo("mount", "ctrl", "Web", "action", "Show", "route", "GET /recipe/:id")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewUpdateWebContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*UpdateWebPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Update(rctx)
+	}
+	service.Mux.Handle("PATCH", "/recipe/:id", ctrl.MuxHandler("update", h, unmarshalUpdateWebPayload))
+	service.LogInfo("mount", "ctrl", "Web", "action", "Update", "route", "PATCH /recipe/:id")
+}
+
+// unmarshalCreateWebPayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreateWebPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &createWebPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// unmarshalUpdateWebPayload unmarshals the request body into the context request data Payload field.
+func unmarshalUpdateWebPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &updateWebPayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}

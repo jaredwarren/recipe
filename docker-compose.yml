@@ -20,6 +20,9 @@ services:
       - 443:443
     environment:
       DB_HOST: mysql:3306
+      DB_PASS_FILE: /run/secrets/mysql_password
+      DB_USER_FILE: /run/secrets/mysql_user
+      DB_NAME_FILE: /run/secrets/mysql_name
     networks:
       - mysql
     depends_on:

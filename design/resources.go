@@ -6,10 +6,76 @@ import (
 )
 
 // Recipe ...
-
-//this might need fixed
 var _ = Resource("recipe", func() {
-	BasePath("/recipes")
+	BasePath("/api")
+	DefaultMedia(RecipeMedia)
+
+	Action("list", func() {
+		Description("List recipes")
+		Scheme("http")
+		Routing(GET("/"))
+		Response(OK, CollectionOf(RecipeMedia))
+		Response(InternalServerError, ErrorMedia)
+		// Headers(func() { // Headers describe relevant action headers
+		// 	// Header("Authorization", String)
+		// 	// Header("X-Account", Integer)
+		// 	// Required("Authorization", "X-Account")
+		// })
+	})
+
+	Action("show", func() {
+		Description("Display an recipe by id")
+		Routing(GET("/:id"))
+		Params(func() {
+			Param("id", String, "Recipe ID")
+		})
+		Response(OK)
+		Response(Created)
+		Response(InternalServerError, ErrorMedia)
+		Response(NotFound)
+	})
+
+	Action("update", func() {
+		Description("")
+		Routing(PATCH("/:id"))
+		Params(func() {
+			Param("id", String, "Recipe ID")
+		})
+
+		Payload("RecipePayload")
+
+		Response(NoContent)
+		Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+		Response(InternalServerError, ErrorMedia)
+	})
+
+	Action("create", func() {
+		Routing(POST("/"))
+		Payload("RecipePayload")
+		Description("")
+
+		Response(OK)
+		Response(InternalServerError, ErrorMedia)
+		Response(Created)
+	})
+
+	Action("delete", func() {
+		Description("")
+		Routing(DELETE("/:id"))
+		Params(func() {
+			Param("id", String, "Recipe ID")
+		})
+		Response(NoContent)
+		Response(NotFound)
+		Response(InternalServerError, ErrorMedia)
+	})
+})
+
+// web ...
+var _ = Resource("web", func() {
+	BasePath("/recipe")
 	DefaultMedia(RecipeMedia)
 
 	Action("list", func() {
@@ -68,20 +134,6 @@ var _ = Resource("recipe", func() {
 		Response(NotFound)
 		Response(InternalServerError, ErrorMedia)
 	})
-
-	/*Action("add_image", func() {
-		Description("add an image to recipe")
-		Routing(POST("/:id/add_image"))
-		Params(func() {
-			Param("id", String, "Recipe ID")
-		})
-
-		Payload(ImagePayload) // TODO:
-
-		Response(OK)
-		Response(InternalServerError, ErrorMedia)
-	})*/
-
 })
 
 var _ = Resource("image", func() {

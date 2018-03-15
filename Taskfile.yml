@@ -1,0 +1,17 @@
+version: '2'
+# https://github.com/go-task/task
+tasks:
+  restart:
+    cmds:
+      - docker-compose down
+      - docker-compose up -d
+  build:
+    desc: "Build app and Docker image"
+    cmds:
+      - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -o recipe -ldflags '-w' .
+      - docker-compose build recipe
+  generate:
+    desc: "generate goa"
+    cmds:
+      - goagen bootstrap -d github.com/jaredwarren/recipe/design
+      - goagen app -d github.com/jaredwarren/recipe/design

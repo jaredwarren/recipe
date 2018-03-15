@@ -56,12 +56,12 @@ type CreateRecipePayload struct {
 // CreateRecipePath computes a request path to the create action of recipe.
 func CreateRecipePath() string {
 
-	return fmt.Sprintf("/recipe/recipes/")
+	return fmt.Sprintf("/api/")
 }
 
 // CreateRecipe makes a request to the create action endpoint of the recipe resource
-func (c *Client) CreateRecipe(ctx context.Context, path string, payload *CreateRecipePayload) (*http.Response, error) {
-	req, err := c.NewCreateRecipeRequest(ctx, path, payload)
+func (c *Client) CreateRecipe(ctx context.Context, path string, payload *CreateRecipePayload, contentType string) (*http.Response, error) {
+	req, err := c.NewCreateRecipeRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
 	}
@@ -69,9 +69,12 @@ func (c *Client) CreateRecipe(ctx context.Context, path string, payload *CreateR
 }
 
 // NewCreateRecipeRequest create the request corresponding to the create action endpoint of the recipe resource.
-func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payload *CreateRecipePayload) (*http.Request, error) {
+func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payload *CreateRecipePayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
-	err := c.Encoder.Encode(payload, &body, "*/*")
+	if contentType == "" {
+		contentType = "*/*" // Use default encoder
+	}
+	err := c.Encoder.Encode(payload, &body, contentType)
 	if err != nil {
 		return nil, fmt.Errorf("failed to encode body: %s", err)
 	}
@@ -85,7 +88,11 @@ func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payloa
 		return nil, err
 	}
 	header := req.Header
-	header.Set("Content-Type", "application/x-www-form-urlencoded")
+	if contentType == "*/*" {
+		header.Set("Content-Type", "application/x-www-form-urlencoded")
+	} else {
+		header.Set("Content-Type", contentType)
+	}
 	return req, nil
 }
 
@@ -93,7 +100,7 @@ func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payloa
 func DeleteRecipePath(id string) string {
 	param0 := id
 
-	return fmt.Sprintf("/recipe/recipes/%s", param0)
+	return fmt.Sprintf("/api/%s", param0)
 }
 
 // DeleteRecipe makes a request to the delete action endpoint of the recipe resource
@@ -122,7 +129,7 @@ func (c *Client) NewDeleteRecipeRequest(ctx context.Context, path string) (*http
 // ListRecipePath computes a request path to the list action of recipe.
 func ListRecipePath() string {
 
-	return fmt.Sprintf("/recipe/recipes/")
+	return fmt.Sprintf("/api/")
 }
 
 // List recipes
@@ -152,7 +159,7 @@ func (c *Client) NewListRecipeRequest(ctx context.Context, path string) (*http.R
 func ShowRecipePath(id string) string {
 	param0 := id
 
-	return fmt.Sprintf("/recipe/recipes/%s", param0)
+	return fmt.Sprintf("/api/%s", param0)
 }
 
 // Display an recipe by id
@@ -216,12 +223,12 @@ type UpdateRecipePayload struct {
 func UpdateRecipePath(id string) string {
 	param0 := id
 
-	return fmt.Sprintf("/recipe/recipes/%s", param0)
+	return fmt.Sprintf("/api/%s", param0)
 }
 
 // UpdateRecipe makes a request to the update action endpoint of the recipe resource
-func (c *Client) UpdateRecipe(ctx context.Context, path string, payload *UpdateRecipePayload) (*http.Response, error) {
-	req, err := c.NewUpdateRecipeRequest(ctx, path, payload)
+func (c *Client) UpdateRecipe(ctx context.Context, path string, payload *UpdateRecipePayload, contentType string) (*http.Response, error) {
+	req, err := c.NewUpdateRecipeRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
 	}
@@ -229,9 +236,12 @@ func (c *Client) UpdateRecipe(ctx context.Context, path string, payload *UpdateR
 }
 
 // NewUpdateRecipeRequest create the request corresponding to the update action endpoint of the recipe resource.
-func (c *Client) NewUpdateRecipeRequest(ctx context.Context, path string, payload *UpdateRecipePayload) (*http.Request, error) {
+func (c *Client) NewUpdateRecipeRequest(ctx context.Context, path string, payload *UpdateRecipePayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
-	err := c.Encoder.Encode(payload, &body, "*/*")
+	if contentType == "" {
+		contentType = "*/*" // Use default encoder
+	}
+	err := c.Encoder.Encode(payload, &body, contentType)
 	if err != nil {
 		return nil, fmt.Errorf("failed to encode body: %s", err)
 	}
@@ -245,6 +255,10 @@ func (c *Client) NewUpdateRecipeRequest(ctx context.Context, path string, payloa
 		return nil, err
 	}
 	header := req.Header
-	header.Set("Content-Type", "application/x-www-form-urlencoded")
+	if contentType == "*/*" {
+		header.Set("Content-Type", "application/x-www-form-urlencoded")
+	} else {
+		header.Set("Content-Type", contentType)
+	}
 	return req, nil
 }

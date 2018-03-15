@@ -25,13 +25,16 @@ var _ = API("recipe", func() {
 	})
 	Host("localhost:8080")
 	Scheme("http")
-	BasePath("/recipe")
+	// BasePath("/recipe")
 	Consumes("application/x-www-form-urlencoded", func() {
 		Package("github.com/goadesign/goa/encoding/form")
 	})
 	Produces("application/x-www-form-urlencoded", func() {
 		Package("github.com/goadesign/goa/encoding/form")
 	})
+
+	Consumes("application/json")
+	Produces("application/json")
 
 	//Produces("text/html")
 

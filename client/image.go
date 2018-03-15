@@ -60,7 +60,7 @@ func (c *Client) DownloadDownload(ctx context.Context, filename, dest string) (i
 func ShowImagePath(id string) string {
 	param0 := id
 
-	return fmt.Sprintf("/recipe/images/%s", param0)
+	return fmt.Sprintf("/images/%s", param0)
 }
 
 // Show an image metadata
@@ -89,7 +89,7 @@ func (c *Client) NewShowImageRequest(ctx context.Context, path string) (*http.Re
 // UploadImagePath computes a request path to the upload action of image.
 func UploadImagePath() string {
 
-	return fmt.Sprintf("/recipe/images/")
+	return fmt.Sprintf("/images/")
 }
 
 // Upload an image

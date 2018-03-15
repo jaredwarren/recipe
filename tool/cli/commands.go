@@ -76,6 +76,41 @@ type (
 		PrettyPrint bool
 	}
 
+	// CreateWebCommand is the command line data structure for the create action of web
+	CreateWebCommand struct {
+		Payload     string
+		ContentType string
+		PrettyPrint bool
+	}
+
+	// DeleteWebCommand is the command line data structure for the delete action of web
+	DeleteWebCommand struct {
+		// Recipe ID
+		ID          string
+		PrettyPrint bool
+	}
+
+	// ListWebCommand is the command line data structure for the list action of web
+	ListWebCommand struct {
+		PrettyPrint bool
+	}
+
+	// ShowWebCommand is the command line data structure for the show action of web
+	ShowWebCommand struct {
+		// Recipe ID
+		ID          string
+		PrettyPrint bool
+	}
+
+	// UpdateWebCommand is the command line data structure for the update action of web
+	UpdateWebCommand struct {
+		Payload     string
+		ContentType string
+		// Recipe ID
+		ID          string
+		PrettyPrint bool
+	}
+
 	// DownloadCommand is the command line data structure for the download command.
 	DownloadCommand struct {
 		// OutFile is the path to the download output file.
@@ -88,11 +123,11 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	var command, sub *cobra.Command
 	command = &cobra.Command{
 		Use:   "create",
-		Short: ``,
+		Short: `create action`,
 	}
 	tmp1 := new(CreateRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipes/"]`,
+		Use:   `recipe ["/api/"]`,
 		Short: ``,
 		Long: `
 
@@ -237,65 +272,9 @@ Payload example:
 	tmp1.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp1.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "delete",
-		Short: ``,
-	}
-	tmp2 := new(DeleteRecipeCommand)
+	tmp2 := new(CreateWebCommand)
 	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipes/ID"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
-	}
-	tmp2.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "list",
-		Short: `List recipes`,
-	}
-	tmp3 := new(ListRecipeCommand)
-	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipes/"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
-	}
-	tmp3.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "show",
-		Short: `show action`,
-	}
-	tmp4 := new(ShowImageCommand)
-	sub = &cobra.Command{
-		Use:   `image ["/recipe/images/ID"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
-	}
-	tmp4.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	tmp5 := new(ShowRecipeCommand)
-	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipes/ID"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
-	}
-	tmp5.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "update",
-		Short: ``,
-	}
-	tmp6 := new(UpdateRecipeCommand)
-	sub = &cobra.Command{
-		Use:   `recipe ["/recipe/recipes/ID"]`,
+		Use:   `web ["/recipe/"]`,
 		Short: ``,
 		Long: `
 
@@ -435,24 +414,401 @@ Payload example:
    "version": "Consequuntur occaecati ipsa qui.",
    "wait_time": "2004-11-23T22:16:37Z"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
+	}
+	tmp2.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "delete",
+		Short: `delete action`,
+	}
+	tmp3 := new(DeleteRecipeCommand)
+	sub = &cobra.Command{
+		Use:   `recipe ["/api/ID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
+	}
+	tmp3.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp4 := new(DeleteWebCommand)
+	sub = &cobra.Command{
+		Use:   `web ["/recipe/ID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
+	}
+	tmp4.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "list",
+		Short: `list action`,
+	}
+	tmp5 := new(ListRecipeCommand)
+	sub = &cobra.Command{
+		Use:   `recipe ["/api/"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
+	}
+	tmp5.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp6 := new(ListWebCommand)
+	sub = &cobra.Command{
+		Use:   `web ["/recipe/"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
 	}
 	tmp6.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp6.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "upload",
-		Short: `Upload an image`,
+		Use:   "show",
+		Short: `show action`,
 	}
-	tmp7 := new(UploadImageCommand)
+	tmp7 := new(ShowImageCommand)
 	sub = &cobra.Command{
-		Use:   `image ["/recipe/images/"]`,
+		Use:   `image ["/images/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp7.Run(c, args) },
 	}
 	tmp7.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp7.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp8 := new(ShowRecipeCommand)
+	sub = &cobra.Command{
+		Use:   `recipe ["/api/ID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp8.Run(c, args) },
+	}
+	tmp8.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp8.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp9 := new(ShowWebCommand)
+	sub = &cobra.Command{
+		Use:   `web ["/recipe/ID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
+	}
+	tmp9.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp9.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "update",
+		Short: `update action`,
+	}
+	tmp10 := new(UpdateRecipeCommand)
+	sub = &cobra.Command{
+		Use:   `recipe ["/api/ID"]`,
+		Short: ``,
+		Long: `
+
+Payload example:
+
+{
+   "complete": false,
+   "cook_time": "2003-08-13T12:47:16Z",
+   "description": "Est facilis commodi ratione temporibus.",
+   "difficulty": 0.5208787095685758,
+   "favorite": false,
+   "image": "Doloremque qui incidunt autem.",
+   "images": [
+      "Occaecati totam deleniti iusto quos."
+   ],
+   "ingredients": [
+      {
+         "complete": false,
+         "cook_time": "2003-08-13T12:47:16Z",
+         "description": "Est facilis commodi ratione temporibus.",
+         "difficulty": 0.5208787095685758,
+         "favorite": false,
+         "image": "Doloremque qui incidunt autem.",
+         "images": [
+            "Occaecati totam deleniti iusto quos."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "2003-08-13T12:47:16Z",
+               "description": "Est facilis commodi ratione temporibus.",
+               "difficulty": 0.5208787095685758,
+               "favorite": false,
+               "image": "Doloremque qui incidunt autem.",
+               "images": [
+                  "Occaecati totam deleniti iusto quos."
+               ],
+               "prep_time": "1990-08-15T00:54:39Z",
+               "rating": 0.9356256018718694,
+               "source": "Recusandae aut.",
+               "state": "Laboriosam enim accusamus in libero.",
+               "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+               "version": "Consequuntur occaecati ipsa qui.",
+               "wait_time": "2004-11-23T22:16:37Z"
+            }
+         ],
+         "prep_time": "1990-08-15T00:54:39Z",
+         "rating": 0.9356256018718694,
+         "source": "Recusandae aut.",
+         "state": "Laboriosam enim accusamus in libero.",
+         "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+         "version": "Consequuntur occaecati ipsa qui.",
+         "wait_time": "2004-11-23T22:16:37Z"
+      },
+      {
+         "complete": false,
+         "cook_time": "2003-08-13T12:47:16Z",
+         "description": "Est facilis commodi ratione temporibus.",
+         "difficulty": 0.5208787095685758,
+         "favorite": false,
+         "image": "Doloremque qui incidunt autem.",
+         "images": [
+            "Occaecati totam deleniti iusto quos."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "2003-08-13T12:47:16Z",
+               "description": "Est facilis commodi ratione temporibus.",
+               "difficulty": 0.5208787095685758,
+               "favorite": false,
+               "image": "Doloremque qui incidunt autem.",
+               "images": [
+                  "Occaecati totam deleniti iusto quos."
+               ],
+               "prep_time": "1990-08-15T00:54:39Z",
+               "rating": 0.9356256018718694,
+               "source": "Recusandae aut.",
+               "state": "Laboriosam enim accusamus in libero.",
+               "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+               "version": "Consequuntur occaecati ipsa qui.",
+               "wait_time": "2004-11-23T22:16:37Z"
+            }
+         ],
+         "prep_time": "1990-08-15T00:54:39Z",
+         "rating": 0.9356256018718694,
+         "source": "Recusandae aut.",
+         "state": "Laboriosam enim accusamus in libero.",
+         "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+         "version": "Consequuntur occaecati ipsa qui.",
+         "wait_time": "2004-11-23T22:16:37Z"
+      },
+      {
+         "complete": false,
+         "cook_time": "2003-08-13T12:47:16Z",
+         "description": "Est facilis commodi ratione temporibus.",
+         "difficulty": 0.5208787095685758,
+         "favorite": false,
+         "image": "Doloremque qui incidunt autem.",
+         "images": [
+            "Occaecati totam deleniti iusto quos."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "2003-08-13T12:47:16Z",
+               "description": "Est facilis commodi ratione temporibus.",
+               "difficulty": 0.5208787095685758,
+               "favorite": false,
+               "image": "Doloremque qui incidunt autem.",
+               "images": [
+                  "Occaecati totam deleniti iusto quos."
+               ],
+               "prep_time": "1990-08-15T00:54:39Z",
+               "rating": 0.9356256018718694,
+               "source": "Recusandae aut.",
+               "state": "Laboriosam enim accusamus in libero.",
+               "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+               "version": "Consequuntur occaecati ipsa qui.",
+               "wait_time": "2004-11-23T22:16:37Z"
+            }
+         ],
+         "prep_time": "1990-08-15T00:54:39Z",
+         "rating": 0.9356256018718694,
+         "source": "Recusandae aut.",
+         "state": "Laboriosam enim accusamus in libero.",
+         "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+         "version": "Consequuntur occaecati ipsa qui.",
+         "wait_time": "2004-11-23T22:16:37Z"
+      }
+   ],
+   "prep_time": "1990-08-15T00:54:39Z",
+   "rating": 0.9356256018718694,
+   "source": "Recusandae aut.",
+   "state": "Laboriosam enim accusamus in libero.",
+   "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+   "version": "Consequuntur occaecati ipsa qui.",
+   "wait_time": "2004-11-23T22:16:37Z"
+}`,
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
+	}
+	tmp10.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp10.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp11 := new(UpdateWebCommand)
+	sub = &cobra.Command{
+		Use:   `web ["/recipe/ID"]`,
+		Short: ``,
+		Long: `
+
+Payload example:
+
+{
+   "complete": false,
+   "cook_time": "2003-08-13T12:47:16Z",
+   "description": "Est facilis commodi ratione temporibus.",
+   "difficulty": 0.5208787095685758,
+   "favorite": false,
+   "image": "Doloremque qui incidunt autem.",
+   "images": [
+      "Occaecati totam deleniti iusto quos."
+   ],
+   "ingredients": [
+      {
+         "complete": false,
+         "cook_time": "2003-08-13T12:47:16Z",
+         "description": "Est facilis commodi ratione temporibus.",
+         "difficulty": 0.5208787095685758,
+         "favorite": false,
+         "image": "Doloremque qui incidunt autem.",
+         "images": [
+            "Occaecati totam deleniti iusto quos."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "2003-08-13T12:47:16Z",
+               "description": "Est facilis commodi ratione temporibus.",
+               "difficulty": 0.5208787095685758,
+               "favorite": false,
+               "image": "Doloremque qui incidunt autem.",
+               "images": [
+                  "Occaecati totam deleniti iusto quos."
+               ],
+               "prep_time": "1990-08-15T00:54:39Z",
+               "rating": 0.9356256018718694,
+               "source": "Recusandae aut.",
+               "state": "Laboriosam enim accusamus in libero.",
+               "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+               "version": "Consequuntur occaecati ipsa qui.",
+               "wait_time": "2004-11-23T22:16:37Z"
+            }
+         ],
+         "prep_time": "1990-08-15T00:54:39Z",
+         "rating": 0.9356256018718694,
+         "source": "Recusandae aut.",
+         "state": "Laboriosam enim accusamus in libero.",
+         "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+         "version": "Consequuntur occaecati ipsa qui.",
+         "wait_time": "2004-11-23T22:16:37Z"
+      },
+      {
+         "complete": false,
+         "cook_time": "2003-08-13T12:47:16Z",
+         "description": "Est facilis commodi ratione temporibus.",
+         "difficulty": 0.5208787095685758,
+         "favorite": false,
+         "image": "Doloremque qui incidunt autem.",
+         "images": [
+            "Occaecati totam deleniti iusto quos."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "2003-08-13T12:47:16Z",
+               "description": "Est facilis commodi ratione temporibus.",
+               "difficulty": 0.5208787095685758,
+               "favorite": false,
+               "image": "Doloremque qui incidunt autem.",
+               "images": [
+                  "Occaecati totam deleniti iusto quos."
+               ],
+               "prep_time": "1990-08-15T00:54:39Z",
+               "rating": 0.9356256018718694,
+               "source": "Recusandae aut.",
+               "state": "Laboriosam enim accusamus in libero.",
+               "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+               "version": "Consequuntur occaecati ipsa qui.",
+               "wait_time": "2004-11-23T22:16:37Z"
+            }
+         ],
+         "prep_time": "1990-08-15T00:54:39Z",
+         "rating": 0.9356256018718694,
+         "source": "Recusandae aut.",
+         "state": "Laboriosam enim accusamus in libero.",
+         "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+         "version": "Consequuntur occaecati ipsa qui.",
+         "wait_time": "2004-11-23T22:16:37Z"
+      },
+      {
+         "complete": false,
+         "cook_time": "2003-08-13T12:47:16Z",
+         "description": "Est facilis commodi ratione temporibus.",
+         "difficulty": 0.5208787095685758,
+         "favorite": false,
+         "image": "Doloremque qui incidunt autem.",
+         "images": [
+            "Occaecati totam deleniti iusto quos."
+         ],
+         "ingredients": [
+            {
+               "complete": false,
+               "cook_time": "2003-08-13T12:47:16Z",
+               "description": "Est facilis commodi ratione temporibus.",
+               "difficulty": 0.5208787095685758,
+               "favorite": false,
+               "image": "Doloremque qui incidunt autem.",
+               "images": [
+                  "Occaecati totam deleniti iusto quos."
+               ],
+               "prep_time": "1990-08-15T00:54:39Z",
+               "rating": 0.9356256018718694,
+               "source": "Recusandae aut.",
+               "state": "Laboriosam enim accusamus in libero.",
+               "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+               "version": "Consequuntur occaecati ipsa qui.",
+               "wait_time": "2004-11-23T22:16:37Z"
+            }
+         ],
+         "prep_time": "1990-08-15T00:54:39Z",
+         "rating": 0.9356256018718694,
+         "source": "Recusandae aut.",
+         "state": "Laboriosam enim accusamus in libero.",
+         "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+         "version": "Consequuntur occaecati ipsa qui.",
+         "wait_time": "2004-11-23T22:16:37Z"
+      }
+   ],
+   "prep_time": "1990-08-15T00:54:39Z",
+   "rating": 0.9356256018718694,
+   "source": "Recusandae aut.",
+   "state": "Laboriosam enim accusamus in libero.",
+   "title": "Itaque maiores quasi corrupti rerum aliquid reiciendis.",
+   "version": "Consequuntur occaecati ipsa qui.",
+   "wait_time": "2004-11-23T22:16:37Z"
+}`,
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
+	}
+	tmp11.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp11.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "upload",
+		Short: `Upload an image`,
+	}
+	tmp12 := new(UploadImageCommand)
+	sub = &cobra.Command{
+		Use:   `image ["/images/"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
+	}
+	tmp12.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp12.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -667,7 +1023,7 @@ func (cmd *ShowImageCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/images/%v", url.QueryEscape(cmd.ID))
+		path = fmt.Sprintf("/images/%v", url.QueryEscape(cmd.ID))
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -693,7 +1049,7 @@ func (cmd *UploadImageCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = "/recipe/images/"
+		path = "/images/"
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -717,7 +1073,7 @@ func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = "/recipe/recipes/"
+		path = "/api/"
 	}
 	var payload client.CreateRecipePayload
 	if cmd.Payload != "" {
@@ -728,7 +1084,7 @@ func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.CreateRecipe(ctx, path, &payload)
+	resp, err := c.CreateRecipe(ctx, path, &payload, cmd.ContentType)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -750,7 +1106,7 @@ func (cmd *DeleteRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/recipes/%v", url.QueryEscape(cmd.ID))
+		path = fmt.Sprintf("/api/%v", url.QueryEscape(cmd.ID))
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -776,7 +1132,7 @@ func (cmd *ListRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = "/recipe/recipes/"
+		path = "/api/"
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -800,7 +1156,7 @@ func (cmd *ShowRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/recipes/%v", url.QueryEscape(cmd.ID))
+		path = fmt.Sprintf("/api/%v", url.QueryEscape(cmd.ID))
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
@@ -826,7 +1182,7 @@ func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = fmt.Sprintf("/recipe/recipes/%v", url.QueryEscape(cmd.ID))
+		path = fmt.Sprintf("/api/%v", url.QueryEscape(cmd.ID))
 	}
 	var payload client.UpdateRecipePayload
 	if cmd.Payload != "" {
@@ -837,7 +1193,7 @@ func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.UpdateRecipe(ctx, path, &payload)
+	resp, err := c.UpdateRecipe(ctx, path, &payload, cmd.ContentType)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -849,6 +1205,150 @@ func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 
 // RegisterFlags registers the command flags with the command line.
 func (cmd *UpdateRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
+	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
+	var id string
+	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
+}
+
+// Run makes the HTTP request corresponding to the CreateWebCommand command.
+func (cmd *CreateWebCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/recipe/"
+	}
+	var payload client.CreateWebPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.CreateWeb(ctx, path, &payload, cmd.ContentType)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *CreateWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
+	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
+}
+
+// Run makes the HTTP request corresponding to the DeleteWebCommand command.
+func (cmd *DeleteWebCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/recipe/%v", url.QueryEscape(cmd.ID))
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.DeleteWeb(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *DeleteWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var id string
+	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
+}
+
+// Run makes the HTTP request corresponding to the ListWebCommand command.
+func (cmd *ListWebCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/recipe/"
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.ListWeb(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *ListWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+}
+
+// Run makes the HTTP request corresponding to the ShowWebCommand command.
+func (cmd *ShowWebCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/recipe/%v", url.QueryEscape(cmd.ID))
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.ShowWeb(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *ShowWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var id string
+	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
+}
+
+// Run makes the HTTP request corresponding to the UpdateWebCommand command.
+func (cmd *UpdateWebCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/recipe/%v", url.QueryEscape(cmd.ID))
+	}
+	var payload client.UpdateWebPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.UpdateWeb(ctx, path, &payload, cmd.ContentType)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *UpdateWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var id string

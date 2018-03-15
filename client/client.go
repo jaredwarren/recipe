@@ -33,7 +33,9 @@ func New(c goaclient.Doer) *Client {
 
 	// Setup encoders and decoders
 	client.Encoder.Register(form.NewEncoder, "application/x-www-form-urlencoded")
+	client.Encoder.Register(goa.NewJSONEncoder, "application/json")
 	client.Decoder.Register(form.NewDecoder, "application/x-www-form-urlencoded")
+	client.Decoder.Register(goa.NewJSONDecoder, "application/json")
 
 	// Setup default encoder and decoder
 	client.Encoder.Register(form.NewEncoder, "*/*")

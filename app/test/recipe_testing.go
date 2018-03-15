@@ -60,7 +60,7 @@ func CreateRecipeCreated(t goatest.TInterface, ctx context.Context, service *goa
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/"),
+		Path: fmt.Sprintf("/api/"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -132,7 +132,7 @@ func CreateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/"),
+		Path: fmt.Sprintf("/api/"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -212,7 +212,7 @@ func CreateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/"),
+		Path: fmt.Sprintf("/api/"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -297,7 +297,7 @@ func CreateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/"),
+		Path: fmt.Sprintf("/api/"),
 	}
 	req, _err := http.NewRequest("POST", u.String(), nil)
 	if _err != nil {
@@ -371,7 +371,7 @@ func DeleteRecipeInternalServerError(t goatest.TInterface, ctx context.Context, 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
@@ -440,7 +440,7 @@ func DeleteRecipeNoContent(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func DeleteRecipeNotFound(t goatest.TInterface, ctx context.Context, service *go
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
@@ -564,7 +564,7 @@ func ListRecipeInternalServerError(t goatest.TInterface, ctx context.Context, se
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/"),
+		Path: fmt.Sprintf("/api/"),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -608,10 +608,10 @@ func ListRecipeInternalServerError(t goatest.TInterface, ctx context.Context, se
 }
 
 // ListRecipeOK runs the method List of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController) http.ResponseWriter {
+func ListRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController) (http.ResponseWriter, app.RecipeRecipeCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -632,7 +632,7 @@ func ListRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/"),
+		Path: fmt.Sprintf("/api/"),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -650,7 +650,7 @@ func ListRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 			panic("invalid test data " + _err.Error()) // bug
 		}
 		t.Errorf("unexpected parameter validation error: %+v", e)
-		return nil
+		return nil, nil
 	}
 
 	// Perform action
@@ -663,9 +663,94 @@ func ListRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
+	var mt app.RecipeRecipeCollection
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(app.RecipeRecipeCollection)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.RecipeRecipeCollection", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
 
 	// Return results
-	return rw
+	return rw, mt
+}
+
+// ListRecipeOKIngredient runs the method List of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func ListRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController) (http.ResponseWriter, app.RecipeRecipeIngredientCollection) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/"),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
+	listCtx, _err := app.NewListRecipeContext(goaCtx, req, service)
+	if _err != nil {
+		e, ok := _err.(goa.ServiceError)
+		if !ok {
+			panic("invalid test data " + _err.Error()) // bug
+		}
+		t.Errorf("unexpected parameter validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Perform action
+	_err = ctrl.List(listCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt app.RecipeRecipeIngredientCollection
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(app.RecipeRecipeIngredientCollection)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.RecipeRecipeIngredientCollection", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
 }
 
 // ShowRecipeCreated runs the method Show of the given controller with the given parameters.
@@ -693,7 +778,7 @@ func ShowRecipeCreated(t goatest.TInterface, ctx context.Context, service *goa.S
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -755,7 +840,7 @@ func ShowRecipeInternalServerError(t goatest.TInterface, ctx context.Context, se
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -824,7 +909,7 @@ func ShowRecipeNotFound(t goatest.TInterface, ctx context.Context, service *goa.
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -862,10 +947,10 @@ func ShowRecipeNotFound(t goatest.TInterface, ctx context.Context, service *goa.
 }
 
 // ShowRecipeOK runs the method Show of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ShowRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) http.ResponseWriter {
+func ShowRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipe) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -886,7 +971,7 @@ func ShowRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -905,7 +990,7 @@ func ShowRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 			panic("invalid test data " + _err.Error()) // bug
 		}
 		t.Errorf("unexpected parameter validation error: %+v", e)
-		return nil
+		return nil, nil
 	}
 
 	// Perform action
@@ -918,9 +1003,95 @@ func ShowRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
+	var mt *app.RecipeRecipe
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.RecipeRecipe)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.RecipeRecipe", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
 
 	// Return results
-	return rw
+	return rw, mt
+}
+
+// ShowRecipeOKIngredient runs the method Show of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func ShowRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.RecipeController, id string) (http.ResponseWriter, *app.RecipeRecipeIngredient) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/%v", id),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["id"] = []string{fmt.Sprintf("%v", id)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "RecipeTest"), rw, req, prms)
+	showCtx, _err := app.NewShowRecipeContext(goaCtx, req, service)
+	if _err != nil {
+		e, ok := _err.(goa.ServiceError)
+		if !ok {
+			panic("invalid test data " + _err.Error()) // bug
+		}
+		t.Errorf("unexpected parameter validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Perform action
+	_err = ctrl.Show(showCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.RecipeRecipeIngredient
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.RecipeRecipeIngredient)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.RecipeRecipeIngredient", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
 }
 
 // UpdateRecipeBadRequest runs the method Update of the given controller with the given parameters and payload.
@@ -958,7 +1129,7 @@ func UpdateRecipeBadRequest(t goatest.TInterface, ctx context.Context, service *
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, _err := http.NewRequest("PATCH", u.String(), nil)
 	if _err != nil {
@@ -1038,7 +1209,7 @@ func UpdateRecipeInternalServerError(t goatest.TInterface, ctx context.Context, 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, _err := http.NewRequest("PATCH", u.String(), nil)
 	if _err != nil {
@@ -1119,7 +1290,7 @@ func UpdateRecipeNoContent(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, _err := http.NewRequest("PATCH", u.String(), nil)
 	if _err != nil {
@@ -1193,7 +1364,7 @@ func UpdateRecipeNotFound(t goatest.TInterface, ctx context.Context, service *go
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, _err := http.NewRequest("PATCH", u.String(), nil)
 	if _err != nil {
@@ -1267,7 +1438,7 @@ func UpdateRecipeOK(t goatest.TInterface, ctx context.Context, service *goa.Serv
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, _err := http.NewRequest("PATCH", u.String(), nil)
 	if _err != nil {
@@ -1353,7 +1524,7 @@ func UpdateRecipeOKIngredient(t goatest.TInterface, ctx context.Context, service
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/recipes/%v", id),
+		Path: fmt.Sprintf("/api/%v", id),
 	}
 	req, _err := http.NewRequest("PATCH", u.String(), nil)
 	if _err != nil {

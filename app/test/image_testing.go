@@ -49,7 +49,7 @@ func ShowImageNotFound(t goatest.TInterface, ctx context.Context, service *goa.S
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/images/%v", id),
+		Path: fmt.Sprintf("/images/%v", id),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ShowImageOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/images/%v", id),
+		Path: fmt.Sprintf("/images/%v", id),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func UploadImageOK(t goatest.TInterface, ctx context.Context, service *goa.Servi
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
-		Path: fmt.Sprintf("/recipe/images/"),
+		Path: fmt.Sprintf("/images/"),
 	}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {

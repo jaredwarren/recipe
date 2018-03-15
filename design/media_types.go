@@ -43,8 +43,10 @@ var Course = MediaType("application/recipe.course+json", func() {
 	})
 })
 
+// RecipeMedia ...
 var RecipeMedia = MediaType("application/recipe.recipe+json", func() {
 	Description("A recipe")
+	ContentType("application/json")
 	Attributes(func() {
 		Attribute("id", String, "Unique recipe ID")
 		Attribute("title", String, "Title of recipe")

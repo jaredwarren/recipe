@@ -18,11 +18,17 @@ import (
 // ImageHref returns the resource href.
 func ImageHref(id interface{}) string {
 	paramid := strings.TrimLeftFunc(fmt.Sprintf("%v", id), func(r rune) bool { return r == '/' })
-	return fmt.Sprintf("/recipe/images/%v", paramid)
+	return fmt.Sprintf("/images/%v", paramid)
 }
 
 // RecipeHref returns the resource href.
 func RecipeHref(id interface{}) string {
 	paramid := strings.TrimLeftFunc(fmt.Sprintf("%v", id), func(r rune) bool { return r == '/' })
-	return fmt.Sprintf("/recipe/recipes/%v", paramid)
+	return fmt.Sprintf("/api/%v", paramid)
+}
+
+// WebHref returns the resource href.
+func WebHref(id interface{}) string {
+	paramid := strings.TrimLeftFunc(fmt.Sprintf("%v", id), func(r rune) bool { return r == '/' })
+	return fmt.Sprintf("/recipe/%v", paramid)
 }
