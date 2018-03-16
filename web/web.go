@@ -37,7 +37,7 @@ func (c *WebController) Create(ctx *app.CreateWebContext) error {
 	}
 	rec.ID = id
 
-	ctx.ResponseData.Header().Set("Location", app.RecipeHref(rec.ID))
+	ctx.ResponseData.Header().Set("Location", app.WebHref(rec.ID))
 	return ctx.Created()
 }
 
@@ -65,7 +65,7 @@ func (c *WebController) List(ctx *app.ListWebContext) error {
 
 	page := struct {
 		Title   string
-		Recipes app.RecipeRecipeCollection
+		Recipes api.RecipeRecipeCollection
 	}{
 		Title:   "Recipe:",
 		Recipes: recipes,
@@ -95,7 +95,7 @@ func (c *WebController) Show(ctx *app.ShowWebContext) error {
 
 	page := struct {
 		Title  string
-		Recipe *app.RecipeRecipe
+		Recipe *api.RecipeRecipe
 	}{
 		Title:  "Recipe:",
 		Recipe: recipe,

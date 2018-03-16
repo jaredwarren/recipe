@@ -1,7 +1,8 @@
 accessLogsFile = "/dev/stdout"
 logLevel = "DEBUG"
-defaultEntryPoints = ["http", "https"]
-debug = true
+# defaultEntryPoints = ["http", "https"]
+defaultEntryPoints = ["http"]
+debug = false
 
 # For testing
 InsecureSkipVerify = true
@@ -33,7 +34,7 @@ InsecureSkipVerify = true
 [docker]
 endpoint = "unix:///var/run/docker.sock"
 watch = true
-swarmmode = false
+# swarmmode = false
 exposedbydefault = true
 
 # API definition
