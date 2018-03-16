@@ -1,10 +1,52 @@
 version: '3.5'
 services:
-  recipe:
-    image: jlwarren1/recipe
+  loadbalancer:
+    image: traefik
+    command: --web --docker
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080 # Træfik dashboard
+    volumes:
+      # Required so Traefik can see new or changed deployments.
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mounted so we can Hot-reload config
+      - ./traefik.toml:/etc/traefik/traefik.toml
+    labels:
+      - traefik.frontend.rule=Host:traefik.recipe.com
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+    deploy:
+      restart_policy:
+        condition: any
+      mode: replicated
+      replicas: 1
+      update_config:
+        delay: 2s
+      placement:
+        constraints: 
+          - node.role == manager
+          - node.labels.name != db
+      labels:
+        - traefik.frontend.rule=Host:traefik.recipe.com
+        - "traefik.enable=true"
+        - "traefik.port=8080"
+    networks:
+      - traefik-net
+    # secrets:
+    #     - bladehq.com.crt
+    #     - bladehq.com.key
+    #     - bladeplay.com.crt
+    #     - bladeplay.com.key
+    #     - flytaniumco.com.crt
+    #     - flytaniumco.com.key
+    #     - arcformknives.com.crt
+    #     - arcformknives.com.key
+        # TODO: add other stores
+  recipe-api:
+    image: jlwarren1/recipe-api
     build: 
-      context: .
-      dockerfile: ./Dockerfile
+      context: ./api
     deploy:
       replicas: 1
       update_config:
@@ -12,19 +54,32 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+    labels:
+      - traefik.backend=recipe-api
+      - traefik.docker.network=traefik-net
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:api.recipe.com
+      - traefik.frontend.priority=1
+      - traefik.port=80
+      - "traefik.frontend.entryPoints=http"
+      # - "traefik.backend.loadbalancer.stickiness=true"
+      # - "traefik.backend.loadbalancer.stickiness.cookieName=_blaze"
     volumes:
       - ./templates:/templates
       - ./static:/static
-    ports:
-      - 80:80
-      - 443:443
+    expose:
+      - "80"
+    # ports:
+    #   - 8999:8999
     environment:
+      PORT: 80
       DB_HOST: mysql:3306
       DB_PASS_FILE: /run/secrets/mysql_password
       DB_USER_FILE: /run/secrets/mysql_user
       DB_NAME_FILE: /run/secrets/mysql_name
     networks:
       - mysql
+      - traefik-net
     depends_on:
       - mysql
     secrets:
@@ -32,6 +87,82 @@ services:
       - mysql_name
       - mysql_user
       - mysql_password
+  recipe-web:
+    image: jlwarren1/recipe-web
+    build: 
+      context: ./web
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    labels:
+      - traefik.backend=recipe-web
+      - traefik.docker.network=traefik-net
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:recipe.com,www.recipe.com
+      - traefik.frontend.priority=1
+      - traefik.port=80
+      - "traefik.frontend.entryPoints=http"
+      # - "traefik.backend.loadbalancer.stickiness=true"
+      # - "traefik.backend.loadbalancer.stickiness.cookieName=_blaze"
+    volumes:
+      - ./templates:/templates
+      - ./static:/static
+    expose:
+      - "80"
+    # ports:
+    #   - 8999:8999
+    environment:
+      PORT: 80
+      DB_HOST: mysql:3306
+      DB_PASS_FILE: /run/secrets/mysql_password
+      DB_USER_FILE: /run/secrets/mysql_user
+      DB_NAME_FILE: /run/secrets/mysql_name
+    networks:
+      - mysql
+      - traefik-net
+    depends_on:
+      - mysql
+    secrets:
+      - mysql_root_password
+      - mysql_name
+      - mysql_user
+      - mysql_password
+  # recipe-web:
+  #   image: jlwarren1/recipe-web
+  #   build: 
+  #     context: .
+  #     dockerfile: ./web/Dockerfile
+  #   deploy:
+  #     replicas: 1
+  #     update_config:
+  #       parallelism: 2
+  #       delay: 10s
+  #     restart_policy:
+  #       condition: on-failure
+  #   volumes:
+  #     - ./templates:/templates
+  #     - ./static:/static
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   environment:
+  #     DB_HOST: mysql:3306
+  #     DB_PASS_FILE: /run/secrets/mysql_password
+  #     DB_USER_FILE: /run/secrets/mysql_user
+  #     DB_NAME_FILE: /run/secrets/mysql_name
+  #   networks:
+  #     - mysql
+  #   depends_on:
+  #     - mysql
+  #   secrets:
+  #     - mysql_root_password
+  #     - mysql_name
+  #     - mysql_user
+  #     - mysql_password
   mysql:
     image: mariadb:10.3
     restart: always
@@ -63,4 +194,6 @@ secrets:
     file: ./.docker/database/secrets/mysql_password.txt
 networks:
   mysql:
+    driver: bridge
+  traefik-net:
     driver: bridge

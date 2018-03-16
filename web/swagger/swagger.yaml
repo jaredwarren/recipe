@@ -1,0 +1,3484 @@
+consumes:
+- application/x-www-form-urlencoded
+definitions:
+  CreateWebPayload:
+    example:
+      complete: false
+      cook_time: 2003-08-13T12:47:16Z
+      description: Est facilis commodi ratione temporibus.
+      difficulty: 0.52087873
+      favorite: false
+      image: Doloremque qui incidunt autem.
+      images:
+      - Occaecati totam deleniti iusto quos.
+      ingredients:
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      prep_time: 1990-08-15T00:54:39Z
+      rating: 0.9356256
+      source: Recusandae aut.
+      state: Laboriosam enim accusamus in libero.
+      title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+      version: Consequuntur occaecati ipsa qui.
+      wait_time: 2004-11-23T22:16:37Z
+    properties:
+      complete:
+        description: If it's been added/included
+        example: false
+        type: boolean
+      cook_time:
+        description: Amount of time to cook
+        example: 2003-08-13T12:47:16Z
+        format: date-time
+        type: string
+      description:
+        description: Long description of recipe
+        example: Est facilis commodi ratione temporibus.
+        type: string
+      difficulty:
+        description: rating between 0-1
+        example: 0.52087873
+        maximum: 1
+        minimum: 0
+        type: number
+      favorite:
+        description: Is a favorite, basically a tag
+        example: false
+        type: boolean
+      image:
+        description: Image of recipe
+        example: Doloremque qui incidunt autem.
+        type: string
+      images:
+        description: Images of recipe
+        example:
+        - Occaecati totam deleniti iusto quos.
+        items:
+          example: Occaecati totam deleniti iusto quos.
+          type: string
+        type: array
+      ingredients:
+        description: List of ingredients
+        example:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        items:
+          $ref: '#/definitions/RecipePayload'
+        type: array
+      prep_time:
+        description: Amount of time to prepare
+        example: 1990-08-15T00:54:39Z
+        format: date-time
+        type: string
+      rating:
+        description: rating between 0-1
+        example: 0.9356256
+        maximum: 1
+        minimum: 0
+        type: number
+      source:
+        description: Source of recipe
+        example: Recusandae aut.
+        type: string
+      state:
+        description: e.g. chopped, sliced, etc.. might need to be array.
+        example: Laboriosam enim accusamus in libero.
+        type: string
+      title:
+        description: Recipe Title
+        example: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        type: string
+      version:
+        description: Version Number e.g. 1.0.1
+        example: Consequuntur occaecati ipsa qui.
+        type: string
+      wait_time:
+        description: Amount of time to wait for things such as mairnading
+        example: 2004-11-23T22:16:37Z
+        format: date-time
+        type: string
+    required:
+    - title
+    title: CreateWebPayload
+    type: object
+  ImageMedia:
+    description: Image metadata (default view)
+    example:
+      filename: Molestiae vel.
+      id: Modi autem qui eum.
+      uploaded_at: 1982-10-08T20:49:10Z
+    properties:
+      filename:
+        description: Image filename
+        example: Molestiae vel.
+        type: string
+      id:
+        description: Image ID
+        example: Modi autem qui eum.
+        type: string
+      uploaded_at:
+        description: Upload timestamp
+        example: 1982-10-08T20:49:10Z
+        format: date-time
+        type: string
+    required:
+    - id
+    - filename
+    - uploaded_at
+    title: 'Mediatype identifier: application/recipe.image+json; view=default'
+    type: object
+  RecipeCategory:
+    description: A Category (default view)
+    example:
+      categories:
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      name: Autem aut in voluptatum architecto.
+      type: Non voluptatum amet.
+    properties:
+      categories:
+        $ref: '#/definitions/RecipeCategoryCollection'
+      name:
+        example: Autem aut in voluptatum architecto.
+        type: string
+      type:
+        example: Non voluptatum amet.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.category+json; view=default'
+    type: object
+  RecipeCategoryCollection:
+    description: RecipeCategoryCollection is the media type for an array of RecipeCategory
+      (default view)
+    example:
+    - categories:
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      name: Autem aut in voluptatum architecto.
+      type: Non voluptatum amet.
+    - categories:
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      name: Autem aut in voluptatum architecto.
+      type: Non voluptatum amet.
+    - categories:
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      - categories:
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      name: Autem aut in voluptatum architecto.
+      type: Non voluptatum amet.
+    items:
+      $ref: '#/definitions/RecipeCategory'
+    title: 'Mediatype identifier: application/recipe.category+json; type=collection;
+      view=default'
+    type: array
+  RecipeCookware:
+    description: A Cookware (default view)
+    example:
+      description: Numquam sint consequuntur.
+      name: Quis id enim voluptatem sed non.
+      parts:
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      settings:
+      - Quo odit magni dolor unde natus iusto.
+      setup:
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+    properties:
+      description:
+        description: long description
+        example: Numquam sint consequuntur.
+        type: string
+      name:
+        description: what's it called
+        example: Quis id enim voluptatem sed non.
+        type: string
+      parts:
+        $ref: '#/definitions/RecipeCookwareCollection'
+      settings:
+        description: settings, e.g. temprature
+        example:
+        - Quo odit magni dolor unde natus iusto.
+        items:
+          example: Quo odit magni dolor unde natus iusto.
+          type: string
+        type: array
+      setup:
+        $ref: '#/definitions/RecipeStepCollection'
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.cookware+json; view=default'
+    type: object
+  RecipeCookwareCollection:
+    description: RecipeCookwareCollection is the media type for an array of RecipeCookware
+      (default view)
+    example:
+    - description: Numquam sint consequuntur.
+      name: Quis id enim voluptatem sed non.
+      parts:
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      settings:
+      - Quo odit magni dolor unde natus iusto.
+      setup:
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+    - description: Numquam sint consequuntur.
+      name: Quis id enim voluptatem sed non.
+      parts:
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      settings:
+      - Quo odit magni dolor unde natus iusto.
+      setup:
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+    items:
+      $ref: '#/definitions/RecipeCookware'
+    title: 'Mediatype identifier: application/recipe.cookware+json; type=collection;
+      view=default'
+    type: array
+  RecipeNote:
+    description: A Note (default view)
+    example:
+      id: Sequi sit saepe in eligendi repellendus aut.
+      text: In rerum doloribus nihil omnis voluptas eum.
+    properties:
+      id:
+        description: Unique ID
+        example: Sequi sit saepe in eligendi repellendus aut.
+        type: string
+      text:
+        description: html text
+        example: In rerum doloribus nihil omnis voluptas eum.
+        type: string
+    required:
+    - id
+    - text
+    title: 'Mediatype identifier: application/recipe.note+json; view=default'
+    type: object
+  RecipeNoteCollection:
+    description: RecipeNoteCollection is the media type for an array of RecipeNote
+      (default view)
+    example:
+    - id: Sequi sit saepe in eligendi repellendus aut.
+      text: In rerum doloribus nihil omnis voluptas eum.
+    items:
+      $ref: '#/definitions/RecipeNote'
+    title: 'Mediatype identifier: application/recipe.note+json; type=collection; view=default'
+    type: array
+  RecipePayload:
+    example:
+      complete: false
+      cook_time: 2003-08-13T12:47:16Z
+      description: Est facilis commodi ratione temporibus.
+      difficulty: 0.52087873
+      favorite: false
+      image: Doloremque qui incidunt autem.
+      images:
+      - Occaecati totam deleniti iusto quos.
+      ingredients:
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      prep_time: 1990-08-15T00:54:39Z
+      rating: 0.9356256
+      source: Recusandae aut.
+      state: Laboriosam enim accusamus in libero.
+      title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+      version: Consequuntur occaecati ipsa qui.
+      wait_time: 2004-11-23T22:16:37Z
+    properties:
+      complete:
+        description: If it's been added/included
+        example: false
+        type: boolean
+      cook_time:
+        description: Amount of time to cook
+        example: 2003-08-13T12:47:16Z
+        format: date-time
+        type: string
+      description:
+        description: Long description of recipe
+        example: Est facilis commodi ratione temporibus.
+        type: string
+      difficulty:
+        description: rating between 0-1
+        example: 0.52087873
+        maximum: 1
+        minimum: 0
+        type: number
+      favorite:
+        description: Is a favorite, basically a tag
+        example: false
+        type: boolean
+      image:
+        description: Image of recipe
+        example: Doloremque qui incidunt autem.
+        type: string
+      images:
+        description: Images of recipe
+        example:
+        - Occaecati totam deleniti iusto quos.
+        items:
+          example: Occaecati totam deleniti iusto quos.
+          type: string
+        type: array
+      ingredients:
+        description: List of ingredients
+        example:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        items:
+          $ref: '#/definitions/RecipePayload'
+        type: array
+      prep_time:
+        description: Amount of time to prepare
+        example: 1990-08-15T00:54:39Z
+        format: date-time
+        type: string
+      rating:
+        description: rating between 0-1
+        example: 0.9356256
+        maximum: 1
+        minimum: 0
+        type: number
+      source:
+        description: Source of recipe
+        example: Recusandae aut.
+        type: string
+      state:
+        description: e.g. chopped, sliced, etc.. might need to be array.
+        example: Laboriosam enim accusamus in libero.
+        type: string
+      title:
+        description: Recipe Title
+        example: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        type: string
+      version:
+        description: Version Number e.g. 1.0.1
+        example: Consequuntur occaecati ipsa qui.
+        type: string
+      wait_time:
+        description: Amount of time to wait for things such as mairnading
+        example: 2004-11-23T22:16:37Z
+        format: date-time
+        type: string
+    required:
+    - title
+    title: RecipePayload
+    type: object
+  RecipeRecipe:
+    description: A recipe (default view)
+    example:
+      categories:
+      - categories:
+        - categories:
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - categories:
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      cook_time: 1972-05-25T18:14:24Z
+      cookware:
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      created: 2002-11-08T23:43:40Z
+      description: Voluptatem sed placeat.
+      difficulty: 0.008745821
+      directions:
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+      favorite: false
+      id: Saepe sit eum.
+      images:
+      - Maiores voluptatum amet adipisci voluptatum.
+      - Maiores voluptatum amet adipisci voluptatum.
+      - Maiores voluptatum amet adipisci voluptatum.
+      ingredients:
+      - categories:
+        - categories:
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        cook_time: 1972-05-25T18:14:24Z
+        cookware:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        created: 2002-11-08T23:43:40Z
+        description: Voluptatem sed placeat.
+        difficulty: 0.008745821
+        directions:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        favorite: false
+        id: Saepe sit eum.
+        images:
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        ingredients:
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        notes:
+        - id: Sequi sit saepe in eligendi repellendus aut.
+          text: In rerum doloribus nihil omnis voluptas eum.
+        prep_time: 1993-05-19T21:00:04Z
+        quantity:
+          name: Asperiores alias rerum molestias esse nisi.
+          type: Quo aut quia voluptas.
+        rating: 0.82895046
+        source:
+          id: Dolorem voluptatem esse explicabo est.
+          name: Sint facere et sunt.
+          url: Quod officiis omnis deleniti eligendi placeat.
+        tags:
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        title: Suscipit natus aliquid.
+        updated: 2015-05-26T16:56:08Z
+        version: Voluptatem praesentium similique qui corporis et et.
+        wait_time: 1996-06-02T00:41:52Z
+      - categories:
+        - categories:
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        cook_time: 1972-05-25T18:14:24Z
+        cookware:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        created: 2002-11-08T23:43:40Z
+        description: Voluptatem sed placeat.
+        difficulty: 0.008745821
+        directions:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        favorite: false
+        id: Saepe sit eum.
+        images:
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        ingredients:
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        notes:
+        - id: Sequi sit saepe in eligendi repellendus aut.
+          text: In rerum doloribus nihil omnis voluptas eum.
+        prep_time: 1993-05-19T21:00:04Z
+        quantity:
+          name: Asperiores alias rerum molestias esse nisi.
+          type: Quo aut quia voluptas.
+        rating: 0.82895046
+        source:
+          id: Dolorem voluptatem esse explicabo est.
+          name: Sint facere et sunt.
+          url: Quod officiis omnis deleniti eligendi placeat.
+        tags:
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        title: Suscipit natus aliquid.
+        updated: 2015-05-26T16:56:08Z
+        version: Voluptatem praesentium similique qui corporis et et.
+        wait_time: 1996-06-02T00:41:52Z
+      notes:
+      - id: Sequi sit saepe in eligendi repellendus aut.
+        text: In rerum doloribus nihil omnis voluptas eum.
+      prep_time: 1993-05-19T21:00:04Z
+      quantity:
+        name: Asperiores alias rerum molestias esse nisi.
+        type: Quo aut quia voluptas.
+      rating: 0.82895046
+      source:
+        id: Dolorem voluptatem esse explicabo est.
+        name: Sint facere et sunt.
+        url: Quod officiis omnis deleniti eligendi placeat.
+      tags:
+      - name: Perspiciatis voluptatem eum.
+      - name: Perspiciatis voluptatem eum.
+      - name: Perspiciatis voluptatem eum.
+      title: Suscipit natus aliquid.
+      updated: 2015-05-26T16:56:08Z
+      version: Voluptatem praesentium similique qui corporis et et.
+      wait_time: 1996-06-02T00:41:52Z
+    properties:
+      categories:
+        $ref: '#/definitions/RecipeCategoryCollection'
+      cook_time:
+        description: Amount of time to cook
+        example: 1972-05-25T18:14:24Z
+        format: date-time
+        type: string
+      cookware:
+        $ref: '#/definitions/RecipeCookwareCollection'
+      created:
+        description: First created
+        example: 2002-11-08T23:43:40Z
+        format: date-time
+        type: string
+      description:
+        description: Long description of recipe
+        example: Voluptatem sed placeat.
+        type: string
+      difficulty:
+        description: rating between 0-1
+        example: 0.008745821
+        maximum: 1
+        minimum: 0
+        type: number
+      directions:
+        $ref: '#/definitions/RecipeStepCollection'
+      favorite:
+        description: Is a favorite, basically a tag
+        example: false
+        type: boolean
+      id:
+        description: Unique recipe ID
+        example: Saepe sit eum.
+        type: string
+      images:
+        description: Title of recipe
+        example:
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        items:
+          example: Maiores voluptatum amet adipisci voluptatum.
+          type: string
+        type: array
+      ingredients:
+        $ref: '#/definitions/RecipeRecipeCollection'
+      notes:
+        $ref: '#/definitions/RecipeNoteCollection'
+      prep_time:
+        description: Amount of time to prepare
+        example: 1993-05-19T21:00:04Z
+        format: date-time
+        type: string
+      quantity:
+        $ref: '#/definitions/RecipeUnitofmeasure'
+      rating:
+        description: rating between 0-1
+        example: 0.82895046
+        maximum: 1
+        minimum: 0
+        type: number
+      source:
+        $ref: '#/definitions/RecipeSource'
+      tags:
+        $ref: '#/definitions/RecipeTagCollection'
+      title:
+        description: Title of recipe
+        example: Suscipit natus aliquid.
+        type: string
+      updated:
+        description: Last Updated
+        example: 2015-05-26T16:56:08Z
+        format: date-time
+        type: string
+      version:
+        description: Version Number e.g. 1.0.1
+        example: Voluptatem praesentium similique qui corporis et et.
+        type: string
+      wait_time:
+        description: Amount of time to wait for things such as mairnading
+        example: 1996-06-02T00:41:52Z
+        format: date-time
+        type: string
+    required:
+    - id
+    - title
+    title: 'Mediatype identifier: application/recipe.recipe+json; view=default'
+    type: object
+  RecipeRecipeCollection:
+    description: RecipeRecipeCollection is the media type for an array of RecipeRecipe
+      (default view)
+    example:
+    - categories:
+      - categories:
+        - categories:
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        - categories:
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        name: Autem aut in voluptatum architecto.
+        type: Non voluptatum amet.
+      cook_time: 1972-05-25T18:14:24Z
+      cookware:
+      - description: Numquam sint consequuntur.
+        name: Quis id enim voluptatem sed non.
+        parts:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        settings:
+        - Quo odit magni dolor unde natus iusto.
+        setup:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+      created: 2002-11-08T23:43:40Z
+      description: Voluptatem sed placeat.
+      difficulty: 0.008745821
+      directions:
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+      - description: Quas fugit corporis et et tenetur quia.
+        title: Est enim nihil asperiores et.
+      favorite: false
+      id: Saepe sit eum.
+      images:
+      - Maiores voluptatum amet adipisci voluptatum.
+      - Maiores voluptatum amet adipisci voluptatum.
+      - Maiores voluptatum amet adipisci voluptatum.
+      ingredients:
+      - categories:
+        - categories:
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        cook_time: 1972-05-25T18:14:24Z
+        cookware:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        created: 2002-11-08T23:43:40Z
+        description: Voluptatem sed placeat.
+        difficulty: 0.008745821
+        directions:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        favorite: false
+        id: Saepe sit eum.
+        images:
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        ingredients:
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        notes:
+        - id: Sequi sit saepe in eligendi repellendus aut.
+          text: In rerum doloribus nihil omnis voluptas eum.
+        prep_time: 1993-05-19T21:00:04Z
+        quantity:
+          name: Asperiores alias rerum molestias esse nisi.
+          type: Quo aut quia voluptas.
+        rating: 0.82895046
+        source:
+          id: Dolorem voluptatem esse explicabo est.
+          name: Sint facere et sunt.
+          url: Quod officiis omnis deleniti eligendi placeat.
+        tags:
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        title: Suscipit natus aliquid.
+        updated: 2015-05-26T16:56:08Z
+        version: Voluptatem praesentium similique qui corporis et et.
+        wait_time: 1996-06-02T00:41:52Z
+      - categories:
+        - categories:
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          - categories:
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          name: Autem aut in voluptatum architecto.
+          type: Non voluptatum amet.
+        cook_time: 1972-05-25T18:14:24Z
+        cookware:
+        - description: Numquam sint consequuntur.
+          name: Quis id enim voluptatem sed non.
+          parts:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          settings:
+          - Quo odit magni dolor unde natus iusto.
+          setup:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+        created: 2002-11-08T23:43:40Z
+        description: Voluptatem sed placeat.
+        difficulty: 0.008745821
+        directions:
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        - description: Quas fugit corporis et et tenetur quia.
+          title: Est enim nihil asperiores et.
+        favorite: false
+        id: Saepe sit eum.
+        images:
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        - Maiores voluptatum amet adipisci voluptatum.
+        ingredients:
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        - categories:
+          - categories:
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            - categories:
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              - name: Autem aut in voluptatum architecto.
+                type: Non voluptatum amet.
+              name: Autem aut in voluptatum architecto.
+              type: Non voluptatum amet.
+            name: Autem aut in voluptatum architecto.
+            type: Non voluptatum amet.
+          cook_time: 1972-05-25T18:14:24Z
+          cookware:
+          - description: Numquam sint consequuntur.
+            name: Quis id enim voluptatem sed non.
+            parts:
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            - description: Numquam sint consequuntur.
+              name: Quis id enim voluptatem sed non.
+              parts:
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              - description: Numquam sint consequuntur.
+                name: Quis id enim voluptatem sed non.
+                settings:
+                - Quo odit magni dolor unde natus iusto.
+                setup:
+                - description: Quas fugit corporis et et tenetur quia.
+                  title: Est enim nihil asperiores et.
+              settings:
+              - Quo odit magni dolor unde natus iusto.
+              setup:
+              - description: Quas fugit corporis et et tenetur quia.
+                title: Est enim nihil asperiores et.
+            settings:
+            - Quo odit magni dolor unde natus iusto.
+            setup:
+            - description: Quas fugit corporis et et tenetur quia.
+              title: Est enim nihil asperiores et.
+          created: 2002-11-08T23:43:40Z
+          description: Voluptatem sed placeat.
+          difficulty: 0.008745821
+          directions:
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          - description: Quas fugit corporis et et tenetur quia.
+            title: Est enim nihil asperiores et.
+          favorite: false
+          id: Saepe sit eum.
+          images:
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          - Maiores voluptatum amet adipisci voluptatum.
+          notes:
+          - id: Sequi sit saepe in eligendi repellendus aut.
+            text: In rerum doloribus nihil omnis voluptas eum.
+          prep_time: 1993-05-19T21:00:04Z
+          quantity:
+            name: Asperiores alias rerum molestias esse nisi.
+            type: Quo aut quia voluptas.
+          rating: 0.82895046
+          source:
+            id: Dolorem voluptatem esse explicabo est.
+            name: Sint facere et sunt.
+            url: Quod officiis omnis deleniti eligendi placeat.
+          tags:
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          - name: Perspiciatis voluptatem eum.
+          title: Suscipit natus aliquid.
+          updated: 2015-05-26T16:56:08Z
+          version: Voluptatem praesentium similique qui corporis et et.
+          wait_time: 1996-06-02T00:41:52Z
+        notes:
+        - id: Sequi sit saepe in eligendi repellendus aut.
+          text: In rerum doloribus nihil omnis voluptas eum.
+        prep_time: 1993-05-19T21:00:04Z
+        quantity:
+          name: Asperiores alias rerum molestias esse nisi.
+          type: Quo aut quia voluptas.
+        rating: 0.82895046
+        source:
+          id: Dolorem voluptatem esse explicabo est.
+          name: Sint facere et sunt.
+          url: Quod officiis omnis deleniti eligendi placeat.
+        tags:
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        - name: Perspiciatis voluptatem eum.
+        title: Suscipit natus aliquid.
+        updated: 2015-05-26T16:56:08Z
+        version: Voluptatem praesentium similique qui corporis et et.
+        wait_time: 1996-06-02T00:41:52Z
+      notes:
+      - id: Sequi sit saepe in eligendi repellendus aut.
+        text: In rerum doloribus nihil omnis voluptas eum.
+      prep_time: 1993-05-19T21:00:04Z
+      quantity:
+        name: Asperiores alias rerum molestias esse nisi.
+        type: Quo aut quia voluptas.
+      rating: 0.82895046
+      source:
+        id: Dolorem voluptatem esse explicabo est.
+        name: Sint facere et sunt.
+        url: Quod officiis omnis deleniti eligendi placeat.
+      tags:
+      - name: Perspiciatis voluptatem eum.
+      - name: Perspiciatis voluptatem eum.
+      - name: Perspiciatis voluptatem eum.
+      title: Suscipit natus aliquid.
+      updated: 2015-05-26T16:56:08Z
+      version: Voluptatem praesentium similique qui corporis et et.
+      wait_time: 1996-06-02T00:41:52Z
+    items:
+      $ref: '#/definitions/RecipeRecipe'
+    title: 'Mediatype identifier: application/recipe.recipe+json; type=collection;
+      view=default'
+    type: array
+  RecipeSource:
+    description: A Source (default view)
+    example:
+      id: Dolorem voluptatem esse explicabo est.
+      name: Sint facere et sunt.
+      url: Quod officiis omnis deleniti eligendi placeat.
+    properties:
+      id:
+        description: Unique ID
+        example: Dolorem voluptatem esse explicabo est.
+        type: string
+      name:
+        example: Sint facere et sunt.
+        type: string
+      url:
+        example: Quod officiis omnis deleniti eligendi placeat.
+        type: string
+    required:
+    - id
+    - name
+    title: 'Mediatype identifier: application/recipe.source+json; view=default'
+    type: object
+  RecipeStep:
+    description: A Step (default view)
+    example:
+      description: Quas fugit corporis et et tenetur quia.
+      title: Est enim nihil asperiores et.
+    properties:
+      description:
+        description: HTML
+        example: Quas fugit corporis et et tenetur quia.
+        type: string
+      title:
+        example: Est enim nihil asperiores et.
+        type: string
+    required:
+    - title
+    title: 'Mediatype identifier: application/recipe.step+json; view=default'
+    type: object
+  RecipeStepCollection:
+    description: RecipeStepCollection is the media type for an array of RecipeStep
+      (default view)
+    example:
+    - description: Quas fugit corporis et et tenetur quia.
+      title: Est enim nihil asperiores et.
+    items:
+      $ref: '#/definitions/RecipeStep'
+    title: 'Mediatype identifier: application/recipe.step+json; type=collection; view=default'
+    type: array
+  RecipeTag:
+    description: A Tag (default view)
+    example:
+      name: Perspiciatis voluptatem eum.
+    properties:
+      name:
+        example: Perspiciatis voluptatem eum.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.tag+json; view=default'
+    type: object
+  RecipeTagCollection:
+    description: RecipeTagCollection is the media type for an array of RecipeTag (default
+      view)
+    example:
+    - name: Perspiciatis voluptatem eum.
+    - name: Perspiciatis voluptatem eum.
+    items:
+      $ref: '#/definitions/RecipeTag'
+    title: 'Mediatype identifier: application/recipe.tag+json; type=collection; view=default'
+    type: array
+  RecipeUnitofmeasure:
+    description: A recipe (default view)
+    example:
+      name: Asperiores alias rerum molestias esse nisi.
+      type: Quo aut quia voluptas.
+    properties:
+      name:
+        description: name e.g. Cups, Table Spoon
+        example: Asperiores alias rerum molestias esse nisi.
+        type: string
+      type:
+        default: weight
+        description: volume, weight, time, length...
+        example: Quo aut quia voluptas.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/recipe.unitofmeasure+json; view=default'
+    type: object
+  UpdateWebPayload:
+    example:
+      complete: false
+      cook_time: 2003-08-13T12:47:16Z
+      description: Est facilis commodi ratione temporibus.
+      difficulty: 0.52087873
+      favorite: false
+      image: Doloremque qui incidunt autem.
+      images:
+      - Occaecati totam deleniti iusto quos.
+      ingredients:
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      - complete: false
+        cook_time: 2003-08-13T12:47:16Z
+        description: Est facilis commodi ratione temporibus.
+        difficulty: 0.52087873
+        favorite: false
+        image: Doloremque qui incidunt autem.
+        images:
+        - Occaecati totam deleniti iusto quos.
+        ingredients:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        prep_time: 1990-08-15T00:54:39Z
+        rating: 0.9356256
+        source: Recusandae aut.
+        state: Laboriosam enim accusamus in libero.
+        title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        version: Consequuntur occaecati ipsa qui.
+        wait_time: 2004-11-23T22:16:37Z
+      prep_time: 1990-08-15T00:54:39Z
+      rating: 0.9356256
+      source: Recusandae aut.
+      state: Laboriosam enim accusamus in libero.
+      title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+      version: Consequuntur occaecati ipsa qui.
+      wait_time: 2004-11-23T22:16:37Z
+    properties:
+      complete:
+        description: If it's been added/included
+        example: false
+        type: boolean
+      cook_time:
+        description: Amount of time to cook
+        example: 2003-08-13T12:47:16Z
+        format: date-time
+        type: string
+      description:
+        description: Long description of recipe
+        example: Est facilis commodi ratione temporibus.
+        type: string
+      difficulty:
+        description: rating between 0-1
+        example: 0.52087873
+        maximum: 1
+        minimum: 0
+        type: number
+      favorite:
+        description: Is a favorite, basically a tag
+        example: false
+        type: boolean
+      image:
+        description: Image of recipe
+        example: Doloremque qui incidunt autem.
+        type: string
+      images:
+        description: Images of recipe
+        example:
+        - Occaecati totam deleniti iusto quos.
+        items:
+          example: Occaecati totam deleniti iusto quos.
+          type: string
+        type: array
+      ingredients:
+        description: List of ingredients
+        example:
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        - complete: false
+          cook_time: 2003-08-13T12:47:16Z
+          description: Est facilis commodi ratione temporibus.
+          difficulty: 0.52087873
+          favorite: false
+          image: Doloremque qui incidunt autem.
+          images:
+          - Occaecati totam deleniti iusto quos.
+          ingredients:
+          - complete: false
+            cook_time: 2003-08-13T12:47:16Z
+            description: Est facilis commodi ratione temporibus.
+            difficulty: 0.52087873
+            favorite: false
+            image: Doloremque qui incidunt autem.
+            images:
+            - Occaecati totam deleniti iusto quos.
+            prep_time: 1990-08-15T00:54:39Z
+            rating: 0.9356256
+            source: Recusandae aut.
+            state: Laboriosam enim accusamus in libero.
+            title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+            version: Consequuntur occaecati ipsa qui.
+            wait_time: 2004-11-23T22:16:37Z
+          prep_time: 1990-08-15T00:54:39Z
+          rating: 0.9356256
+          source: Recusandae aut.
+          state: Laboriosam enim accusamus in libero.
+          title: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+          version: Consequuntur occaecati ipsa qui.
+          wait_time: 2004-11-23T22:16:37Z
+        items:
+          $ref: '#/definitions/RecipePayload'
+        type: array
+      prep_time:
+        description: Amount of time to prepare
+        example: 1990-08-15T00:54:39Z
+        format: date-time
+        type: string
+      rating:
+        description: rating between 0-1
+        example: 0.9356256
+        maximum: 1
+        minimum: 0
+        type: number
+      source:
+        description: Source of recipe
+        example: Recusandae aut.
+        type: string
+      state:
+        description: e.g. chopped, sliced, etc.. might need to be array.
+        example: Laboriosam enim accusamus in libero.
+        type: string
+      title:
+        description: Recipe Title
+        example: Itaque maiores quasi corrupti rerum aliquid reiciendis.
+        type: string
+      version:
+        description: Version Number e.g. 1.0.1
+        example: Consequuntur occaecati ipsa qui.
+        type: string
+      wait_time:
+        description: Amount of time to wait for things such as mairnading
+        example: 2004-11-23T22:16:37Z
+        format: date-time
+        type: string
+    required:
+    - title
+    title: UpdateWebPayload
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+externalDocs:
+  description: TODO
+  url: http://jlwarren1.com/recipe/docs
+host: www.recipe.com
+info:
+  contact:
+    email: jlwarren1@gmail.com
+    name: Jared Warren
+    url: http://jlwarren1.com
+  description: CRUD API recipe
+  license:
+    name: MIT
+    url: https://github.com/goadesign/goa/blob/master/LICENSE
+  title: Recipe Web interrace
+  version: ""
+paths:
+  /download/{filename}:
+    get:
+      operationId: image#/download/*filename
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filename
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: Download images/
+  /images/:
+    post:
+      description: Upload an image
+      operationId: image#upload
+      produces:
+      - application/recipe.image+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ImageMedia'
+      schemes:
+      - http
+      summary: upload image
+      tags:
+      - image
+  /images/{id}:
+    get:
+      description: Show an image metadata
+      operationId: image#show
+      parameters:
+      - description: Image ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/recipe.image+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ImageMedia'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show image
+      tags:
+      - image
+  /recipe/:
+    get:
+      description: List recipes
+      operationId: web#list
+      produces:
+      - application/vnd.goa.error
+      - text/html
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: list web
+      tags:
+      - web
+    post:
+      operationId: web#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateWebPayload'
+      produces:
+      - application/recipe.recipe+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: create web
+      tags:
+      - web
+  /recipe/{id}:
+    delete:
+      operationId: web#delete
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/vnd.goa.error
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: delete web
+      tags:
+      - web
+    get:
+      description: Display an recipe by id
+      operationId: web#show
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/vnd.goa.error
+      - text/html
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: href to created resource
+              pattern: text/html
+              type: string
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: show web
+      tags:
+      - web
+    patch:
+      operationId: web#update
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateWebPayload'
+      produces:
+      - application/recipe.recipe+json
+      - application/vnd.goa.error
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RecipeRecipe'
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: update web
+      tags:
+      - web
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  Created:
+    description: Created
+  NoContent:
+    description: No Content
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/RecipeRecipe'
+schemes:
+- http
+swagger: "2.0"

@@ -5,13 +5,37 @@ tasks:
     cmds:
       - docker-compose down
       - docker-compose up -d
-  build:
-    desc: "Build app and Docker image"
+  build-all:
+    deps:
+     - task: build-api
+     - task: build-web
+  build-api: 
+    dir: ./api
     cmds:
-      - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -o recipe -ldflags '-w' .
-      - docker-compose build recipe
-  generate:
-    desc: "generate goa"
+      - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -o recipe-api -ldflags '-w' .
+      - docker-compose build recipe-api
+  build-web: 
+    dir: ./web
     cmds:
-      - goagen bootstrap -d github.com/jaredwarren/recipe/design
-      - goagen app -d github.com/jaredwarren/recipe/design
+      - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -o recipe-web -ldflags '-w' .
+      - docker-compose build recipe-web
+  gen-all:
+    deps:
+     - task: generate-all
+  generate-all:
+    deps:
+     - task: generate-api
+     - task: generate-web
+  generate-api:
+    dir: ./api
+    cmds:
+      - goagen bootstrap -d github.com/jaredwarren/recipe/api/design
+      - goagen app -d github.com/jaredwarren/recipe/api/design
+  gen-web:
+    deps:
+     - task: generate-web
+  generate-web:
+    dir: ./web
+    cmds:
+      - goagen bootstrap -d github.com/jaredwarren/recipe/web/design
+      - goagen app -d github.com/jaredwarren/recipe/web/design

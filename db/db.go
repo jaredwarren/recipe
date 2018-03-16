@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jaredwarren/recipe/app"
+	"github.com/jaredwarren/recipe/api/app"
 )
 
 // RecipeDataAccessLayer abstract recipe access
