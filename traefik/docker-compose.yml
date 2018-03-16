@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  proxy:
+    image: traefik
+    command: --api --docker --docker.watch --docker.domain=recipe.localhost --logLevel=DEBUG
+    networks:
+      - webgateway
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080 # Træfik dashboard
+    volumes:
+      # Required so Traefik can see new or changed deployments.
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mounted so we can Hot-reload config
+      - ./traefik.toml:/etc/traefik/traefik.toml
+    labels:
+      - traefik.frontend.rule=Host:traefik.recipe.localhost
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - traefik.backend.loadbalancer.method=wrr
+networks:
+  webgateway:
+    driver: bridge

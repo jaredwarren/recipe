@@ -1,43 +1,43 @@
 version: '3.5'
 services:
-  loadbalancer:
-    image: traefik
-    command: --docker --docker.watch  --docker.domain=recipe.com
-    ports:
-      - 80:80
-      - 443:443
-      - 8080:8080 # Træfik dashboard
-    volumes:
-      # Required so Traefik can see new or changed deployments.
-      - /var/run/docker.sock:/var/run/docker.sock
-      # Mounted so we can Hot-reload config
-      - ./traefik.toml:/etc/traefik/traefik.toml
-    labels:
-      - traefik.frontend.rule=Host:traefik.recipe.com
-      - "traefik.enable=true"
-      - "traefik.port=8080"
-      - traefik.backend.loadbalancer.method=wrr
-    deploy:
-      restart_policy:
-        condition: any
-      mode: replicated
-      replicas: 1
-      update_config:
-        delay: 2s
-      placement:
-        constraints: 
-          - node.role == manager
-          - node.labels.name != db
-      labels:
-        - traefik.frontend.rule=Host:traefik.recipe.com
-        - "traefik.enable=true"
-        - "traefik.port=8080"
-        - "traefik.frontend.entryPoints=http"
+  # loadbalancer:
+  #   image: traefik
+  #   # command: --docker --docker.watch
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #     - 8080:8080 # Træfik dashboard
+  #   volumes:
+  #     # Required so Traefik can see new or changed deployments.
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     # Mounted so we can Hot-reload config
+  #     - ./traefik.toml:/etc/traefik/traefik.toml
+    # labels:
+    #   - traefik.frontend.rule=Host:traefik.recipe.localhost
+    #   - "traefik.enable=true"
+    #   - "traefik.port=8080"
+    #   - traefik.backend.loadbalancer.method=wrr
+    # deploy:
+    #   restart_policy:
+    #     condition: any
+    #   mode: replicated
+    #   replicas: 1
+    #   update_config:
+    #     delay: 2s
+    #   placement:
+    #     constraints: 
+    #       - node.role == manager
+    #       - node.labels.name != db
+    #   labels:
+    #     - traefik.frontend.rule=Host:traefik.recipe.localhost
+    #     - "traefik.enable=true"
+    #     - "traefik.port=8080"
+    #     - "traefik.frontend.entryPoints=http"
     # networks:
     #   - traefik-net
-    depends_on:
-      - recipe-api
-      - recipe-web
+    # depends_on:
+    #   - recipe-api
+    #   - recipe-web
     # secrets:
     #     - bladehq.com.crt
     #     - bladehq.com.key
@@ -63,13 +63,14 @@ services:
       - traefik.backend=recipe-api
       # - traefik.docker.network=traefik-net
       # - traefik.docker.network=recipe_mysql
-      - traefik.docker.network=bridge
+      # - traefik.docker.network=bridge
       - traefik.enable=true
-      - traefik.frontend.rule=Host:api.recipe.com
-      - traefik.frontend.priority=1
-      - traefik.port=80
-      - "traefik.frontend.entryPoints=http"
-      - traefik.backend.loadbalancer.method=wrr
+      - traefik.frontend.rule=Host:api.recipe.localhost
+      - "traefik.docker.network=traefik_webgateway"
+      # - traefik.frontend.priority=1
+      # - traefik.port=80
+      # - "traefik.frontend.entryPoints=http"
+      # - traefik.backend.loadbalancer.method=wrr
       # - "traefik.backend.loadbalancer.stickiness=true"
       # - "traefik.backend.loadbalancer.stickiness.cookieName=_blaze"
     volumes:
@@ -87,7 +88,7 @@ services:
       DB_NAME_FILE: /run/secrets/mysql_name
     networks:
       - mysql
-      # - traefik-net
+      - web
     depends_on:
       - mysql
     secrets:
@@ -110,12 +111,13 @@ services:
       - traefik.backend=recipe-web
       # - traefik.docker.network=traefik-net
       # - traefik.docker.network=recipe_mysql
-      - traefik.docker.network=bridge
+      # - traefik.docker.network=bridge
       - traefik.enable=true
-      - traefik.frontend.rule=Host:recipe.com,www.recipe.com
-      - traefik.frontend.priority=1
-      - traefik.port=80
-      - "traefik.frontend.entryPoints=http"
+      - traefik.frontend.rule=Host:recipe.localhost,www.recipe.localhost
+      - "traefik.docker.network=traefik_webgateway"
+      # - traefik.frontend.priority=1
+      # - traefik.port=80
+      # - "traefik.frontend.entryPoints=http"
       # - "traefik.backend.loadbalancer.stickiness=true"
       # - "traefik.backend.loadbalancer.stickiness.cookieName=_blaze"
     volumes:
@@ -133,7 +135,7 @@ services:
       DB_NAME_FILE: /run/secrets/mysql_name
     networks:
       - mysql
-      # - traefik-net
+      - web
     depends_on:
       - mysql
     secrets:
@@ -175,5 +177,6 @@ secrets:
 networks:
   mysql:
     driver: bridge
-  # traefik-net:
-  #   driver: bridge
+  web:
+    external:
+      name: traefik_webgateway

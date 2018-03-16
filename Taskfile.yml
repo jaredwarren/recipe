@@ -5,6 +5,10 @@ tasks:
     cmds:
       - docker-compose down
       - docker-compose up -d
+  lb-up:
+    dir: ./traefik
+    cmds:
+      - docker-compose up -d
   build-all:
     deps:
      - task: build-api

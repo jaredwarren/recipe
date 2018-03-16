@@ -10,32 +10,12 @@ InsecureSkipVerify = true
 [entryPoints]
   [entryPoints.http]
   address = ":80"
-    # [entryPoints.http.redirect]
-    # entryPoint = "https"
-#   [entryPoints.https]
-#   address = ":443"
-#     [entryPoints.https.tls]
-#       [[entryPoints.https.tls.certificates]]
-#       CertFile = "/run/secrets/bladehq.com.crt"
-#       KeyFile = "/run/secrets/bladehq.com.key"
-#       [[entryPoints.https.tls.certificates]]
-#       CertFile = "/run/secrets/bladeplay.com.crt"
-#       KeyFile = "/run/secrets/bladeplay.com.key"
-#       [[entryPoints.https.tls.certificates]]
-#       CertFile = "/run/secrets/flytaniumco.com.crt"
-#       KeyFile = "/run/secrets/flytaniumco.com.key"
-#       [[entryPoints.https.tls.certificates]]
-#       CertFile = "/run/secrets/arcformknives.com.crt"
-#       KeyFile = "/run/secrets/arcformknives.com.key"
-#     #   TODO: add other stores
-#     #   [[entryPoints.https.tls.certificates]]
-#     #   CertFile = "/run/secrets/store_name.com.crt"
-#     #   KeyFile = "/run/secrets/store_name.com.key"
 [docker]
 endpoint = "unix:///var/run/docker.sock"
 watch = true
+domain = "recipe.com"
 # swarmmode = false
-exposedbydefault = true
+exposedbydefault = false
 
 # API definition
 [api]
