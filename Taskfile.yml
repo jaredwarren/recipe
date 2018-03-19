@@ -1,14 +1,24 @@
 version: '2'
 # https://github.com/go-task/task
 tasks:
-  restart:
-    cmds:
-      - docker-compose down
-      - docker-compose up -d
+  up:
+    deps:
+     - task: lb-up
+     - task: web-up
   lb-up:
     dir: ./traefik
     cmds:
       - docker-compose up -d
+  web-up:
+    cmds:
+      - docker-compose up -d
+  web-down:
+    cmds:
+      - docker-compose down
+  web-restart:
+    deps:
+      - task: web-down
+      - task: web-up
   build-all:
     deps:
      - task: build-api

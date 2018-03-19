@@ -15,11 +15,12 @@
 </div>
 <div>
     <fieldset>
-        <legend>Create New Recipe</legend>
-        <form action="/recipe/recipes/" method="POST">
+        <legend>Create New Recipe..</legend>
+        <form id="createRecipeForm" action="http://api.recipe.localhost/recipe/" method="POST">
             <input type="text" name="title" placeholder="Title">
-            <input type="submit" value="Create">
+            <input id="submit" type="submit" value="Create">
         </form>
+        
     </fieldset>
 </div>
 {{end}}

@@ -21,8 +21,8 @@ func ImageHref(id interface{}) string {
 	return fmt.Sprintf("/images/%v", paramid)
 }
 
-// WebHref returns the resource href.
-func WebHref(id interface{}) string {
+// RecipeHref returns the resource href.
+func RecipeHref(id interface{}) string {
 	paramid := strings.TrimLeftFunc(fmt.Sprintf("%v", id), func(r rune) bool { return r == '/' })
 	return fmt.Sprintf("/recipe/%v", paramid)
 }

@@ -41,34 +41,34 @@ type (
 		PrettyPrint bool
 	}
 
-	// CreateWebCommand is the command line data structure for the create action of web
-	CreateWebCommand struct {
+	// CreateRecipeCommand is the command line data structure for the create action of recipe
+	CreateRecipeCommand struct {
 		Payload     string
 		ContentType string
 		PrettyPrint bool
 	}
 
-	// DeleteWebCommand is the command line data structure for the delete action of web
-	DeleteWebCommand struct {
+	// DeleteRecipeCommand is the command line data structure for the delete action of recipe
+	DeleteRecipeCommand struct {
 		// Recipe ID
 		ID          string
 		PrettyPrint bool
 	}
 
-	// ListWebCommand is the command line data structure for the list action of web
-	ListWebCommand struct {
+	// ListRecipeCommand is the command line data structure for the list action of recipe
+	ListRecipeCommand struct {
 		PrettyPrint bool
 	}
 
-	// ShowWebCommand is the command line data structure for the show action of web
-	ShowWebCommand struct {
+	// ShowRecipeCommand is the command line data structure for the show action of recipe
+	ShowRecipeCommand struct {
 		// Recipe ID
 		ID          string
 		PrettyPrint bool
 	}
 
-	// UpdateWebCommand is the command line data structure for the update action of web
-	UpdateWebCommand struct {
+	// UpdateRecipeCommand is the command line data structure for the update action of recipe
+	UpdateRecipeCommand struct {
 		Payload     string
 		ContentType string
 		// Recipe ID
@@ -90,9 +90,9 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 		Use:   "create",
 		Short: ``,
 	}
-	tmp1 := new(CreateWebCommand)
+	tmp1 := new(CreateRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `web ["/recipe/"]`,
+		Use:   `recipe ["/recipe/"]`,
 		Short: ``,
 		Long: `
 
@@ -242,9 +242,9 @@ Payload example:
 		Use:   "delete",
 		Short: ``,
 	}
-	tmp2 := new(DeleteWebCommand)
+	tmp2 := new(DeleteRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `web ["/recipe/ID"]`,
+		Use:   `recipe ["/recipe/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
 	}
@@ -256,9 +256,9 @@ Payload example:
 		Use:   "list",
 		Short: `List recipes`,
 	}
-	tmp3 := new(ListWebCommand)
+	tmp3 := new(ListRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `web ["/recipe/"]`,
+		Use:   `recipe ["/recipe/"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
@@ -279,9 +279,9 @@ Payload example:
 	tmp4.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp5 := new(ShowWebCommand)
+	tmp5 := new(ShowRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `web ["/recipe/ID"]`,
+		Use:   `recipe ["/recipe/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
@@ -293,9 +293,9 @@ Payload example:
 		Use:   "update",
 		Short: ``,
 	}
-	tmp6 := new(UpdateWebCommand)
+	tmp6 := new(UpdateRecipeCommand)
 	sub = &cobra.Command{
-		Use:   `web ["/recipe/ID"]`,
+		Use:   `recipe ["/recipe/ID"]`,
 		Short: ``,
 		Long: `
 
@@ -711,15 +711,15 @@ func (cmd *UploadImageCommand) Run(c *client.Client, args []string) error {
 func (cmd *UploadImageCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 }
 
-// Run makes the HTTP request corresponding to the CreateWebCommand command.
-func (cmd *CreateWebCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the CreateRecipeCommand command.
+func (cmd *CreateRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
 	} else {
 		path = "/recipe/"
 	}
-	var payload client.CreateWebPayload
+	var payload client.CreateRecipePayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {
@@ -728,7 +728,7 @@ func (cmd *CreateWebCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.CreateWeb(ctx, path, &payload)
+	resp, err := c.CreateRecipe(ctx, path, &payload)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -739,13 +739,13 @@ func (cmd *CreateWebCommand) Run(c *client.Client, args []string) error {
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *CreateWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *CreateRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 }
 
-// Run makes the HTTP request corresponding to the DeleteWebCommand command.
-func (cmd *DeleteWebCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the DeleteRecipeCommand command.
+func (cmd *DeleteRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
@@ -754,7 +754,7 @@ func (cmd *DeleteWebCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.DeleteWeb(ctx, path)
+	resp, err := c.DeleteRecipe(ctx, path)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -765,13 +765,13 @@ func (cmd *DeleteWebCommand) Run(c *client.Client, args []string) error {
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *DeleteWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *DeleteRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var id string
 	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
 }
 
-// Run makes the HTTP request corresponding to the ListWebCommand command.
-func (cmd *ListWebCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the ListRecipeCommand command.
+func (cmd *ListRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
@@ -780,7 +780,7 @@ func (cmd *ListWebCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.ListWeb(ctx, path)
+	resp, err := c.ListRecipe(ctx, path)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -791,11 +791,11 @@ func (cmd *ListWebCommand) Run(c *client.Client, args []string) error {
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *ListWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *ListRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 }
 
-// Run makes the HTTP request corresponding to the ShowWebCommand command.
-func (cmd *ShowWebCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the ShowRecipeCommand command.
+func (cmd *ShowRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
@@ -804,7 +804,7 @@ func (cmd *ShowWebCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.ShowWeb(ctx, path)
+	resp, err := c.ShowRecipe(ctx, path)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -815,20 +815,20 @@ func (cmd *ShowWebCommand) Run(c *client.Client, args []string) error {
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *ShowWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *ShowRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var id string
 	cc.Flags().StringVar(&cmd.ID, "id", id, `Recipe ID`)
 }
 
-// Run makes the HTTP request corresponding to the UpdateWebCommand command.
-func (cmd *UpdateWebCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the UpdateRecipeCommand command.
+func (cmd *UpdateRecipeCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
 	} else {
 		path = fmt.Sprintf("/recipe/%v", url.QueryEscape(cmd.ID))
 	}
-	var payload client.UpdateWebPayload
+	var payload client.UpdateRecipePayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {
@@ -837,7 +837,7 @@ func (cmd *UpdateWebCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.UpdateWeb(ctx, path, &payload)
+	resp, err := c.UpdateRecipe(ctx, path, &payload)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -848,7 +848,7 @@ func (cmd *UpdateWebCommand) Run(c *client.Client, args []string) error {
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *UpdateWebCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *UpdateRecipeCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var id string

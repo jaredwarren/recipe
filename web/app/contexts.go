@@ -83,28 +83,28 @@ func (ctx *UploadImageContext) OK(r *ImageMedia) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// CreateWebContext provides the web create action context.
-type CreateWebContext struct {
+// CreateRecipeContext provides the recipe create action context.
+type CreateRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Payload *CreateWebPayload
+	Payload *CreateRecipePayload
 }
 
-// NewCreateWebContext parses the incoming request URL and body, performs validations and creates the
-// context used by the web controller create action.
-func NewCreateWebContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateWebContext, error) {
+// NewCreateRecipeContext parses the incoming request URL and body, performs validations and creates the
+// context used by the recipe controller create action.
+func NewCreateRecipeContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateRecipeContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := CreateWebContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := CreateRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	return &rctx, err
 }
 
-// createWebPayload is the web create action payload.
-type createWebPayload struct {
+// createRecipePayload is the recipe create action payload.
+type createRecipePayload struct {
 	// If it's been added/included
 	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
 	// Amount of time to cook
@@ -138,7 +138,7 @@ type createWebPayload struct {
 }
 
 // Validate runs the validation rules defined in the design.
-func (payload *createWebPayload) Validate() (err error) {
+func (payload *createRecipePayload) Validate() (err error) {
 	if payload.Title == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
 	}
@@ -172,9 +172,9 @@ func (payload *createWebPayload) Validate() (err error) {
 	return
 }
 
-// Publicize creates CreateWebPayload from createWebPayload
-func (payload *createWebPayload) Publicize() *CreateWebPayload {
-	var pub CreateWebPayload
+// Publicize creates CreateRecipePayload from createRecipePayload
+func (payload *createRecipePayload) Publicize() *CreateRecipePayload {
+	var pub CreateRecipePayload
 	if payload.Complete != nil {
 		pub.Complete = payload.Complete
 	}
@@ -226,8 +226,8 @@ func (payload *createWebPayload) Publicize() *CreateWebPayload {
 	return &pub
 }
 
-// CreateWebPayload is the web create action payload.
-type CreateWebPayload struct {
+// CreateRecipePayload is the recipe create action payload.
+type CreateRecipePayload struct {
 	// If it's been added/included
 	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
 	// Amount of time to cook
@@ -261,7 +261,7 @@ type CreateWebPayload struct {
 }
 
 // Validate runs the validation rules defined in the design.
-func (payload *CreateWebPayload) Validate() (err error) {
+func (payload *CreateRecipePayload) Validate() (err error) {
 	if payload.Title == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
 	}
@@ -296,7 +296,7 @@ func (payload *CreateWebPayload) Validate() (err error) {
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *CreateWebContext) OK(r *RecipeRecipe) error {
+func (ctx *CreateRecipeContext) OK(r *RecipeRecipe) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	}
@@ -304,7 +304,7 @@ func (ctx *CreateWebContext) OK(r *RecipeRecipe) error {
 }
 
 // OKIngredient sends a HTTP response with status code 200.
-func (ctx *CreateWebContext) OKIngredient(r *RecipeRecipeIngredient) error {
+func (ctx *CreateRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	}
@@ -312,36 +312,36 @@ func (ctx *CreateWebContext) OKIngredient(r *RecipeRecipeIngredient) error {
 }
 
 // Created sends a HTTP response with status code 201.
-func (ctx *CreateWebContext) Created() error {
+func (ctx *CreateRecipeContext) Created() error {
 	ctx.ResponseData.WriteHeader(201)
 	return nil
 }
 
 // InternalServerError sends a HTTP response with status code 500.
-func (ctx *CreateWebContext) InternalServerError(r error) error {
+func (ctx *CreateRecipeContext) InternalServerError(r error) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
 }
 
-// DeleteWebContext provides the web delete action context.
-type DeleteWebContext struct {
+// DeleteRecipeContext provides the recipe delete action context.
+type DeleteRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
 	ID string
 }
 
-// NewDeleteWebContext parses the incoming request URL and body, performs validations and creates the
-// context used by the web controller delete action.
-func NewDeleteWebContext(ctx context.Context, r *http.Request, service *goa.Service) (*DeleteWebContext, error) {
+// NewDeleteRecipeContext parses the incoming request URL and body, performs validations and creates the
+// context used by the recipe controller delete action.
+func NewDeleteRecipeContext(ctx context.Context, r *http.Request, service *goa.Service) (*DeleteRecipeContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := DeleteWebContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := DeleteRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramID := req.Params["id"]
 	if len(paramID) > 0 {
 		rawID := paramID[0]
@@ -351,46 +351,46 @@ func NewDeleteWebContext(ctx context.Context, r *http.Request, service *goa.Serv
 }
 
 // NoContent sends a HTTP response with status code 204.
-func (ctx *DeleteWebContext) NoContent() error {
+func (ctx *DeleteRecipeContext) NoContent() error {
 	ctx.ResponseData.WriteHeader(204)
 	return nil
 }
 
 // NotFound sends a HTTP response with status code 404.
-func (ctx *DeleteWebContext) NotFound() error {
+func (ctx *DeleteRecipeContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
 // InternalServerError sends a HTTP response with status code 500.
-func (ctx *DeleteWebContext) InternalServerError(r error) error {
+func (ctx *DeleteRecipeContext) InternalServerError(r error) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
 }
 
-// ListWebContext provides the web list action context.
-type ListWebContext struct {
+// ListRecipeContext provides the recipe list action context.
+type ListRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
 }
 
-// NewListWebContext parses the incoming request URL and body, performs validations and creates the
-// context used by the web controller list action.
-func NewListWebContext(ctx context.Context, r *http.Request, service *goa.Service) (*ListWebContext, error) {
+// NewListRecipeContext parses the incoming request URL and body, performs validations and creates the
+// context used by the recipe controller list action.
+func NewListRecipeContext(ctx context.Context, r *http.Request, service *goa.Service) (*ListRecipeContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := ListWebContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := ListRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	return &rctx, err
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ListWebContext) OK(resp []byte) error {
+func (ctx *ListRecipeContext) OK(resp []byte) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "text/html")
 	}
@@ -400,30 +400,30 @@ func (ctx *ListWebContext) OK(resp []byte) error {
 }
 
 // InternalServerError sends a HTTP response with status code 500.
-func (ctx *ListWebContext) InternalServerError(r error) error {
+func (ctx *ListRecipeContext) InternalServerError(r error) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
 }
 
-// ShowWebContext provides the web show action context.
-type ShowWebContext struct {
+// ShowRecipeContext provides the recipe show action context.
+type ShowRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
 	ID string
 }
 
-// NewShowWebContext parses the incoming request URL and body, performs validations and creates the
-// context used by the web controller show action.
-func NewShowWebContext(ctx context.Context, r *http.Request, service *goa.Service) (*ShowWebContext, error) {
+// NewShowRecipeContext parses the incoming request URL and body, performs validations and creates the
+// context used by the recipe controller show action.
+func NewShowRecipeContext(ctx context.Context, r *http.Request, service *goa.Service) (*ShowRecipeContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := ShowWebContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := ShowRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramID := req.Params["id"]
 	if len(paramID) > 0 {
 		rawID := paramID[0]
@@ -433,7 +433,7 @@ func NewShowWebContext(ctx context.Context, r *http.Request, service *goa.Servic
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowWebContext) OK(resp []byte) error {
+func (ctx *ShowRecipeContext) OK(resp []byte) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "text/html")
 	}
@@ -443,43 +443,43 @@ func (ctx *ShowWebContext) OK(resp []byte) error {
 }
 
 // Created sends a HTTP response with status code 201.
-func (ctx *ShowWebContext) Created() error {
+func (ctx *ShowRecipeContext) Created() error {
 	ctx.ResponseData.WriteHeader(201)
 	return nil
 }
 
 // NotFound sends a HTTP response with status code 404.
-func (ctx *ShowWebContext) NotFound() error {
+func (ctx *ShowRecipeContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
 // InternalServerError sends a HTTP response with status code 500.
-func (ctx *ShowWebContext) InternalServerError(r error) error {
+func (ctx *ShowRecipeContext) InternalServerError(r error) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 500, r)
 }
 
-// UpdateWebContext provides the web update action context.
-type UpdateWebContext struct {
+// UpdateRecipeContext provides the recipe update action context.
+type UpdateRecipeContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
 	ID      string
-	Payload *UpdateWebPayload
+	Payload *UpdateRecipePayload
 }
 
-// NewUpdateWebContext parses the incoming request URL and body, performs validations and creates the
-// context used by the web controller update action.
-func NewUpdateWebContext(ctx context.Context, r *http.Request, service *goa.Service) (*UpdateWebContext, error) {
+// NewUpdateRecipeContext parses the incoming request URL and body, performs validations and creates the
+// context used by the recipe controller update action.
+func NewUpdateRecipeContext(ctx context.Context, r *http.Request, service *goa.Service) (*UpdateRecipeContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := UpdateWebContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := UpdateRecipeContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramID := req.Params["id"]
 	if len(paramID) > 0 {
 		rawID := paramID[0]
@@ -488,8 +488,8 @@ func NewUpdateWebContext(ctx context.Context, r *http.Request, service *goa.Serv
 	return &rctx, err
 }
 
-// updateWebPayload is the web update action payload.
-type updateWebPayload struct {
+// updateRecipePayload is the recipe update action payload.
+type updateRecipePayload struct {
 	// If it's been added/included
 	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
 	// Amount of time to cook
@@ -523,7 +523,7 @@ type updateWebPayload struct {
 }
 
 // Validate runs the validation rules defined in the design.
-func (payload *updateWebPayload) Validate() (err error) {
+func (payload *updateRecipePayload) Validate() (err error) {
 	if payload.Title == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
 	}
@@ -557,9 +557,9 @@ func (payload *updateWebPayload) Validate() (err error) {
 	return
 }
 
-// Publicize creates UpdateWebPayload from updateWebPayload
-func (payload *updateWebPayload) Publicize() *UpdateWebPayload {
-	var pub UpdateWebPayload
+// Publicize creates UpdateRecipePayload from updateRecipePayload
+func (payload *updateRecipePayload) Publicize() *UpdateRecipePayload {
+	var pub UpdateRecipePayload
 	if payload.Complete != nil {
 		pub.Complete = payload.Complete
 	}
@@ -611,8 +611,8 @@ func (payload *updateWebPayload) Publicize() *UpdateWebPayload {
 	return &pub
 }
 
-// UpdateWebPayload is the web update action payload.
-type UpdateWebPayload struct {
+// UpdateRecipePayload is the recipe update action payload.
+type UpdateRecipePayload struct {
 	// If it's been added/included
 	Complete *bool `form:"complete,omitempty" json:"complete,omitempty" xml:"complete,omitempty"`
 	// Amount of time to cook
@@ -646,7 +646,7 @@ type UpdateWebPayload struct {
 }
 
 // Validate runs the validation rules defined in the design.
-func (payload *UpdateWebPayload) Validate() (err error) {
+func (payload *UpdateRecipePayload) Validate() (err error) {
 	if payload.Title == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
 	}
@@ -681,7 +681,7 @@ func (payload *UpdateWebPayload) Validate() (err error) {
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *UpdateWebContext) OK(r *RecipeRecipe) error {
+func (ctx *UpdateRecipeContext) OK(r *RecipeRecipe) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	}
@@ -689,7 +689,7 @@ func (ctx *UpdateWebContext) OK(r *RecipeRecipe) error {
 }
 
 // OKIngredient sends a HTTP response with status code 200.
-func (ctx *UpdateWebContext) OKIngredient(r *RecipeRecipeIngredient) error {
+func (ctx *UpdateRecipeContext) OKIngredient(r *RecipeRecipeIngredient) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	}
@@ -697,13 +697,13 @@ func (ctx *UpdateWebContext) OKIngredient(r *RecipeRecipeIngredient) error {
 }
 
 // NoContent sends a HTTP response with status code 204.
-func (ctx *UpdateWebContext) NoContent() error {
+func (ctx *UpdateRecipeContext) NoContent() error {
 	ctx.ResponseData.WriteHeader(204)
 	return nil
 }
 
 // BadRequest sends a HTTP response with status code 400.
-func (ctx *UpdateWebContext) BadRequest(r error) error {
+func (ctx *UpdateRecipeContext) BadRequest(r error) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}
@@ -711,13 +711,13 @@ func (ctx *UpdateWebContext) BadRequest(r error) error {
 }
 
 // NotFound sends a HTTP response with status code 404.
-func (ctx *UpdateWebContext) NotFound() error {
+func (ctx *UpdateRecipeContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
 // InternalServerError sends a HTTP response with status code 500.
-func (ctx *UpdateWebContext) InternalServerError(r error) error {
+func (ctx *UpdateRecipeContext) InternalServerError(r error) error {
 	if ctx.ResponseData.Header().Get("Content-Type") == "" {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	}

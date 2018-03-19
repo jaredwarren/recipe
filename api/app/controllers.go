@@ -13,6 +13,7 @@ package app
 import (
 	"context"
 	"github.com/goadesign/goa"
+	"github.com/goadesign/goa/cors"
 	"net/http"
 )
 
@@ -41,6 +42,8 @@ type RecipeController interface {
 func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 	initService(service)
 	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/recipe/", ctrl.MuxHandler("preflight", handleRecipeOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/recipe/:id", ctrl.MuxHandler("preflight", handleRecipeOrigin(cors.HandlePreflight()), nil))
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -60,6 +63,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Create(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("POST", "/recipe/", ctrl.MuxHandler("create", h, unmarshalCreateRecipePayload))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Create", "route", "POST /recipe/")
 
@@ -75,6 +79,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Delete(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("DELETE", "/recipe/:id", ctrl.MuxHandler("delete", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Delete", "route", "DELETE /recipe/:id")
 
@@ -90,6 +95,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.List(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("GET", "/recipe/", ctrl.MuxHandler("list", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "List", "route", "GET /recipe/")
 
@@ -105,6 +111,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Show(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("GET", "/recipe/:id", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Show", "route", "GET /recipe/:id")
 
@@ -126,8 +133,35 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Update(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("PATCH", "/recipe/:id", ctrl.MuxHandler("update", h, unmarshalUpdateRecipePayload))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PATCH /recipe/:id")
+}
+
+// handleRecipeOrigin applies the CORS response headers corresponding to the origin.
+func handleRecipeOrigin(h goa.Handler) goa.Handler {
+
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "*") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Access-Control-Expose-Headers", "Content-Type, Origin")
+			rw.Header().Set("Access-Control-Allow-Credentials", "false")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				rw.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
 }
 
 // unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.

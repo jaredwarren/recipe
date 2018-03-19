@@ -5,8 +5,8 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-// web ...
-var _ = Resource("web", func() {
+// recipe ...
+var _ = Resource("recipe", func() {
 	BasePath("/recipe")
 	DefaultMedia(RecipeMedia)
 

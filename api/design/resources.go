@@ -9,6 +9,12 @@ import (
 var _ = Resource("recipe", func() {
 	BasePath("/recipe")
 	DefaultMedia(RecipeMedia)
+	// Headers(func() {
+	// 	// Header("Location", String, "Resource location", func() {
+	// 	// 	Pattern("/results/[0-9]+")
+	// 	// })
+	// 	Header("Access-Control-Allow-Origin", String, "*.recipe.localhost") // assumes String type as with Attribute
+	// })
 
 	Action("list", func() {
 		Description("List recipes")

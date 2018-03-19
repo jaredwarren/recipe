@@ -25,6 +25,13 @@ var _ = API("recipe", func() {
 	})
 	Host("api.recipe.com")
 	Scheme("http")
+	// Origin("*", func() {
+	// 	Methods("GET", "POST", "PUT", "PATCH", "DELETE")
+	// 	Headers("Accept", "Content-Type")
+	// 	Expose("Content-Type", "Origin")
+	// 	// MaxAge(600)
+	// 	// Credentials()
+	// })
 	// BasePath("/recipe")
 	// Consumes("application/x-www-form-urlencoded", func() {
 	// 	Package("github.com/goadesign/goa/encoding/form")

@@ -82,18 +82,18 @@ func MountImageController(service *goa.Service, ctrl ImageController) {
 	service.LogInfo("mount", "ctrl", "Image", "files", "images/index.html", "route", "GET /download/")
 }
 
-// WebController is the controller interface for the Web actions.
-type WebController interface {
+// RecipeController is the controller interface for the Recipe actions.
+type RecipeController interface {
 	goa.Muxer
-	Create(*CreateWebContext) error
-	Delete(*DeleteWebContext) error
-	List(*ListWebContext) error
-	Show(*ShowWebContext) error
-	Update(*UpdateWebContext) error
+	Create(*CreateRecipeContext) error
+	Delete(*DeleteRecipeContext) error
+	List(*ListRecipeContext) error
+	Show(*ShowRecipeContext) error
+	Update(*UpdateRecipeContext) error
 }
 
-// MountWebController "mounts" a Web resource controller on the given service.
-func MountWebController(service *goa.Service, ctrl WebController) {
+// MountRecipeController "mounts" a Recipe resource controller on the given service.
+func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 	initService(service)
 	var h goa.Handler
 
@@ -103,20 +103,20 @@ func MountWebController(service *goa.Service, ctrl WebController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewCreateWebContext(ctx, req, service)
+		rctx, err := NewCreateRecipeContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*CreateWebPayload)
+			rctx.Payload = rawPayload.(*CreateRecipePayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
 		return ctrl.Create(rctx)
 	}
-	service.Mux.Handle("POST", "/recipe/", ctrl.MuxHandler("create", h, unmarshalCreateWebPayload))
-	service.LogInfo("mount", "ctrl", "Web", "action", "Create", "route", "POST /recipe/")
+	service.Mux.Handle("POST", "/recipe/", ctrl.MuxHandler("create", h, unmarshalCreateRecipePayload))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Create", "route", "POST /recipe/")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -124,14 +124,14 @@ func MountWebController(service *goa.Service, ctrl WebController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewDeleteWebContext(ctx, req, service)
+		rctx, err := NewDeleteRecipeContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
 		return ctrl.Delete(rctx)
 	}
 	service.Mux.Handle("DELETE", "/recipe/:id", ctrl.MuxHandler("delete", h, nil))
-	service.LogInfo("mount", "ctrl", "Web", "action", "Delete", "route", "DELETE /recipe/:id")
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Delete", "route", "DELETE /recipe/:id")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -139,14 +139,14 @@ func MountWebController(service *goa.Service, ctrl WebController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewListWebContext(ctx, req, service)
+		rctx, err := NewListRecipeContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
 		return ctrl.List(rctx)
 	}
 	service.Mux.Handle("GET", "/recipe/", ctrl.MuxHandler("list", h, nil))
-	service.LogInfo("mount", "ctrl", "Web", "action", "List", "route", "GET /recipe/")
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "List", "route", "GET /recipe/")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -154,14 +154,14 @@ func MountWebController(service *goa.Service, ctrl WebController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewShowWebContext(ctx, req, service)
+		rctx, err := NewShowRecipeContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
 		return ctrl.Show(rctx)
 	}
 	service.Mux.Handle("GET", "/recipe/:id", ctrl.MuxHandler("show", h, nil))
-	service.LogInfo("mount", "ctrl", "Web", "action", "Show", "route", "GET /recipe/:id")
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Show", "route", "GET /recipe/:id")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -169,25 +169,25 @@ func MountWebController(service *goa.Service, ctrl WebController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewUpdateWebContext(ctx, req, service)
+		rctx, err := NewUpdateRecipeContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*UpdateWebPayload)
+			rctx.Payload = rawPayload.(*UpdateRecipePayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
 		return ctrl.Update(rctx)
 	}
-	service.Mux.Handle("PATCH", "/recipe/:id", ctrl.MuxHandler("update", h, unmarshalUpdateWebPayload))
-	service.LogInfo("mount", "ctrl", "Web", "action", "Update", "route", "PATCH /recipe/:id")
+	service.Mux.Handle("PATCH", "/recipe/:id", ctrl.MuxHandler("update", h, unmarshalUpdateRecipePayload))
+	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PATCH /recipe/:id")
 }
 
-// unmarshalCreateWebPayload unmarshals the request body into the context request data Payload field.
-func unmarshalCreateWebPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &createWebPayload{}
+// unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &createRecipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
@@ -200,9 +200,9 @@ func unmarshalCreateWebPayload(ctx context.Context, service *goa.Service, req *h
 	return nil
 }
 
-// unmarshalUpdateWebPayload unmarshals the request body into the context request data Payload field.
-func unmarshalUpdateWebPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &updateWebPayload{}
+// unmarshalUpdateRecipePayload unmarshals the request body into the context request data Payload field.
+func unmarshalUpdateRecipePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &updateRecipePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}

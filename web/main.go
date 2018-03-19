@@ -84,8 +84,8 @@ func main() {
 	// c2 := NewRecipeController(service)
 	// app.MountRecipeController(service, c2)
 	// Mount "web" controller
-	c2 := NewWebController(service, rdb)
-	app.MountWebController(service, c2)
+	c2 := NewRecipeController(service, rdb)
+	app.MountRecipeController(service, c2)
 
 	// Start service
 	port, ok := os.LookupEnv("PORT")
