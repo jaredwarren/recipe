@@ -13,6 +13,7 @@ package client
 import (
 	"github.com/goadesign/goa"
 	goaclient "github.com/goadesign/goa/client"
+	"github.com/goadesign/goa/encoding/form"
 )
 
 // Client is the recipe service client.
@@ -32,11 +33,11 @@ func New(c goaclient.Doer) *Client {
 
 	// Setup encoders and decoders
 	client.Encoder.Register(goa.NewJSONEncoder, "application/json")
-	client.Decoder.Register(goa.NewJSONDecoder, "application/json")
+	client.Decoder.Register(form.NewDecoder, "application/x-www-form-urlencoded")
 
 	// Setup default encoder and decoder
 	client.Encoder.Register(goa.NewJSONEncoder, "*/*")
-	client.Decoder.Register(goa.NewJSONDecoder, "*/*")
+	client.Decoder.Register(form.NewDecoder, "*/*")
 
 	return client
 }

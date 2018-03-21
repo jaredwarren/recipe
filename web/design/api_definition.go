@@ -23,25 +23,18 @@ var _ = API("recipe", func() {
 		Description("TODO")
 		URL("http://jlwarren1.com/recipe/docs")
 	})
-	Host("www.recipe.com")
+	Host("recipe.localhost")
 	Scheme("http")
-	// BasePath("/recipe")
 	Consumes("application/x-www-form-urlencoded", func() {
 		Package("github.com/goadesign/goa/encoding/form")
 	})
-	// Produces("application/x-www-form-urlencoded", func() {
-	// 	Package("github.com/goadesign/goa/encoding/form")
-	// })
-
-	// Produces("text/html")
-
-	/*Origin("http://swagger.goa.design", func() {
+	Origin("*", func() {
 		Methods("GET", "POST", "PUT", "PATCH", "DELETE")
+		Headers("Accept", "Content-Type")
+		Expose("Content-Type", "Origin")
 		MaxAge(600)
 		Credentials()
 	})
-
-	*/
 	ResponseTemplate(Created, func(pattern string) {
 		Description("Resource created")
 		Status(201)

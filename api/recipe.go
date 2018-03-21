@@ -25,23 +25,23 @@ func NewRecipeController(service *goa.Service, db rdb.RecipeDataAccessLayer) *Re
 
 // Create runs the create action.
 func (c *RecipeController) Create(ctx *app.CreateRecipeContext) error {
-	fmt.Println("~~~~~~~01~~~~~~~")
 	rec := &app.RecipeRecipe{
 		Title: ctx.Payload.Title,
 	}
 
 	id, err := c.DB.InsertRecipe(rec)
 	if err != nil {
-		fmt.Println("~~~~~~~", err, "~~~~~~~")
 		return ctx.InternalServerError(err)
 	}
-	fmt.Println("~~~~~~~02~~~~~~~")
 	rec.ID = id
-	ctx.ResponseData.Header().Set("Access-Control-Allow-Origin", "*.recipe.localhost")
+	ctx.ResponseData.Header().Set("Access-Control-Allow-Origin", "http://recipe.localhost")
+	// ctx.ResponseData.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
+	ctx.ResponseData.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With, Location")
+	// ctx.ResponseData.Header().Set("Access-Control-Allow-Credentials", "true")
 
+	// this doesn't work for some reason
 	ctx.ResponseData.Header().Set("Location", app.RecipeHref(rec.ID))
-	fmt.Println("~~~~~~~03~~~~~~~")
-	return ctx.Created()
+	return ctx.OK(rec)
 }
 
 // Delete runs the delete action.

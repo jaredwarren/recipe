@@ -85,7 +85,7 @@ func (c *Client) NewCreateRecipeRequest(ctx context.Context, path string, payloa
 		return nil, err
 	}
 	header := req.Header
-	header.Set("Content-Type", "application/json")
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
 	return req, nil
 }
 
@@ -245,6 +245,6 @@ func (c *Client) NewUpdateRecipeRequest(ctx context.Context, path string, payloa
 		return nil, err
 	}
 	header := req.Header
-	header.Set("Content-Type", "application/json")
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
 	return req, nil
 }

@@ -13,6 +13,7 @@ package app
 import (
 	"context"
 	"github.com/goadesign/goa"
+	"github.com/goadesign/goa/cors"
 	"github.com/goadesign/goa/encoding/form"
 	"net/http"
 )
@@ -42,6 +43,9 @@ type ImageController interface {
 func MountImageController(service *goa.Service, ctrl ImageController) {
 	initService(service)
 	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/images/:id", ctrl.MuxHandler("preflight", handleImageOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/images/", ctrl.MuxHandler("preflight", handleImageOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/download/*filename", ctrl.MuxHandler("preflight", handleImageOrigin(cors.HandlePreflight()), nil))
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -55,6 +59,7 @@ func MountImageController(service *goa.Service, ctrl ImageController) {
 		}
 		return ctrl.Show(rctx)
 	}
+	h = handleImageOrigin(h)
 	service.Mux.Handle("GET", "/images/:id", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Image", "action", "Show", "route", "GET /images/:id")
 
@@ -70,16 +75,46 @@ func MountImageController(service *goa.Service, ctrl ImageController) {
 		}
 		return ctrl.Upload(rctx)
 	}
+	h = handleImageOrigin(h)
 	service.Mux.Handle("POST", "/images/", ctrl.MuxHandler("upload", h, nil))
 	service.LogInfo("mount", "ctrl", "Image", "action", "Upload", "route", "POST /images/")
 
 	h = ctrl.FileHandler("/download/*filename", "images/")
+	h = handleImageOrigin(h)
 	service.Mux.Handle("GET", "/download/*filename", ctrl.MuxHandler("serve", h, nil))
 	service.LogInfo("mount", "ctrl", "Image", "files", "images/", "route", "GET /download/*filename")
 
 	h = ctrl.FileHandler("/download/", "images/index.html")
+	h = handleImageOrigin(h)
 	service.Mux.Handle("GET", "/download/", ctrl.MuxHandler("serve", h, nil))
 	service.LogInfo("mount", "ctrl", "Image", "files", "images/index.html", "route", "GET /download/")
+}
+
+// handleImageOrigin applies the CORS response headers corresponding to the origin.
+func handleImageOrigin(h goa.Handler) goa.Handler {
+
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "*") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Access-Control-Expose-Headers", "Content-Type, Origin")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				rw.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
 }
 
 // RecipeController is the controller interface for the Recipe actions.
@@ -96,6 +131,8 @@ type RecipeController interface {
 func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 	initService(service)
 	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/recipe/", ctrl.MuxHandler("preflight", handleRecipeOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/recipe/:id", ctrl.MuxHandler("preflight", handleRecipeOrigin(cors.HandlePreflight()), nil))
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -115,6 +152,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Create(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("POST", "/recipe/", ctrl.MuxHandler("create", h, unmarshalCreateRecipePayload))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Create", "route", "POST /recipe/")
 
@@ -130,6 +168,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Delete(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("DELETE", "/recipe/:id", ctrl.MuxHandler("delete", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Delete", "route", "DELETE /recipe/:id")
 
@@ -145,6 +184,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.List(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("GET", "/recipe/", ctrl.MuxHandler("list", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "List", "route", "GET /recipe/")
 
@@ -160,6 +200,7 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Show(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("GET", "/recipe/:id", ctrl.MuxHandler("show", h, nil))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Show", "route", "GET /recipe/:id")
 
@@ -181,8 +222,36 @@ func MountRecipeController(service *goa.Service, ctrl RecipeController) {
 		}
 		return ctrl.Update(rctx)
 	}
+	h = handleRecipeOrigin(h)
 	service.Mux.Handle("PATCH", "/recipe/:id", ctrl.MuxHandler("update", h, unmarshalUpdateRecipePayload))
 	service.LogInfo("mount", "ctrl", "Recipe", "action", "Update", "route", "PATCH /recipe/:id")
+}
+
+// handleRecipeOrigin applies the CORS response headers corresponding to the origin.
+func handleRecipeOrigin(h goa.Handler) goa.Handler {
+
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "*") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Access-Control-Expose-Headers", "Content-Type, Origin")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				rw.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
 }
 
 // unmarshalCreateRecipePayload unmarshals the request body into the context request data Payload field.

@@ -12,6 +12,7 @@
         {{ end }}
     </ul>
     <br/>
+
 </div>
 <div>
     <fieldset>
@@ -19,6 +20,30 @@
         <form id="createRecipeForm" action="http://api.recipe.localhost/recipe/" method="POST">
             <input type="text" name="title" placeholder="Title">
             <input id="submit" type="submit" value="Create">
+            <script>
+                $(function () {
+                    $('#createRecipeForm').on('submit', function (event) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'http://api.recipe.localhost/recipe/',
+                            dataType: 'text',
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true,
+                            data: $('#createRecipeForm').serialize(),
+                            success: function (data, x, response, z) {
+                                // debugger;
+                            },
+                            error: function(x, y, z){
+                                debugger;
+                            },
+                        });
+
+                        return false;
+                    });
+                });
+            </script>
         </form>
         
     </fieldset>

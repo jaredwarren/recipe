@@ -25,6 +25,13 @@ var _ = API("recipe", func() {
 	})
 	Host("api.recipe.com")
 	Scheme("http")
+	Origin("*.recipe.localhost", func() {
+		Methods("GET", "POST", "PUT", "PATCH", "DELETE")
+		Headers("Accept", "Content-Type")
+		Expose("Content-Type", "Origin")
+		MaxAge(600)
+		Credentials()
+	})
 	// Origin("*", func() {
 	// 	Methods("GET", "POST", "PUT", "PATCH", "DELETE")
 	// 	Headers("Accept", "Content-Type")
@@ -40,7 +47,10 @@ var _ = API("recipe", func() {
 	// 	Package("github.com/goadesign/goa/encoding/form")
 	// })
 
-	Consumes("application/json")
+	// Consumes("application/json")
+	Consumes("application/x-www-form-urlencoded", func() {
+		Package("github.com/goadesign/goa/encoding/form")
+	})
 	Produces("application/json")
 
 	//Produces("text/html")

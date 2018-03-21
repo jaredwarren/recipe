@@ -14,6 +14,7 @@ import (
 	"context"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/cors"
+	"github.com/goadesign/goa/encoding/form"
 	"net/http"
 )
 
@@ -21,11 +22,11 @@ import (
 func initService(service *goa.Service) {
 	// Setup encoders and decoders
 	service.Encoder.Register(goa.NewJSONEncoder, "application/json")
-	service.Decoder.Register(goa.NewJSONDecoder, "application/json")
+	service.Decoder.Register(form.NewDecoder, "application/x-www-form-urlencoded")
 
 	// Setup default encoder and decoder
 	service.Encoder.Register(goa.NewJSONEncoder, "*/*")
-	service.Decoder.Register(goa.NewJSONDecoder, "*/*")
+	service.Decoder.Register(form.NewDecoder, "*/*")
 }
 
 // RecipeController is the controller interface for the Recipe actions.
@@ -147,11 +148,13 @@ func handleRecipeOrigin(h goa.Handler) goa.Handler {
 			// Not a CORS request
 			return h(ctx, rw, req)
 		}
-		if cors.MatchOrigin(origin, "*") {
+		if cors.MatchOrigin(origin, "*.recipe.localhost") {
 			ctx = goa.WithLogContext(ctx, "origin", origin)
 			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Vary", "Origin")
 			rw.Header().Set("Access-Control-Expose-Headers", "Content-Type, Origin")
-			rw.Header().Set("Access-Control-Allow-Credentials", "false")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
 			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
 				// We are handling a preflight request
 				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
